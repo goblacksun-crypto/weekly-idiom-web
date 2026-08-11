@@ -90,15 +90,13 @@
   }
   .chars-row {
     margin: 4mm 10mm 0 10mm;
-    display: flex; flex-wrap: wrap; gap: 3mm;
+    line-height: 1.9;
   }
-  .char-box {
-    padding: 6px 14px;
-    border-radius: 8px;
-    border-width: 2px;
-    border-style: solid;
+  .chars-row .char-item {
+    display: inline-block;
     font-weight: 700;
     font-size: 13px;
+    margin: 0 10px 4px 0;
     white-space: nowrap;
   }
   .meaning-bar {
@@ -442,13 +440,11 @@ function render() {
   charsRow.innerHTML = "";
   idiom.chars.forEach((pair, i) => {
     const color = CHAR_COLORS[i % CHAR_COLORS.length];
-    const box = document.createElement("div");
-    box.className = "char-box";
-    box.textContent = `${pair[0]} ${pair[1]}`;
-    box.style.color = rgb(color);
-    box.style.borderColor = rgb(color);
-    box.style.background = lighten(color, 0.85);
-    charsRow.appendChild(box);
+    const item = document.createElement("span");
+    item.className = "char-item";
+    item.style.color = rgb(color);
+    item.textContent = `${pair[0]}(${pair[1]})`;
+    charsRow.appendChild(item);
   });
 
   document.getElementById("meaningText").textContent = idiom.meaning;
