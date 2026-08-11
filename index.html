@@ -176,11 +176,32 @@
     position: absolute; bottom: 8mm; left: 10mm;
     font-size: 11px; color: rgb(140,140,140);
   }
+  .schedule-bar {
+    position: absolute; bottom: 7mm; right: 10mm;
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; color: rgb(100,100,100);
+  }
+  .schedule-bar .schedule-label {
+    font-weight: 700; color: rgb(140,140,140); margin-right: 2px;
+  }
+  .schedule-bar select {
+    font-size: 11px; padding: 2px 4px; border-radius: 4px;
+    border: 1px solid #ccc; background: white; color: rgb(60,60,60);
+  }
+  .schedule-bar button {
+    font-size: 11px; padding: 3px 12px; border-radius: 5px; border: none;
+    background: var(--cyan); color: white; cursor: pointer;
+  }
+  .schedule-bar button:hover { opacity: 0.9; }
+  .schedule-status {
+    font-size: 10px; color: rgb(160,160,160); margin-left: 2px; white-space: nowrap;
+  }
 
   @media print {
     html, body { background: white; }
     .toolbar { display: none; }
     .week-nav-group, .week-select-group { display: none !important; }
+    .schedule-bar { display: none !important; }
     #page { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     @page { size: A4; margin: 0; }
@@ -219,6 +240,14 @@
   <div class="charorigin-label">한자는 어떻게 만들어졌을까요?</div>
   <div class="charorigin-list" id="charoriginList"></div>
   <div class="footer-text">삼성 잉크젯 프린터 잉크 순환용 주간 자동 인쇄 · 노즐 막힘 방지</div>
+  <div class="schedule-bar" id="scheduleBar">
+    <span class="schedule-label">자동 인쇄 시각</span>
+    <select id="schWeekday"></select>
+    <select id="schHour"></select>
+    <select id="schMinute"></select>
+    <button id="schSaveBtn">저장</button>
+    <span class="schedule-status" id="scheduleStatus"></span>
+  </div>
 </div>
 
 <script>
@@ -416,9 +445,125 @@ document.getElementById("weekSelect").addEventListener("change", (e) => {
   render();
 });
 
+// ---------------------------------------------------------------------------
+// 자동 인쇄 요일/시간 스케줄 설정
+//   schedule.json이 실제 자동 인쇄 스크립트(weekly_print_job.sh)가 읽는 단일
+//   기준값이다. 이 페이지는 그 값을 불러와 보여주고, 저장 시 schedule.json을
+//   갱신한다(가능하면 파일에 바로 저장, 안 되면 다운로드 후 안내).
+// ---------------------------------------------------------------------------
+const SCHEDULE_WEEKDAYS = ["월", "화", "수", "목", "금", "토", "일"];
+const SCHEDULE_STORAGE_KEY = "weeklyIdiomPrintSchedule";
+const SCHEDULE_DEFAULT = { weekday: 0, hour: 7, minute: 0 };
+let scheduleFileHandle = null; // File System Access API 연결 시에만 사용 (세션 내에서만 재사용)
+
+function populateScheduleSelects() {
+  const wSel = document.getElementById("schWeekday");
+  const hSel = document.getElementById("schHour");
+  const mSel = document.getElementById("schMinute");
+  wSel.innerHTML = SCHEDULE_WEEKDAYS.map((label, i) => `<option value="${i}">${label}요일</option>`).join("");
+  hSel.innerHTML = Array.from({ length: 24 }, (_, h) => `<option value="${h}">${String(h).padStart(2, "0")}시</option>`).join("");
+  mSel.innerHTML = [0, 30].map(m => `<option value="${m}">${String(m).padStart(2, "0")}분</option>`).join("");
+}
+
+function applyScheduleToSelects(sch) {
+  document.getElementById("schWeekday").value = String(sch.weekday);
+  document.getElementById("schHour").value = String(sch.hour);
+  document.getElementById("schMinute").value = String(sch.minute >= 30 ? 30 : 0);
+}
+
+function readScheduleFromSelects() {
+  return {
+    weekday: parseInt(document.getElementById("schWeekday").value, 10),
+    hour: parseInt(document.getElementById("schHour").value, 10),
+    minute: parseInt(document.getElementById("schMinute").value, 10),
+  };
+}
+
+function setScheduleStatus(text) {
+  document.getElementById("scheduleStatus").textContent = text;
+}
+
+async function loadSchedule() {
+  populateScheduleSelects();
+  // 1) 이 페이지와 같은 위치의 schedule.json을 먼저 시도 (실제 자동화가 읽는 값 그대로)
+  try {
+    const res = await fetch("schedule.json", { cache: "no-store" });
+    if (res.ok) {
+      const sch = await res.json();
+      applyScheduleToSelects(sch);
+      localStorage.setItem(SCHEDULE_STORAGE_KEY, JSON.stringify(sch));
+      setScheduleStatus(sch.updated ? `저장됨 · ${sch.updated}` : "저장된 설정 불러옴");
+      return;
+    }
+  } catch (e) {
+    // file://로 직접 열었거나 schedule.json이 아직 없는 경우 - 아래 localStorage로 대체
+  }
+  // 2) 이 브라우저(기기)에 마지막으로 저장했던 값
+  try {
+    const saved = localStorage.getItem(SCHEDULE_STORAGE_KEY);
+    if (saved) {
+      const sch = JSON.parse(saved);
+      applyScheduleToSelects(sch);
+      setScheduleStatus(sch.updated ? `이 기기에 저장됨 · ${sch.updated}` : "이 기기에 저장된 설정");
+      return;
+    }
+  } catch (e) { /* ignore */ }
+  // 3) 기본값
+  applyScheduleToSelects(SCHEDULE_DEFAULT);
+  setScheduleStatus("아직 설정 안 됨 (기본값 표시 중)");
+}
+
+async function saveScheduleToFile(json) {
+  // Chrome/Edge 등 File System Access API를 지원하면, weekly_print_job.sh가 읽는
+  // 실제 schedule.json 파일을 선택해 바로 덮어쓸 수 있다.
+  if (window.showSaveFilePicker) {
+    try {
+      if (!scheduleFileHandle) {
+        scheduleFileHandle = await window.showSaveFilePicker({
+          suggestedName: "schedule.json",
+          types: [{ description: "JSON", accept: { "application/json": [".json"] } }],
+        });
+      }
+      const writable = await scheduleFileHandle.createWritable();
+      await writable.write(json);
+      await writable.close();
+      return "file";
+    } catch (e) {
+      // 사용자가 취소했거나 API를 쓸 수 없음 - 아래 다운로드 방식으로 대체
+      scheduleFileHandle = null;
+    }
+  }
+  // 대체 방법: schedule.json 파일을 다운로드 (프로젝트 폴더로 직접 옮겨야 함)
+  const blob = new Blob([json], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "schedule.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  return "download";
+}
+
+document.getElementById("schSaveBtn").addEventListener("click", async () => {
+  const sch = readScheduleFromSelects();
+  sch.updated = new Date().toLocaleString("ko-KR", { hour12: false });
+  localStorage.setItem(SCHEDULE_STORAGE_KEY, JSON.stringify(sch));
+  const json = JSON.stringify(sch, null, 2);
+  setScheduleStatus("저장 중...");
+  const how = await saveScheduleToFile(json);
+  if (how === "file") {
+    setScheduleStatus(`저장됨 · ${sch.updated}`);
+  } else {
+    setScheduleStatus(`다운로드됨 - 폴더로 옮겨주세요 · ${sch.updated}`);
+  }
+});
+
 populateWeekSelect();
 currentWeek = computeWeek(new Date());
 render();
+loadSchedule();
 </script>
 </body>
 </html>
