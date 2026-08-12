@@ -82,14 +82,18 @@
     font-weight: 800;
     font-size: clamp(34px, 13vw, 20mm);
   }
+  .hangul-row {
+    margin: 3mm 10mm 0 10mm;
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    column-gap: 5mm; row-gap: 2mm;
+  }
   .hangul-reading {
-    margin: 2mm 10mm 0 10mm;
     font-size: clamp(20px, 6vw, 9mm);
     font-weight: 800;
     color: rgb(20,20,20);
   }
   .chars-row {
-    margin: 4mm 10mm 0 10mm;
+    display: flex; flex-wrap: wrap; align-items: baseline;
     line-height: 1.9;
   }
   .chars-row .char-item {
@@ -276,8 +280,10 @@
     </div>
   </div>
   <div class="hanja-row" id="hanjaRow"></div>
-  <div class="hangul-reading" id="hangulReading"></div>
-  <div class="chars-row" id="charsRow"></div>
+  <div class="hangul-row">
+    <span class="hangul-reading" id="hangulReading"></span>
+    <span class="chars-row" id="charsRow"></span>
+  </div>
   <div class="meaning-bar"><span class="label">뜻</span><span class="text" id="meaningText"></span></div>
   <div class="origin-label">이 말은 어떻게 생겨났을까요?</div>
   <div class="origin-box" id="originBox"></div>
@@ -496,7 +502,7 @@ function render() {
   simTitle.className = "group-title";
   simTitle.textContent = "· 비슷한 한자성어";
   simGroup.appendChild(simTitle);
-  related.similar.forEach((item, i) => {
+  related.similar.slice(0, 1).forEach((item, i) => {
     simGroup.appendChild(buildRelatedItem(item, CHAR_COLORS[i % CHAR_COLORS.length], true));
   });
   relatedList.appendChild(simGroup);
@@ -508,7 +514,7 @@ function render() {
   oppTitle.textContent = "· 반대 한자성어";
   oppGroup.appendChild(oppTitle);
   if (related.opposite.length > 0) {
-    related.opposite.forEach((item, i) => {
+    related.opposite.slice(0, 1).forEach((item, i) => {
       oppGroup.appendChild(buildRelatedItem(item, CHAR_COLORS[(i + 3) % CHAR_COLORS.length], false));
     });
   } else if (related.opposite_note) {
