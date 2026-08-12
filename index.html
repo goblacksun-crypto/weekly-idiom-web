@@ -283,7 +283,7 @@
   <div class="origin-box" id="originBox"></div>
   <div class="example-label">일상생활에서 이렇게 써요</div>
   <div class="example-list"><ol id="exampleList"></ol></div>
-  <div class="related-label">비슷한 한자성어 · 반대 한자성어</div>
+  <div class="related-label">비슷한 한자성어</div>
   <div class="related-list" id="relatedList"></div>
   <div class="charorigin-label">한자는 어떻게 만들어졌을까요?</div>
   <div class="charorigin-list" id="charoriginList"></div>
@@ -489,32 +489,10 @@ function render() {
 
   const simGroup = document.createElement("div");
   simGroup.className = "related-group";
-  const simTitle = document.createElement("div");
-  simTitle.className = "group-title";
-  simTitle.textContent = "· 비슷한 한자성어";
-  simGroup.appendChild(simTitle);
   related.similar.slice(0, 1).forEach((item, i) => {
     simGroup.appendChild(buildRelatedItem(item, CHAR_COLORS[i % CHAR_COLORS.length], true));
   });
   relatedList.appendChild(simGroup);
-
-  const oppGroup = document.createElement("div");
-  oppGroup.className = "related-group";
-  const oppTitle = document.createElement("div");
-  oppTitle.className = "group-title";
-  oppTitle.textContent = "· 반대 한자성어";
-  oppGroup.appendChild(oppTitle);
-  if (related.opposite.length > 0) {
-    related.opposite.slice(0, 1).forEach((item, i) => {
-      oppGroup.appendChild(buildRelatedItem(item, CHAR_COLORS[(i + 3) % CHAR_COLORS.length], false));
-    });
-  } else if (related.opposite_note) {
-    const note = document.createElement("div");
-    note.className = "related-note";
-    note.textContent = related.opposite_note;
-    oppGroup.appendChild(note);
-  }
-  relatedList.appendChild(oppGroup);
 
   const charoriginList = document.getElementById("charoriginList");
   charoriginList.innerHTML = "";
