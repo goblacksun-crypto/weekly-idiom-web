@@ -201,25 +201,6 @@
   .charorigin-item .body {
     font-size: 13px; line-height: 1.6; color: rgb(50,50,50); margin-left: 16px;
   }
-  .schedule-bar {
-    display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
-    font-size: 11px; color: rgb(100,100,100);
-  }
-  .schedule-bar .schedule-label {
-    font-weight: 700; color: rgb(140,140,140); margin-right: 2px;
-  }
-  .schedule-bar select {
-    font-size: 11px; padding: 2px 4px; border-radius: 4px;
-    border: 1px solid #ccc; background: white; color: rgb(60,60,60);
-  }
-  .schedule-bar button {
-    font-size: 11px; padding: 3px 12px; border-radius: 5px; border: none;
-    background: var(--cyan); color: white; cursor: pointer;
-  }
-  .schedule-bar button:hover { opacity: 0.9; }
-  .schedule-status {
-    font-size: 10px; color: rgb(160,160,160); margin-left: 2px; white-space: nowrap;
-  }
 
   /* 화면(특히 모바일)에서 가로 스크롤이 생기지 않도록 페이지 폭을 유동적으로 전환.
      인쇄는 별도의 @media print / @page 규칙을 따로 적용하므로 영향 없음. */
@@ -235,7 +216,6 @@
     html, body { background: white; }
     .toolbar { display: none; }
     .week-nav-group, .week-select-group { display: none !important; }
-    .schedule-bar { display: none !important; }
     #page { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
     .hanja-row span { font-size: 20mm !important; }
     .hangul-reading { font-size: 9mm !important; }
@@ -263,14 +243,6 @@
     <div class="week-select-group">
       <span>전체목록</span>
       <select id="weekSelect"></select>
-    </div>
-    <div class="schedule-bar" id="scheduleBar">
-      <span class="schedule-label">자동 인쇄 시각</span>
-      <select id="schWeekday"></select>
-      <select id="schHour"></select>
-      <select id="schMinute"></select>
-      <button id="schSaveBtn">저장</button>
-      <span class="schedule-status" id="scheduleStatus"></span>
     </div>
   </div>
   <div class="hanja-row" id="hanjaRow"></div>
@@ -588,207 +560,10 @@ document.getElementById("weekSelect").addEventListener("change", (e) => {
   render();
 });
 
-// ---------------------------------------------------------------------------
-// 자동 인쇄 요일/시간 스케줄 설정
-//   schedule.json이 실제 자동 인쇄 스크립트(weekly_print_job.sh)가 읽는 단일
-//   기준값이다. 이 페이지는 그 값을 불러와 보여주고, 저장 시 schedule.json을
-//   갱신한다(가능하면 파일에 바로 저장, 안 되면 다운로드 후 안내).
-// ---------------------------------------------------------------------------
-const SCHEDULE_WEEKDAYS = ["월", "화", "수", "목", "금", "토", "일"];
-const SCHEDULE_STORAGE_KEY = "weeklyIdiomPrintSchedule";
-const SCHEDULE_DEFAULT = { weekday: 0, hour: 7, minute: 0 };
-let scheduleFileHandle = null; // File System Access API로 연결한 schedule.json 핸들 (메모리 캐시)
-
-// ---------------------------------------------------------------------------
-// schedule.json 파일 핸들을 IndexedDB에 저장해두면, 처음 한 번만 파일 위치를
-// 고르고(예: D:\git_hub\weekly-idiom-printer\schedule.json) 그 다음부터는
-// 페이지를 새로 열어도 파일 선택창 없이 바로 그 파일에 덮어쓸 수 있다.
-// ---------------------------------------------------------------------------
-const SCHEDULE_DB_NAME = "weeklyIdiomPrintDB";
-const SCHEDULE_DB_STORE = "handles";
-const SCHEDULE_DB_KEY = "scheduleFileHandle";
-
-function openScheduleDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(SCHEDULE_DB_NAME, 1);
-    req.onupgradeneeded = () => {
-      req.result.createObjectStore(SCHEDULE_DB_STORE);
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function idbGetHandle() {
-  try {
-    const db = await openScheduleDB();
-    return await new Promise((resolve, reject) => {
-      const tx = db.transaction(SCHEDULE_DB_STORE, "readonly");
-      const req = tx.objectStore(SCHEDULE_DB_STORE).get(SCHEDULE_DB_KEY);
-      req.onsuccess = () => resolve(req.result || null);
-      req.onerror = () => reject(req.error);
-    });
-  } catch (e) {
-    return null;
-  }
-}
-
-async function idbSetHandle(handle) {
-  try {
-    const db = await openScheduleDB();
-    await new Promise((resolve, reject) => {
-      const tx = db.transaction(SCHEDULE_DB_STORE, "readwrite");
-      tx.objectStore(SCHEDULE_DB_STORE).put(handle, SCHEDULE_DB_KEY);
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => reject(tx.error);
-    });
-  } catch (e) { /* ignore */ }
-}
-
-async function idbClearHandle() {
-  try {
-    const db = await openScheduleDB();
-    await new Promise((resolve, reject) => {
-      const tx = db.transaction(SCHEDULE_DB_STORE, "readwrite");
-      tx.objectStore(SCHEDULE_DB_STORE).delete(SCHEDULE_DB_KEY);
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => reject(tx.error);
-    });
-  } catch (e) { /* ignore */ }
-}
-
-function populateScheduleSelects() {
-  const wSel = document.getElementById("schWeekday");
-  const hSel = document.getElementById("schHour");
-  const mSel = document.getElementById("schMinute");
-  wSel.innerHTML = SCHEDULE_WEEKDAYS.map((label, i) => `<option value="${i}">${label}요일</option>`).join("");
-  hSel.innerHTML = Array.from({ length: 24 }, (_, h) => `<option value="${h}">${String(h).padStart(2, "0")}시</option>`).join("");
-  mSel.innerHTML = Array.from({ length: 12 }, (_, i) => i * 5).map(m => `<option value="${m}">${String(m).padStart(2, "0")}분</option>`).join("");
-}
-
-function applyScheduleToSelects(sch) {
-  document.getElementById("schWeekday").value = String(sch.weekday);
-  document.getElementById("schHour").value = String(sch.hour);
-  const roundedMinute = Math.min(55, Math.round((sch.minute || 0) / 5) * 5);
-  document.getElementById("schMinute").value = String(roundedMinute);
-}
-
-function readScheduleFromSelects() {
-  return {
-    weekday: parseInt(document.getElementById("schWeekday").value, 10),
-    hour: parseInt(document.getElementById("schHour").value, 10),
-    minute: parseInt(document.getElementById("schMinute").value, 10),
-  };
-}
-
-function setScheduleStatus(text) {
-  document.getElementById("scheduleStatus").textContent = text;
-}
-
-async function loadSchedule() {
-  populateScheduleSelects();
-  // 1) 이 페이지와 같은 위치의 schedule.json을 먼저 시도 (실제 자동화가 읽는 값 그대로)
-  try {
-    const res = await fetch("schedule.json", { cache: "no-store" });
-    if (res.ok) {
-      const sch = await res.json();
-      applyScheduleToSelects(sch);
-      localStorage.setItem(SCHEDULE_STORAGE_KEY, JSON.stringify(sch));
-      setScheduleStatus(sch.updated ? `저장됨 · ${sch.updated}` : "저장된 설정 불러옴");
-      return;
-    }
-  } catch (e) {
-    // file://로 직접 열었거나 schedule.json이 아직 없는 경우 - 아래 localStorage로 대체
-  }
-  // 2) 이 브라우저(기기)에 마지막으로 저장했던 값
-  try {
-    const saved = localStorage.getItem(SCHEDULE_STORAGE_KEY);
-    if (saved) {
-      const sch = JSON.parse(saved);
-      applyScheduleToSelects(sch);
-      setScheduleStatus(sch.updated ? `이 기기에 저장됨 · ${sch.updated}` : "이 기기에 저장된 설정");
-      return;
-    }
-  } catch (e) { /* ignore */ }
-  // 3) 기본값
-  applyScheduleToSelects(SCHEDULE_DEFAULT);
-  setScheduleStatus("아직 설정 안 됨 (기본값 표시 중)");
-}
-
-async function saveScheduleToFile(json) {
-  // Chrome/Edge 등 File System Access API를 지원하면, weekly_print_job.ps1/.sh가
-  // 읽는 실제 schedule.json 파일에 파일 선택창 없이 바로 덮어쓸 수 있다.
-  if (window.showSaveFilePicker) {
-    try {
-      // 1) 이번 세션에서 이미 연결된 핸들이 없으면, 예전에 저장해둔 위치를
-      //    IndexedDB에서 불러온다 (브라우저를 새로 열어도 유지됨).
-      if (!scheduleFileHandle) {
-        scheduleFileHandle = await idbGetHandle();
-      }
-
-      if (scheduleFileHandle) {
-        // 2) 이미 한 번 위치를 지정해 둔 파일 - 권한만 확인(필요시 재요청)하고
-        //    파일 선택창 없이 바로 덮어쓴다.
-        let perm = await scheduleFileHandle.queryPermission({ mode: "readwrite" });
-        if (perm !== "granted") {
-          perm = await scheduleFileHandle.requestPermission({ mode: "readwrite" });
-        }
-        if (perm !== "granted") {
-          throw new Error("schedule.json 쓰기 권한이 없음");
-        }
-      } else {
-        // 3) 최초 1회만: 저장할 위치를 직접 선택
-        //    (예: D:\git_hub\weekly-idiom-printer\schedule.json 선택 또는 새로 생성)
-        scheduleFileHandle = await window.showSaveFilePicker({
-          suggestedName: "schedule.json",
-          types: [{ description: "JSON", accept: { "application/json": [".json"] } }],
-        });
-        await idbSetHandle(scheduleFileHandle);
-      }
-
-      const writable = await scheduleFileHandle.createWritable();
-      await writable.write(json);
-      await writable.close();
-      return "file";
-    } catch (e) {
-      // 선택 취소/권한 거부/파일이 옮겨지거나 지워짐 등으로 실패 - 저장해 둔 위치
-      // 정보를 지워서 다음 저장 시 다시 깨끗하게 위치를 고르도록 하고, 이번에는
-      // 아래 다운로드 방식으로 대체
-      scheduleFileHandle = null;
-      await idbClearHandle();
-    }
-  }
-  // 대체 방법: schedule.json 파일을 다운로드 (프로젝트 폴더로 직접 옮겨야 함)
-  const blob = new Blob([json], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "schedule.json";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-  return "download";
-}
-
-document.getElementById("schSaveBtn").addEventListener("click", async () => {
-  const sch = readScheduleFromSelects();
-  sch.updated = new Date().toLocaleString("ko-KR", { hour12: false });
-  localStorage.setItem(SCHEDULE_STORAGE_KEY, JSON.stringify(sch));
-  const json = JSON.stringify(sch, null, 2);
-  setScheduleStatus("저장 중...");
-  const how = await saveScheduleToFile(json);
-  if (how === "file") {
-    setScheduleStatus(`저장됨 · ${sch.updated}`);
-  } else {
-    setScheduleStatus(`다운로드됨 - 폴더로 옮겨주세요 · ${sch.updated}`);
-  }
-});
 
 populateWeekSelect();
 currentWeek = computeWeek(new Date());
 render();
-loadSchedule();
 </script>
 </body>
 </html>
