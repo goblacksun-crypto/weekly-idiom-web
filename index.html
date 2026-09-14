@@ -19,6 +19,12 @@
     background: #e9e9e9;
     font-family: "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", "NanumGothic", sans-serif;
   }
+  /* 한자(漢字)는 궁서체로 표시. .hj는 한글 설명 속에 섞여 나오는 한자 한 글자씩을
+     감싸는 클래스(JS의 wrapHanja()가 붙여줌). */
+  .hanja-row span, .related-item .head .hanja, .charorigin-item .visual .chip,
+  .charorigin-item .visual .badge, .hj {
+    font-family: "궁서체", "HYGungSo-Bold", GungsuhChe, Gungsuh, Batang, serif;
+  }
   .toolbar {
     max-width: 210mm; margin: 12px auto; padding: 0 4mm;
     display: flex; justify-content: space-between; align-items: center;
@@ -348,6 +354,25 @@ function lighten(a, factor=0.85) {
   return `rgb(${Math.round(a[0]+(255-a[0])*factor)},${Math.round(a[1]+(255-a[1])*factor)},${Math.round(a[2]+(255-a[2])*factor)})`;
 }
 
+// 한자(漢字)만 궁서체(.hj 클래스, CSS 참고)로 감싸고 나머지는 그대로 두는 헬퍼.
+// 한글 설명 속에 한자가 섞여 나오는 경우(예: "이백(李白)")에도 그 한자 글자만
+// 궁서체로 표시하기 위해, textContent 대신 innerHTML로 넣을 때 사용한다.
+function isHanjaChar(ch) {
+  const cp = ch.codePointAt(0);
+  // CJK 확장 A(0x3400~0x4DBF) + CJK 통합 한자(0x4E00~0x9FFF)
+  return (cp >= 0x3400 && cp <= 0x4dbf) || (cp >= 0x4e00 && cp <= 0x9fff);
+}
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function wrapHanja(text) {
+  let out = "";
+  for (const ch of String(text)) {
+    out += isHanjaChar(ch) ? `<span class="hj">${escapeHtml(ch)}</span>` : escapeHtml(ch);
+  }
+  return out;
+}
+
 function toUTCDateOnly(date) {
   return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
 }
@@ -412,18 +437,18 @@ function render() {
     const item = document.createElement("span");
     item.className = "char-item";
     item.style.color = rgb(color);
-    item.textContent = `${pair[0]}(${pair[1]})`;
+    item.innerHTML = wrapHanja(`${pair[0]}(${pair[1]})`);
     charsRow.appendChild(item);
   });
 
   document.getElementById("meaningText").textContent = idiom.meaning;
-  document.getElementById("originBox").textContent = idiom.origin;
+  document.getElementById("originBox").innerHTML = wrapHanja(idiom.origin);
 
   const exampleList = document.getElementById("exampleList");
   exampleList.innerHTML = "";
   (idiom.examples || []).forEach(sentence => {
     const li = document.createElement("li");
-    li.textContent = sentence;
+    li.innerHTML = wrapHanja(sentence);
     exampleList.appendChild(li);
   });
 
@@ -447,13 +472,13 @@ function render() {
     if (breakdown) {
       const breakdownDiv = document.createElement("div");
       breakdownDiv.className = "breakdown";
-      breakdownDiv.textContent = breakdown;
+      breakdownDiv.innerHTML = wrapHanja(breakdown);
       div.appendChild(breakdownDiv);
     }
     if (withNuance && item.nuance) {
       const nuance = document.createElement("div");
       nuance.className = "nuance";
-      nuance.textContent = item.nuance;
+      nuance.innerHTML = wrapHanja(item.nuance);
       div.appendChild(nuance);
     }
     return div;
@@ -475,7 +500,7 @@ function render() {
 
     const sub = document.createElement("div");
     sub.className = "sub";
-    sub.textContent = `${i + 1}. ${pair[0]} (${pair[1]})`;
+    sub.innerHTML = wrapHanja(`${i + 1}. ${pair[0]} (${pair[1]})`);
     sub.style.color = rgb(color);
     item.appendChild(sub);
 
@@ -528,7 +553,7 @@ function render() {
 
     const body = document.createElement("div");
     body.className = "body";
-    body.textContent = CHAR_ORIGINS[pair[0]] || "";
+    body.innerHTML = wrapHanja(CHAR_ORIGINS[pair[0]] || "");
     item.appendChild(body);
 
     charoriginList.appendChild(item);
