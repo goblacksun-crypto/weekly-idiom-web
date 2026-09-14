@@ -226,7 +226,12 @@
     }
   }
 
+  #fitDebug { display: none; }
   @media print {
+    #fitDebug {
+      display: block; position: fixed; bottom: 1mm; right: 1mm;
+      font-size: 7px; color: #ccc; z-index: 9999;
+    }
     html, body { background: white; }
     .toolbar { display: none; }
     .week-nav-group, .week-select-group { display: none !important; }
@@ -602,26 +607,45 @@ render();
 // 필요한 만큼만 글자를 자동으로 줄인다(Python 버전의 자동 글자 크기 조절과
 // 같은 목적 - 성어마다 유래 이야기 길이가 달라 고정 크기로는 항상 맞지 않음).
 (function () {
-  var A4_TARGET_PX = 1100; // 297mm ≈ 1122px(96dpi) - 약간의 안전 여유를 둔 목표 높이
-  var MIN_FIT = 0.7;       // 이보다 더 줄이지는 않음(가독성 최저선)
+  var A4_TARGET_PX = 1122; // 297mm = 1122px(96dpi) - A4 실제 높이 그대로 사용
+  var MIN_FIT = 0.85;      // 너무 작아지지 않도록 최저선을 넉넉히 둠(이전 0.7→0.85)
 
   function setFit(v) {
     document.documentElement.style.setProperty("--fit", String(v));
+  }
+
+  function debugShow(text) {
+    var el = document.getElementById("fitDebug");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "fitDebug";
+      document.body.appendChild(el);
+    }
+    el.textContent = text;
   }
 
   function fitToOnePage() {
     var page = document.getElementById("page");
     if (!page) return;
     setFit(1);
+    var h0 = page.scrollHeight;
     var fit = 1;
-    // 글자 크기를 줄이면 문단 줄바꿈 수도 바뀌므로, 몇 번 다시 재보면서 좁혀간다.
-    for (var i = 0; i < 6; i++) {
-      var h = page.scrollHeight;
+    // 이미 한 페이지 안에 들어가면 손대지 않는다.
+    if (h0 <= A4_TARGET_PX) {
+      debugShow("h=" + h0 + " fit=1(변경없음)");
+      return;
+    }
+    // 글자 크기를 줄이면 문단 줄바꿈 수도 바뀌므로, 최대 3번만 다시 재며 좁혀간다
+    // (너무 여러 번 반복하면 매번 완전히 새로 줄어들며 과도하게 작아질 수 있음).
+    var h = h0;
+    for (var i = 0; i < 3; i++) {
       if (h <= A4_TARGET_PX || fit <= MIN_FIT) break;
       var ratio = A4_TARGET_PX / h;
       fit = Math.max(fit * ratio, MIN_FIT);
       setFit(fit.toFixed(3));
+      h = page.scrollHeight;
     }
+    debugShow("h0=" + h0 + " h=" + h + " fit=" + fit.toFixed(3));
   }
 
   function resetFit() {
