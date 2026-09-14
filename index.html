@@ -12,6 +12,10 @@
     --near-black: rgb(20,20,20);
     --teal: rgb(0,128,90);
     --purple: rgb(110,60,180);
+    /* 인쇄 시 내용이 A4 한 장을 넘기면 자동으로 줄어드는 배율(1=원래 크기).
+       평소 화면에서는 항상 1이고, 인쇄 직전에 JS가 실제 렌더링 높이를 재서
+       필요한 만큼만 줄인다 (Python 버전의 자동 글자 크기 조절과 같은 목적). */
+    --fit: 1;
   }
   * { box-sizing: border-box; }
   html, body {
@@ -24,6 +28,10 @@
   .hanja-row span, .related-item .head .hanja, .charorigin-item .visual .chip,
   .charorigin-item .visual .badge, .hj {
     font-family: "궁서체", "HYGungSo-Bold", GungsuhChe, Gungsuh, Batang, serif;
+    /* 궁서체는 획이 가늘어 다른 고딕 글자보다 얇고 작아 보이므로 살짝
+       외곽선을 더해 두께를 보완한다 (지원 안 하는 브라우저에서는 무시됨). */
+    -webkit-text-stroke: 0.4px currentColor;
+    text-stroke: 0.4px currentColor;
   }
   .toolbar {
     max-width: 210mm; margin: 12px auto; padding: 0 4mm;
@@ -50,11 +58,11 @@
     background: linear-gradient(to right, cyan, magenta, yellow);
   }
   .header-row {
-    margin: 5mm 10mm 0 10mm;
+    margin: calc(5mm * var(--fit)) 10mm 0 10mm;
     display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
   }
   .header-text {
-    font-size: 13px; color: rgb(90,90,90);
+    font-size: calc(13px * var(--fit)); color: rgb(90,90,90);
   }
   .week-nav-group {
     display: flex; align-items: center; gap: 6px;
@@ -80,7 +88,7 @@
     font-family: inherit; max-width: 260px;
   }
   .hanja-row {
-    margin: 6mm 10mm 0 10mm;
+    margin: calc(6mm * var(--fit)) 10mm 0 10mm;
     display: flex; flex-wrap: wrap; align-items: baseline; gap: 4mm;
     line-height: 1;
   }
@@ -89,7 +97,7 @@
     font-size: clamp(34px, 13vw, 20mm);
   }
   .hangul-row {
-    margin: 3mm 10mm 0 10mm;
+    margin: calc(3mm * var(--fit)) 10mm 0 10mm;
     display: flex; flex-wrap: wrap; align-items: baseline;
     column-gap: 5mm; row-gap: 2mm;
   }
@@ -105,69 +113,69 @@
   .chars-row .char-item {
     display: inline-block;
     font-weight: 700;
-    font-size: 18px;
+    font-size: calc(18px * var(--fit));
     margin: 0 10px 4px 0;
     white-space: nowrap;
   }
   .meaning-bar {
-    margin: 5mm 10mm 0 10mm;
+    margin: calc(5mm * var(--fit)) 10mm 0 10mm;
     background: rgb(255,244,214);
     border-radius: 8px;
     padding: 10px 16px;
     display: flex; align-items: baseline; gap: 10px;
-    font-size: 15px;
+    font-size: calc(15px * var(--fit));
   }
   .meaning-bar .label {
-    color: rgb(180,110,0); font-weight: 700; font-size: 13px;
+    color: rgb(180,110,0); font-weight: 700; font-size: calc(13px * var(--fit));
   }
   .meaning-bar .text {
     color: rgb(60,40,0); font-weight: 700;
   }
   .origin-label, .example-label, .charorigin-label, .related-label {
-    margin: 6mm 10mm 0 10mm;
-    color: rgb(20,90,140); font-weight: 700; font-size: 15px;
+    margin: calc(6mm * var(--fit)) 10mm 0 10mm;
+    color: rgb(20,90,140); font-weight: 700; font-size: calc(15px * var(--fit));
   }
   .related-list {
-    margin: 3mm 10mm 0 10mm;
+    margin: calc(3mm * var(--fit)) 10mm 0 10mm;
   }
   .related-group {
     margin-bottom: 6px;
   }
   .related-group .group-title {
-    color: rgb(20,90,140); font-weight: 700; font-size: 13px; margin-bottom: 2px;
+    color: rgb(20,90,140); font-weight: 700; font-size: calc(13px * var(--fit)); margin-bottom: 2px;
   }
   .related-item {
     margin: 3px 0 3px 16px;
   }
   .related-item .head {
-    font-size: 14px; color: rgb(0,0,0);
+    font-size: calc(14px * var(--fit)); color: rgb(0,0,0);
   }
   .related-item .head .hanja {
-    font-weight: 700; font-size: 15px;
+    font-weight: 700; font-size: calc(15px * var(--fit));
   }
   .related-item .breakdown {
-    font-size: 14px; line-height: 1.7; color: rgb(0,0,0); margin: 2px 0 0 8px;
+    font-size: calc(14px * var(--fit)); line-height: 1.7; color: rgb(0,0,0); margin: 2px 0 0 8px;
   }
   .related-item .nuance {
-    font-size: 14px; line-height: 1.7; color: rgb(0,0,0); margin: 2px 0 0 8px;
+    font-size: calc(14px * var(--fit)); line-height: 1.7; color: rgb(0,0,0); margin: 2px 0 0 8px;
   }
   .related-note {
     margin: 3px 0 3px 16px;
-    font-size: 12px; color: rgb(0,0,0);
+    font-size: calc(12px * var(--fit)); color: rgb(0,0,0);
   }
   .origin-box {
-    margin: 3mm 10mm 0 10mm;
+    margin: calc(3mm * var(--fit)) 10mm 0 10mm;
     background: rgb(235,247,250);
     border: 2px solid rgb(180,220,230);
     border-radius: 10px;
     padding: 14px 18px;
-    font-size: 16px;
+    font-size: calc(16px * var(--fit));
     line-height: 1.7;
     color: rgb(0,0,0);
   }
   .example-list {
-    margin: 3mm 10mm 0 10mm;
-    font-size: 14px;
+    margin: calc(3mm * var(--fit)) 10mm 0 10mm;
+    font-size: calc(14px * var(--fit));
     line-height: 1.8;
     color: rgb(0,0,0);
   }
@@ -175,13 +183,13 @@
     margin: 0; padding-left: 20px;
   }
   .charorigin-list {
-    margin: 3mm 10mm 0 10mm;
+    margin: calc(3mm * var(--fit)) 10mm 0 10mm;
   }
   .charorigin-item {
     margin-bottom: 10px;
   }
   .charorigin-item .sub {
-    font-weight: 700; font-size: 14px; margin-bottom: 2px;
+    font-weight: 700; font-size: calc(14px * var(--fit)); margin-bottom: 2px;
   }
   .charorigin-item .visual {
     display: flex; align-items: center; gap: 6px; margin: 4px 0 6px 16px; flex-wrap: wrap;
@@ -190,22 +198,22 @@
     display: inline-flex; align-items: center; justify-content: center;
     min-width: 30px; height: 30px; padding: 0 6px;
     border-radius: 8px; border-width: 2px; border-style: solid;
-    font-weight: 700; font-size: 16px;
+    font-weight: 700; font-size: calc(16px * var(--fit));
   }
   .charorigin-item .visual .badge {
     display: inline-flex; align-items: center; justify-content: center;
     width: 34px; height: 34px; border-radius: 50%;
     border-width: 2px; border-style: solid;
-    font-weight: 700; font-size: 17px;
+    font-weight: 700; font-size: calc(17px * var(--fit));
   }
   .charorigin-item .visual .op {
-    color: rgb(150,150,150); font-weight: 700; font-size: 14px;
+    color: rgb(150,150,150); font-weight: 700; font-size: calc(14px * var(--fit));
   }
   .charorigin-item .visual .note {
-    color: rgb(0,0,0); font-size: 14px; margin-left: 4px;
+    color: rgb(0,0,0); font-size: calc(14px * var(--fit)); margin-left: 4px;
   }
   .charorigin-item .body {
-    font-size: 13px; line-height: 1.6; color: rgb(0,0,0); margin-left: 16px;
+    font-size: calc(13px * var(--fit)); line-height: 1.6; color: rgb(0,0,0); margin-left: 16px;
   }
 
   /* 화면(특히 모바일)에서 가로 스크롤이 생기지 않도록 페이지 폭을 유동적으로 전환.
@@ -223,8 +231,8 @@
     .toolbar { display: none; }
     .week-nav-group, .week-select-group { display: none !important; }
     #page { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
-    .hanja-row span { font-size: 20mm !important; }
-    .hangul-reading { font-size: 9mm !important; }
+    .hanja-row span { font-size: calc(20mm * var(--fit)) !important; }
+    .hangul-reading { font-size: calc(9mm * var(--fit)) !important; }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     @page { size: A4; margin: 0; }
   }
@@ -589,6 +597,40 @@ document.getElementById("weekSelect").addEventListener("change", (e) => {
 populateWeekSelect();
 currentWeek = computeWeek(new Date());
 render();
+
+// 인쇄가 A4 한 장을 넘기지 않도록, 인쇄 직전에 실제 렌더링 높이를 재서
+// 필요한 만큼만 글자를 자동으로 줄인다(Python 버전의 자동 글자 크기 조절과
+// 같은 목적 - 성어마다 유래 이야기 길이가 달라 고정 크기로는 항상 맞지 않음).
+(function () {
+  var A4_TARGET_PX = 1100; // 297mm ≈ 1122px(96dpi) - 약간의 안전 여유를 둔 목표 높이
+  var MIN_FIT = 0.7;       // 이보다 더 줄이지는 않음(가독성 최저선)
+
+  function setFit(v) {
+    document.documentElement.style.setProperty("--fit", String(v));
+  }
+
+  function fitToOnePage() {
+    var page = document.getElementById("page");
+    if (!page) return;
+    setFit(1);
+    var fit = 1;
+    // 글자 크기를 줄이면 문단 줄바꿈 수도 바뀌므로, 몇 번 다시 재보면서 좁혀간다.
+    for (var i = 0; i < 6; i++) {
+      var h = page.scrollHeight;
+      if (h <= A4_TARGET_PX || fit <= MIN_FIT) break;
+      var ratio = A4_TARGET_PX / h;
+      fit = Math.max(fit * ratio, MIN_FIT);
+      setFit(fit.toFixed(3));
+    }
+  }
+
+  function resetFit() {
+    setFit(1);
+  }
+
+  window.addEventListener("beforeprint", fitToOnePage);
+  window.addEventListener("afterprint", resetFit);
+})();
 </script>
 </body>
 </html>
