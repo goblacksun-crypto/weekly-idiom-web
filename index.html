@@ -20,6 +20,10 @@
        자기 페이지 안에서만 자동으로 줄어든다. */
     --fit2: 1;
   }
+  /* 개론 2장(품사/문장성분)은 --fitOv라는 같은 이름을 쓰지만 각 페이지
+     엘리먼트(#pageOv1/#pageOv2) 스스로에 지역 스코프로 설정되므로 서로
+     독립적으로 줄어든다(같은 :root 변수를 공유하지 않음). */
+  #pageOv1, #pageOv2 { --fitOv: 1; }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
@@ -325,7 +329,64 @@
   .tip-box .tip-label {
     color: rgb(180,110,0); font-weight: 700; margin-right: 8px;
   }
-  #page2.pb-before { page-break-before: always; break-before: page; }
+  /* 여러 페이지 중 첫 번째로 보이는 페이지가 아니면 인쇄 시 새 장부터
+     시작하도록 하는 공통 클래스 (사자성어/영문법/개론1/개론2 어떤 조합이든
+     applyContentVisibility()가 동적으로 붙였다 뗐다 한다). */
+  .pb-before { page-break-before: always; break-before: page; }
+
+  /* --- 개론 2장(품사 / 문장성분) - 주간 로테이션과 무관한 1회성 참고 페이지 --- */
+  .ov-page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto 30px auto;
+    background: white;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  @media screen and (max-width: 210mm) {
+    .ov-page { width: 100%; min-width: 0; }
+  }
+  .ov-header-row {
+    margin: calc(5mm * var(--fitOv)) 10mm 0 10mm;
+  }
+  .ov-header-text {
+    font-size: calc(13px * var(--fitOv)); color: rgb(90,90,90);
+  }
+  .ov-title {
+    margin: calc(2mm * var(--fitOv)) 10mm 0 10mm;
+    font-size: calc(28px * var(--fitOv)); font-weight: 800; color: rgb(20,20,20);
+  }
+  .ov-intro-box {
+    margin: calc(5mm * var(--fitOv)) 10mm 0 10mm;
+    background: rgb(255,244,214);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: calc(13px * var(--fitOv));
+  }
+  .ov-intro-hanja {
+    font-weight: 700; color: rgb(150,90,0); margin-bottom: 6px;
+  }
+  .ov-intro-text { line-height: 1.7; color: rgb(70,50,0); }
+  .ov-groups {
+    margin: calc(6mm * var(--fitOv)) 10mm 0 10mm;
+    font-size: calc(13px * var(--fitOv));
+  }
+  .ov-group { margin-bottom: 14px; }
+  .ov-group-name { font-weight: 800; margin-right: 10px; }
+  .ov-group-def { color: rgb(60,60,60); }
+  .ov-group-words { color: rgb(130,130,130); margin: 3px 0 6px 0; }
+  .ov-item { color: rgb(30,30,30); margin: 2px 0 2px 14px; line-height: 1.6; }
+  .ov-rule-box {
+    margin: calc(6mm * var(--fitOv)) 10mm calc(6mm * var(--fitOv)) 10mm;
+    background: rgb(233,243,255);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: calc(13px * var(--fitOv));
+    line-height: 1.7;
+    color: rgb(20,40,80);
+  }
+  .ov-rule-label { font-weight: 700; color: rgb(15,75,160); margin-right: 10px; }
 
 
   /* 화면(특히 모바일)에서 가로 스크롤이 생기지 않도록 페이지 폭을 유동적으로 전환.
@@ -349,6 +410,7 @@
     .week-nav-group, .week-select-group, .content-toggle-group { display: none !important; }
     #page { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
     #page2 { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
+    .ov-page { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
     .hanja-row span { font-size: calc(20mm * var(--fit)) !important; }
     .hangul-reading { font-size: calc(9mm * var(--fit)) !important; }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -371,11 +433,30 @@
       <select id="weekSelect"></select>
     </div>
     <div class="content-toggle-group">
+      <label><input type="checkbox" id="showPosOvChk"> 품사 개론</label>
+      <label><input type="checkbox" id="showCompOvChk"> 문장성분 개론</label>
       <label><input type="checkbox" id="showIdiomChk" checked> 사자성어</label>
       <label><input type="checkbox" id="showGrammarChk" checked> 영어문법</label>
     </div>
   </div>
   <button onclick="window.print()">인쇄하기</button>
+</div>
+
+<div id="pageOv1" class="ov-page" style="display:none">
+  <div class="gradient-bar"></div>
+  <div class="ov-header-row"><div class="ov-header-text" id="ov1HeaderText"></div></div>
+  <div class="ov-title" id="ov1Title"></div>
+  <div class="ov-intro-box" id="ov1Intro"></div>
+  <div class="ov-groups" id="ov1Groups"></div>
+</div>
+
+<div id="pageOv2" class="ov-page" style="display:none">
+  <div class="gradient-bar"></div>
+  <div class="ov-header-row"><div class="ov-header-text" id="ov2HeaderText"></div></div>
+  <div class="ov-title" id="ov2Title"></div>
+  <div class="ov-intro-box" id="ov2Intro"></div>
+  <div class="ov-groups" id="ov2Groups"></div>
+  <div class="ov-rule-box" id="ov2Rule" style="display:none"></div>
 </div>
 
 <div id="page">
@@ -435,6 +516,12 @@ const CHAR_WORDS = {"馬":[["마차","말이 끄는 수레"],["승마","말을 �
 // new_terms: 이 Point에서 새로 등장하는 용어의 한자 풀이 카드(동적). principle: 문단(문자열) 리스트.
 const GRAMMAR_POINTS = [{"point_no":1,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"1형식 (S+V)","new_terms":[{"term":"주어","hanja":[["主","주인 주"],["語","말씀 어"]],"definition":"문장의 주인이 되는 말","words":["주인(主人)","주제(主題)","주인공(主人公)"]},{"term":"서술어","hanja":[["敍","펼 서"],["述","펼 술"],["語","말씀 어"]],"definition":"무언가를 풀어서 설명하는 말","words":["자서전(自敍傳)","서술(敍述)","진술(陳述)"]}],"concept":"주어와 동사만으로 뜻이 완성되는 가장 단순한 문장이에요. 목적어도 보어도 필요 없어요.","korean_example":[["새가","S"],["난다","V"]],"english_example":[["Birds","S"],["fly","V"]],"compare_note":"1형식은 한국어랑 영어 어순이 거의 똑같이 느껴지는 유일한 형식이에요.","principle":["fly(날다), sleep(자다), arrive(도착하다) 같은 동사는 '누구를/무엇을' 없이도 그 자체로 뜻이 완성돼요. 이런 동사를 완전자동사라고 불러요 - '완전'은 뜻이 이미 다 갖춰졌다는 말이고, '자동사'는 목적어가 필요 없다는 말이에요.","반대로 '먹다'를 생각해 보세요. '나는 먹는다'라고만 하면 뭔가 허전하죠? '무엇을 먹는지' 궁금해지니까요. 하지만 '새가 난다'는 그 자체로 완벽해요 - '무엇을 날았는지' 궁금하지 않잖아요. 이게 1형식 동사들의 공통점이에요."],"examples":[{"parts":[["The sun","S"],["rises","V"]],"translation":"해가 뜬다."},{"parts":[["She","S"],["smiled","V"]],"translation":"그녀가 웃었다."},{"parts":[["Birds","S"],["sing","V"]],"translation":"새들이 노래한다."}],"tip":"1형식인지 확인하는 방법: 문장 뒤에 '무엇을?'을 붙여 보세요. 'She smiled - 무엇을?' → 어색하죠? 그럼 1형식이 맞아요. 'She made - 무엇을?' → 자연스럽게 궁금해지죠? 그럼 목적어가 필요한 3형식이에요."},{"point_no":2,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"2형식 (S+V+SC)","new_terms":[{"term":"보어","hanja":[["補","도울 보"],["語","말씀 어"]],"definition":"부족한 부분을 채워 주는 말","words":["보충(補充)","보완(補完)","후보(候補)"]},{"term":"형용사","hanja":[["形","모양 형"],["容","얼굴 용"],["詞","말 사"]],"definition":"모양·성질·상태를 나타내는 말","words":["형태(形態)","용모(容貌)","대사(臺詞)"]}],"concept":"주어만으로는 뜻이 부족해서, 주어를 설명해 주는 말(주격보어)이 필요한 문장이에요.","korean_example":[["그녀는","S"],["예쁘다","SC"]],"english_example":[["She","S"],["is","V"],["pretty","SC"]],"compare_note":"여기서 형용사(pretty)가 왜 필요한지 감이 와요 - 보어 자리에서 주어를 설명해 줘요.","principle":["'그녀는'까지만 들으면 뭔가 부족하죠? 예쁜지 키가 큰지 아직 모르니까요. 이 빈자리를 채워 문장을 완성하는 말이 보어예요. 한 가지 꼭 기억할 것 - 보어는 동사가 아니에요. 이 문장의 진짜 서술어(동사)는 '~이다'에 해당하는 is이고, pretty는 그 뒤에서 상태를 설명하는 보어예요. 동사(V)와 보어(C)는 서로 다른 자리에 있는 서로 다른 성분이에요.","한국어의 서술어는 사실 세 가지 모습으로 나타나요: 동사형(그가 달린다), 형용사형(꽃이 예쁘다 - 형용사 혼자서 서술어가 돼요, '이다'조차 필요 없어요!), 명사+'이다'형(그는 학생이다). 그런데 영어의 서술어(V) 자리엔 언제나 동사만 올 수 있어요. 그래서 형용사나 명사로 서술하려면 반드시 be동사를 빌려와야 해요 - 이게 바로 2형식이 필요한 이유예요.","품사마다 답하는 질문이 달라요. 형용사·명사는 '어떤 상태/무엇인가?'에 답하고, 부사는 '어떻게 동작했는가?'에 답해요. 보어 자리는 '상태가 어떤지'를 묻는 자리라서, 동작을 꾸미는 부사는 그 답이 될 수 없어요. She is quick.(그녀는 빠르다)은 자연스럽지만 She is quickly.는 이상해요 - 우리말도 '예쁘다'는 되지만 '예쁘게이다'는 안 되는 것과 같은 이치예요."],"examples":[{"parts":[["He","S"],["became","V"],["a doctor","SC"]],"translation":"그는 의사가 되었다."},{"parts":[["The soup","S"],["tastes","V"],["salty","SC"]],"translation":"그 수프는 짜다."},{"parts":[["I","S"],["feel","V"],["tired","SC"]],"translation":"나는 피곤하게 느껴진다(=피곤하다)."}],"tip":"'주어 = 보어'가 자연스럽게 성립하는지 확인해 보세요. She=pretty(그녀는 예쁜 상태), He=a doctor(그는 의사라는 신분) - 등호가 성립하면 2형식이에요. 참고로 feel·look·become 같은 동사는 뒤에 형용사가 오면 원래 뜻(느끼다/보다/되다)이 아니라 '~하게 느껴지다/~해 보이다/~하게 되다'라는 상태의 뜻으로 슬쩍 바뀌어요."},{"point_no":3,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"3형식 (S+V+O)","new_terms":[{"term":"목적어","hanja":[["目","눈 목"],["的","과녁 적"],["語","말씀 어"]],"definition":"동작이 향하는 대상(과녁)을 나타내는 말","words":["목표(目標)","목차(目次)","적중(的中)"]}],"concept":"\"누구를/무엇을\"에 해당하는 목적어가 필요한 문장이에요. 영어 문장의 절반 이상이 이 형식이에요.","korean_example":[["나는","S"],["사과를","O"],["먹는다","V"]],"english_example":[["I","S"],["eat","V"],["an apple","O"]],"compare_note":"한국어는 목적어가 동사보다 앞(S-O-V), 영어는 동사가 먼저(S-V-O) - 이게 한영 어순 차이의 핵심이에요.","principle":["목적(目的)이라는 말 자체가 '눈이 향하는 과녁'이라는 뜻이에요. 목적어도 똑같아요 - 서술어(동작)가 향하는 대상을 가리켜요. '나는 사과를 먹는다'에서 '먹는다'라는 동작이 향하는 과녁이 바로 '사과'예요.","그런데 왜 영어는 동사를 목적어보다 먼저 말할까요? 한국어는 조사('~을/를')가 목적어를 딱 표시해 주기 때문에 순서가 비교적 자유로워요 - '사과를 나는 먹는다'도 말이 되잖아요. 하지만 영어는 조사가 없어서, 어순 자체가 '누가 무엇인지'를 알려주는 유일한 단서예요. 그래서 영어는 동사를 항상 주어 바로 뒤에 고정해서, 그다음에 나오는 말이 목적어라는 걸 순서로 알려주는 거예요."],"examples":[{"parts":[["I","S"],["like","V"],["music","O"]],"translation":"나는 음악을 좋아한다."},{"parts":[["She","S"],["bought","V"],["a new bag","O"]],"translation":"그녀는 새 가방을 샀다."},{"parts":[["We","S"],["watched","V"],["a movie","O"]],"translation":"우리는 영화를 봤다."}],"tip":"동사 뒤에서 '누구를?/무엇을?' 물었을 때 자연스러운 답이 나오면 목적어예요. 'I like ___' → 무엇을 좋아하는지 답이 나오죠? music이 목적어예요. 목적어 자리엔 언제나 명사(구)가 와요 - 형용사는 '어떤 상태'를 말할 뿐 '무엇을'의 답이 될 수 없어서 올 수 없어요."},{"point_no":4,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"4형식 (S+V+IO+DO)","new_terms":[{"term":"간접목적어","hanja":[["間","사이 간"],["接","이을 접"],["目的語","눈+과녁+말씀어"]],"definition":"동작을 사이에서 이어받는 대상(주로 사람)","words":["간격(間隔)","시간(時間)","접촉(接觸)"]},{"term":"직접목적어","hanja":[["直","곧을 직"],["接","이을 접"],["目的語","눈+과녁+말씀어"]],"definition":"동작을 곧장 직접 받는 대상(주로 사물)","words":["직진(直進)","정직(正直)","직접(直接)"]}],"concept":"\"누구에게(IO) 무엇을(DO) 해 주다\"라는 뜻의 동사(give, teach, buy)는 목적어가 두 개예요.","korean_example":[["나는","S"],["그녀에게","IO"],["선물을","DO"],["주었다","V"]],"english_example":[["I","S"],["gave","V"],["her","IO"],["a present","DO"]],"compare_note":"동사 다음 '누구에게'가 먼저, '무엇을'이 나중에 와요.","principle":["'주다'라는 동작을 떠올려 보면, 항상 두 가지 정보가 같이 필요해요 - '누구에게' 주는지, '무엇을' 주는지. 둘 중 하나라도 빠지면 문장이 어색해져요. '나는 주었다'만으로는 뭘 줬는지도, 누구한테 줬는지도 알 수 없잖아요.","'그녀에게'처럼 동작을 사이(間)에서 이어받는 대상(받는 사람)이 간접목적어(IO), '선물을'처럼 동작의 내용을 곧장(直) 받는 대상(주는 물건)이 직접목적어(DO)예요. 한자 이름 그대로 물건은 동작을 바로 받고, 사람은 그 물건을 통해 한 단계 거쳐서 받는 셈이에요."],"examples":[{"parts":[["He","S"],["teaches","V"],["us","IO"],["English","DO"]],"translation":"그는 우리에게 영어를 가르친다."},{"parts":[["She","S"],["made","V"],["me","IO"],["a cake","DO"]],"translation":"그녀는 나에게 케이크를 만들어 주었다."},{"parts":[["They","S"],["sent","V"],["him","IO"],["a letter","DO"]],"translation":"그들은 그에게 편지를 보냈다."}],"tip":"give·teach·buy·make·send처럼 '~해 주다' 느낌의 동사 뒤에는 대부분 '사람(IO) + 물건(DO)' 순서가 와요. 헷갈리면 우리말로 '~에게 ~을'이 자연스러운지 확인해 보세요 - '그에게 편지를' 순서 그대로 영어도 him(IO) a letter(DO) 순서예요."},{"point_no":5,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"5형식 (S+V+O+OC)","new_terms":[{"term":"목적격보어","hanja":[["目的","눈+과녁"],["格","격식 격"],["補語","도울+말씀어"]],"definition":"목적어의 자리(格)를 보충해 주는 말","words":["성격(性格)","자격(資格)","가격(價格)"]}],"concept":"목적어만으로는 뜻이 부족해서, 목적어를 보충 설명하는 말(목적격보어)이 필요한 문장이에요.","korean_example":[["나는","S"],["그를","O"],["반장으로","OC"],["만들었다","V"]],"english_example":[["I","S"],["made","V"],["him","O"],["captain","OC"]],"compare_note":"'반장으로'가 없으면 '그를 만들었다(창조했다?)'는 이상한 뜻이 돼요.","principle":["목적격보어(OC)는 이름 그대로 '목적어(目的語)의 자리(格)를 보충(補)해 주는 말'이에요. 2형식의 보어(SC)가 주어를 보충한다면, 5형식의 보어(OC)는 목적어를 보충해요 - 보충하는 대상만 다를 뿐 역할은 똑같아요.","핵심은 이거예요: 목적어와 목적격보어 사이엔 숨은 '=' 관계가 있어요. him = captain(그가 곧 반장)처럼요. 이 관계가 성립하지 않으면 5형식이 아니에요. 'I made him a cake.'(나는 그에게 케이크를 만들어 줬다)는 him≠a cake니까 5형식이 아니라 4형식이에요 - 같은 동사 make라도 뒤에 오는 두 말의 관계에 따라 형식이 완전히 달라지는 거예요."],"examples":[{"parts":[["They","S"],["call","V"],["him","O"],["a genius","OC"]],"translation":"그들은 그를 천재라고 부른다."},{"parts":[["The news","S"],["made","V"],["her","O"],["happy","OC"]],"translation":"그 소식은 그녀를 행복하게 만들었다."},{"parts":[["We","S"],["found","V"],["the movie","O"],["boring","OC"]],"translation":"우리는 그 영화가 지루하다고 느꼈다."}],"tip":"목적어와 목적격보어 사이에 '이다'를 넣어 말이 되는지 확인해 보세요. him이다=captain('그가 반장이다') → 말이 되면 5형식! 참고로 make가 '만들어 주다(4형식)'인지 '~하게 만들다(5형식)'인지는 뒤에 오는 두 말이 '=' 관계인지 아닌지로 구별해요."}];
 const LABEL_COLORS = {"S":[200,30,30],"V":[20,90,200],"O":[0,140,70],"SC":[180,110,0],"OC":[180,110,0],"IO":[0,120,90],"DO":[0,100,60],"M":[120,120,120]};
+
+// 개론 2장(품사/문장성분) 데이터 - generate_weekly_idiom.py의 POS_OVERVIEW/COMPONENT_OVERVIEW와 동일한 내용.
+// 주간 로테이션과 무관하게 1회성으로 렌더링되며(renderOverview()), 기본은 체크박스가 꺼져 있어
+// 화면/인쇄에 나타나지 않는다.
+const POS_OVERVIEW = {"title":"품사(品詞) 개론 — 낱말의 9가지 종류","intro_hanja":[["品","물건/등급 품"],["詞","말 사"]],"intro":"품(品)은 '여러 종류로 나누다', 사(詞)는 '말'이라는 뜻이에요. 품사란 '낱말을 종류별로 나눠놓은 것'이죠. 사람에게 타고난 직업이 있듯, 모든 단어는 태어날 때부터 정해진 품사가 있고 문장 어디에 쓰이든 이 종류는 절대 바뀌지 않아요. 국어의 품사는 모두 9개이고, 성질이 비슷한 것끼리 5개 무리로 묶을 수 있어요.","groups":[{"group":"체언","hanja":[["體","몸 체"],["言","말씀 언"]],"definition":"문장의 몸통이 되는 말(형태가 변하지 않음)","words":["신체(身體)","전체(全體)","체육(體育)"],"items":[{"term":"명사","hanja":[["名","이름 명"],["詞","말 사"]],"definition":"이름을 나타내는 말","example":"학생, 사과, 서울"},{"term":"대명사","hanja":[["代","대신 대"],["名","이름 명"],["詞","말 사"]],"definition":"이름을 대신 가리키는 말","example":"나, 너, 그것"},{"term":"수사","hanja":[["數","셈 수"],["詞","말 사"]],"definition":"수·순서를 나타내는 말","example":"하나, 둘째, 셋"}]},{"group":"용언","hanja":[["用","쓸 용"],["言","말씀 언"]],"definition":"쓰임(문맥)에 따라 형태가 바뀌는 말","words":["사용(使用)","이용(利用)","용도(用途)"],"items":[{"term":"동사","hanja":[["動","움직일 동"],["詞","말 사"]],"definition":"움직임·동작을 나타내는 말","example":"달리다, 먹다, 자다"},{"term":"형용사","hanja":[["形","모양 형"],["容","얼굴 용"],["詞","말 사"]],"definition":"성질·상태를 나타내는 말","example":"예쁘다, 크다, 빠르다"}]},{"group":"수식언","hanja":[["修","닦을 수"],["飾","꾸밀 식"],["言","말씀 언"]],"definition":"다른 말을 꾸며 주는 말","words":["수리(修理)","장식(裝飾)","수식어(修飾語)"],"items":[{"term":"관형사","hanja":[["冠","갓 관"],["形","모양 형"],["詞","말 사"]],"definition":"체언을 꾸며 주는 말","example":"새 책, 헌 옷, 이 사람"},{"term":"부사","hanja":[["副","버금 부"],["詞","말 사"]],"definition":"용언(주로 동사·형용사)을 꾸며 주는 말","example":"빨리, 매우, 아주"}]},{"group":"관계언","hanja":[["關","관계할 관"],["係","맬 계"],["言","말씀 언"]],"definition":"다른 말과의 문법적 관계를 나타내는 말","words":["관계(關係)","관련(關聯)","무관(無關)"],"items":[{"term":"조사","hanja":[["助","도울 조"],["詞","말 사"]],"definition":"다른 말에 붙어 자격·관계를 표시함","example":"~이/가, ~을/를, ~의"}]},{"group":"독립언","hanja":[["獨","홀로 독"],["立","설 립"]],"definition":"다른 말과 상관없이 홀로 쓰이는 말","words":["독립(獨立)","고독(孤獨)","자립(自立)"],"items":[{"term":"감탄사","hanja":[["感","느낄 감"],["歎","탄식할 탄"],["詞","말 사"]],"definition":"느낌·놀람을 나타내는 말","example":"아!, 와!, 어머!"}]}]};
+const COMPONENT_OVERVIEW = {"title":"문장성분(文章成分) 개론 — 문장을 이루는 7가지 조각","intro_hanja":[["文","글월 문"],["章","글 장"],["成","이룰 성"],["分","나눌 분"]],"intro":"문장(文章)은 '글', 성분(成分)은 '무언가를 이루는 각각의 조각'이라는 뜻이에요. 문장성분이란 문장을 이루는 재료 조각들, 즉 문장 속에서 각 말이 맡는 역할이에요. 같은 단어라도 문장 속 자리에 따라 역할이 매번 달라질 수 있어요 - 이게 품사와 다른 점이에요. 문장성분은 모두 7가지이고, 역할의 비중에 따라 3개 무리로 나뉘어요.","groups":[{"group":"주성분","hanja":[["主","주인 주"],["成","이룰 성"],["分","나눌 분"]],"definition":"문장의 뼈대 - 하나라도 빠지면 문장이 안 됨","words":["주인(主人)","주제(主題)","주최(主催)"],"items":[{"term":"주어","hanja":[["主","주인 주"],["語","말씀 어"]],"definition":"문장의 주인이 되는 말"},{"term":"서술어","hanja":[["敍","펼 서"],["述","펼 술"],["語","말씀 어"]],"definition":"주어를 풀어서 설명하는 말"},{"term":"목적어","hanja":[["目","눈 목"],["的","과녁 적"],["語","말씀 어"]],"definition":"서술어(동작)가 향하는 대상"},{"term":"보어","hanja":[["補","도울 보"],["語","말씀 어"]],"definition":"부족한 뜻을 보충해 채우는 말"}]},{"group":"부속성분","hanja":[["附","붙을 부"],["屬","붙일 속"],["成","이룰 성"],["分","나눌 분"]],"definition":"주성분에 붙어서 뜻을 더 자세히 꾸며 주는 성분","words":["부착(附着)","부록(附錄)","소속(所屬)"],"items":[{"term":"관형어","hanja":[["冠","갓 관"],["形","모양 형"],["語","말씀 어"]],"definition":"체언을 꾸며 주는 말"},{"term":"부사어","hanja":[["副","버금 부"],["語","말씀 어"]],"definition":"용언을 꾸며 주는 말"}]},{"group":"독립성분","hanja":[["獨","홀로 독"],["立","설 립"],["成","이룰 성"],["分","나눌 분"]],"definition":"다른 성분과 상관없이 홀로 쓰이는 성분","words":["독립(獨立)","독차지"],"items":[{"term":"독립어","hanja":[["獨","홀로 독"],["立","설 립"],["語","말씀 어"]],"definition":"부름·감탄처럼 홀로 쓰이는 말"}]}],"rule_note":"품사는 詞(말 사)로 끝나고 '단어가 타고난 고정된 종류'를, 문장성분은 語(말씀 어)로 끝나고 '문장 속에서 그때그때 맡는 역할'을 가리켜요 - 예외 없는 확실한 구별법이에요. 예를 들어 '학생'이라는 단어는 품사로는 언제나 명사(名詞)지만, 문장 속에서는 '학생이 온다'에서는 주어(主語), '나는 학생이다'에서는 보어(補語)로 자리에 따라 다른 문장성분을 맡아요."};
 
 // 비슷한/반대 한자성어에 나오는 한자 중, 52개 사자성어 자체에는 등장하지 않아
 // 훈(뜻)을 아직 모르는 한자들의 훈만 모아둔 사전 (음/발음은 각 성어의 이미
@@ -676,14 +763,106 @@ function renderGrammar() {
   document.getElementById("tipText").textContent = " " + gp.tip;
 }
 
+// 개론 2장(품사/문장성분)은 주간 로테이션과 무관하게 항상 같은 내용이므로,
+// 매주 다시 그릴 필요 없이 페이지 로드 시 딱 한 번만 렌더링한다
+// (generate_weekly_idiom.py의 build_overview_image()와 같은 내용/순서).
+function buildOverviewPage(prefix, overview, showRule) {
+  document.getElementById(prefix + "Title").textContent = overview.title;
+
+  const introBox = document.getElementById(prefix + "Intro");
+  introBox.innerHTML = "";
+  const hj = document.createElement("div");
+  hj.className = "ov-intro-hanja";
+  hj.textContent = overview.intro_hanja.map(([ch, eum]) => `${ch}(${eum})`).join("   ");
+  const tx = document.createElement("div");
+  tx.className = "ov-intro-text";
+  tx.textContent = overview.intro;
+  introBox.appendChild(hj);
+  introBox.appendChild(tx);
+
+  const groupsEl = document.getElementById(prefix + "Groups");
+  groupsEl.innerHTML = "";
+  overview.groups.forEach((g, gi) => {
+    const color = rgb(CHAR_COLORS[gi % CHAR_COLORS.length]);
+    const groupDiv = document.createElement("div");
+    groupDiv.className = "ov-group";
+
+    const header = document.createElement("div");
+    const hjStr = g.hanja.map(([ch, eum]) => `${ch}(${eum})`).join(" ");
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "ov-group-name";
+    nameSpan.style.color = color;
+    nameSpan.textContent = `${g.group}  [${hjStr}]`;
+    const defSpan = document.createElement("span");
+    defSpan.className = "ov-group-def";
+    defSpan.textContent = g.definition;
+    header.appendChild(nameSpan);
+    header.appendChild(defSpan);
+    groupDiv.appendChild(header);
+
+    const words = document.createElement("div");
+    words.className = "ov-group-words";
+    words.textContent = "일상 속 한자어: " + g.words.join(", ");
+    groupDiv.appendChild(words);
+
+    g.items.forEach((it) => {
+      const line = document.createElement("div");
+      line.className = "ov-item";
+      const ihj = it.hanja.map(([ch, eum]) => `${ch}(${eum})`).join(" ");
+      const ex = it.example ? `   예) ${it.example}` : "";
+      line.textContent = `·  ${it.term}  [${ihj}]  —  ${it.definition}${ex}`;
+      groupDiv.appendChild(line);
+    });
+
+    groupsEl.appendChild(groupDiv);
+  });
+
+  const ruleBox = document.getElementById(prefix + "Rule");
+  if (ruleBox) {
+    if (showRule && overview.rule_note) {
+      ruleBox.style.display = "";
+      ruleBox.innerHTML = "";
+      const label = document.createElement("span");
+      label.className = "ov-rule-label";
+      label.textContent = "구별법";
+      const text = document.createElement("span");
+      text.textContent = overview.rule_note;
+      ruleBox.appendChild(label);
+      ruleBox.appendChild(text);
+    } else {
+      ruleBox.style.display = "none";
+    }
+  }
+}
+
+function renderOverview() {
+  const note = "(한 번 읽고 철해 두면 언제든 다시 볼 수 있어요)";
+  document.getElementById("ov1HeaderText").textContent = `학습지 개론 · 1장 품사  ${note}`;
+  document.getElementById("ov2HeaderText").textContent = `학습지 개론 · 2장 문장성분  ${note}`;
+  buildOverviewPage("ov1", POS_OVERVIEW, false);
+  buildOverviewPage("ov2", COMPONENT_OVERVIEW, true);
+}
+
+// 개론1(품사)/개론2(문장성분)/사자성어/영문법, 이 순서로 체크된 것만 화면·인쇄에
+// 보여준다. 여러 조합이 동시에 가능해졌으므로(예: 개론만, 개론+주간 둘 다 등),
+// "보이는 페이지 중 맨 처음"만 빼고 나머지에 pb-before(새 장에서 시작)를 붙이는
+// 방식으로 일반화했다 - #page2에만 고정으로 걸려 있던 예전 방식과 달리 어떤
+// 조합이 와도 항상 올바르게 페이지가 나뉜다.
 function applyContentVisibility() {
-  const showIdiom = document.getElementById("showIdiomChk").checked;
-  const showGrammar = document.getElementById("showGrammarChk").checked;
-  const page1 = document.getElementById("page");
-  const page2 = document.getElementById("page2");
-  page1.style.display = showIdiom ? "" : "none";
-  page2.style.display = showGrammar ? "" : "none";
-  page2.classList.toggle("pb-before", showIdiom && showGrammar);
+  const sections = [
+    { id: "pageOv1", show: document.getElementById("showPosOvChk").checked },
+    { id: "pageOv2", show: document.getElementById("showCompOvChk").checked },
+    { id: "page", show: document.getElementById("showIdiomChk").checked },
+    { id: "page2", show: document.getElementById("showGrammarChk").checked },
+  ];
+  let seenVisible = false;
+  sections.forEach(({ id, show }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.display = show ? "" : "none";
+    el.classList.toggle("pb-before", show && seenVisible);
+    if (show) seenVisible = true;
+  });
 }
 
 function renderAll() {
@@ -881,11 +1060,14 @@ document.getElementById("weekSelect").addEventListener("change", (e) => {
 });
 document.getElementById("showIdiomChk").addEventListener("change", applyContentVisibility);
 document.getElementById("showGrammarChk").addEventListener("change", applyContentVisibility);
+document.getElementById("showPosOvChk").addEventListener("change", applyContentVisibility);
+document.getElementById("showCompOvChk").addEventListener("change", applyContentVisibility);
 
 
 populateWeekSelect();
 currentWeek = computeWeek(new Date());
 renderAll();
+renderOverview();
 applyContentVisibility();
 
 // 인쇄가 A4 한 장을 넘기지 않도록, 인쇄 직전에 실제 렌더링 높이를 재서
@@ -897,13 +1079,22 @@ applyContentVisibility();
 
   // 사자성어(--fit)/영어문법(--fit2) 페이지는 서로 독립적으로 줄어든다 -
   // 체크박스로 한쪽만 인쇄할 때도 그 페이지만 기준으로 딱 맞게 맞추기 위해서다.
+  // 개론1/개론2는 같은 변수 이름(--fitOv)을 쓰지만 scope:"self"로 각 페이지
+  // 엘리먼트 자신에게 지역 스코프로 설정되므로(: root가 아님) 서로 영향을
+  // 주지 않고 독립적으로 줄어든다.
   var PAGES = [
+    { id: "pageOv1", cssVar: "--fitOv", scope: "self" },
+    { id: "pageOv2", cssVar: "--fitOv", scope: "self" },
     { id: "page", cssVar: "--fit" },
     { id: "page2", cssVar: "--fit2" },
   ];
 
-  function setFit(cssVar, v) {
-    document.documentElement.style.setProperty(cssVar, String(v));
+  function fitTarget(page, scope) {
+    return scope === "self" ? page : document.documentElement;
+  }
+
+  function setFit(target, cssVar, v) {
+    target.style.setProperty(cssVar, String(v));
   }
 
   function debugShow(text) {
@@ -916,8 +1107,9 @@ applyContentVisibility();
     el.textContent = text;
   }
 
-  function fitPage(page, cssVar) {
-    setFit(cssVar, 1);
+  function fitPage(page, cssVar, scope) {
+    var target = fitTarget(page, scope);
+    setFit(target, cssVar, 1);
     var h0 = page.scrollHeight;
     var fit = 1;
     // 이미 한 페이지 안에 들어가면 손대지 않는다.
@@ -931,7 +1123,7 @@ applyContentVisibility();
       if (h <= A4_TARGET_PX || fit <= MIN_FIT) break;
       var ratio = A4_TARGET_PX / h;
       fit = Math.max(fit * ratio, MIN_FIT);
-      setFit(cssVar, fit.toFixed(3));
+      setFit(target, cssVar, fit.toFixed(3));
       h = page.scrollHeight;
     }
     return page.id + ":h0=" + h0 + " h=" + h + " fit=" + fit.toFixed(3);
@@ -944,13 +1136,17 @@ applyContentVisibility();
       // 체크박스로 꺼서 display:none인 페이지는 scrollHeight가 0이라
       // 의미가 없으므로 건너뛴다.
       if (!el || el.style.display === "none") return;
-      results.push(fitPage(el, p.cssVar));
+      results.push(fitPage(el, p.cssVar, p.scope));
     });
     debugShow(results.join(" / "));
   }
 
   function resetFit() {
-    PAGES.forEach(function (p) { setFit(p.cssVar, 1); });
+    PAGES.forEach(function (p) {
+      var el = document.getElementById(p.id);
+      if (!el) return;
+      setFit(fitTarget(el, p.scope), p.cssVar, 1);
+    });
   }
 
   window.addEventListener("beforeprint", fitToOnePage);
