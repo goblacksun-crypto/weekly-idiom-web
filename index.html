@@ -330,10 +330,147 @@
   .tip-box .tip-label {
     color: rgb(180,110,0); font-weight: 700; margin-right: 8px;
   }
+  /* --- 금주의 영어 속담(page2의 또 다른 얼굴) - grammarFallbackBody와 같은
+     --fit2 변수를 공유한다(같은 주간 슬롯이라 동시에 보이지 않으므로 문제 없음). */
+  .pv-header-row { margin: calc(5mm * var(--fit2)) 10mm 0 10mm; }
+  .pv-header-text { font-size: calc(13px * var(--fit2)); color: rgb(90,90,90); }
+  .pv-pair {
+    margin: calc(2mm * var(--fit2)) 10mm 0 10mm;
+    font-size: calc(11.5px * var(--fit2)); color: rgb(130,130,130);
+  }
+  .pv-proverb {
+    margin: calc(3mm * var(--fit2)) 10mm 0 10mm;
+    font-size: calc(26px * var(--fit2)); font-weight: 800; color: rgb(20,20,20); line-height: 1.3;
+  }
+  .pv-match-box {
+    margin: calc(4mm * var(--fit2)) 10mm 0 10mm;
+    border-radius: 12px;
+    padding: calc(10px * var(--fit2)) calc(16px * var(--fit2));
+  }
+  .pv-match-label { font-weight: 700; font-size: calc(13px * var(--fit2)); display: block; margin-bottom: calc(4px * var(--fit2)); }
+  .pv-match-note { font-size: calc(12px * var(--fit2)); line-height: 1.6; color: rgb(60,60,60); }
+  .pv-section-label {
+    margin: calc(4mm * var(--fit2)) 10mm 0 10mm;
+    color: rgb(20,20,20); font-weight: 700; font-size: calc(15px * var(--fit2));
+  }
+  .pv-tokens {
+    margin: calc(2mm * var(--fit2)) 10mm 0 10mm;
+    font-size: calc(13px * var(--fit2)); line-height: 1.7; color: rgb(30,30,30);
+  }
+  .pv-tokens span.lbl { font-weight: 700; }
+  .pv-struct-label {
+    margin: calc(1mm * var(--fit2)) 10mm 0 10mm;
+    font-size: calc(10.5px * var(--fit2)); color: rgb(130,130,130);
+  }
+  .pv-body-text {
+    margin: calc(2mm * var(--fit2)) 10mm 0 10mm;
+    font-size: calc(13px * var(--fit2)); line-height: 1.65; color: rgb(90,90,90);
+  }
+  .pv-origin-text {
+    margin: calc(2mm * var(--fit2)) 10mm 0 10mm;
+    font-size: calc(13px * var(--fit2)); line-height: 1.65; color: rgb(30,30,30);
+  }
+  .pv-word-card {
+    margin: calc(3mm * var(--fit2)) 10mm 0 10mm;
+    background: rgb(233,243,255);
+    border-radius: 10px;
+    padding: calc(8px * var(--fit2)) calc(14px * var(--fit2));
+  }
+  .pv-word-card .pv-word { font-weight: 700; font-size: calc(14px * var(--fit2)); color: rgb(15,75,160); }
+  .pv-word-card .pv-pos { font-size: calc(11px * var(--fit2)); color: rgb(110,110,110); margin-left: 8px; }
+  .pv-word-card .pv-sub { font-size: calc(11.5px * var(--fit2)); color: rgb(80,80,80); line-height: 1.6; margin-top: 4px; }
+  .pv-examples { margin: calc(2mm * var(--fit2)) 10mm 0 10mm; }
+  .pv-example-item { margin-bottom: calc(8px * var(--fit2)); font-size: calc(12.5px * var(--fit2)); line-height: 1.6; }
+  .pv-example-item .pv-en { color: rgb(30,30,30); }
+  .pv-example-item .pv-kr { color: rgb(100,100,100); }
+  .pv-example-item .pv-note { color: rgb(150,120,40); font-size: calc(10.5px * var(--fit2)); }
+
   /* 여러 페이지 중 첫 번째로 보이는 페이지가 아니면 인쇄 시 새 장부터
      시작하도록 하는 공통 클래스 (사자성어/영문법/알아보기1/알아보기2 어떤 조합이든
      applyContentVisibility()가 동적으로 붙였다 뗐다 한다). */
   .pb-before { page-break-before: always; break-before: page; }
+
+  /* --- 문장의 5형식 알아보기 (Point 1~5, 주간 로테이션과 무관한 1회성 참고
+     페이지) - .g-* 그룹과 내용 모양은 같지만(용어카드/핵심개념/한영 예문/원리/
+     예문/TIP) 독립적으로 크기를 줄여야 해서 별도의 --fitSp 변수를 쓴다
+     (품사/문장성분 알아보기가 --fitOv를 쓰는 것과 같은 이유). */
+  .sp-header-row { margin: calc(5mm * var(--fitSp)) 10mm 0 10mm; }
+  .sp-header-text { font-size: calc(13px * var(--fitSp)); color: rgb(90,90,90); }
+  .sp-chapter {
+    margin: calc(4mm * var(--fitSp)) 10mm 0 10mm;
+    font-size: calc(12px * var(--fitSp)); color: rgb(130,130,130);
+  }
+  .sp-title {
+    margin: calc(2mm * var(--fitSp)) 10mm 0 10mm;
+    font-size: calc(30px * var(--fitSp)); font-weight: 800; color: rgb(20,20,20);
+  }
+  .sp-term-card {
+    margin: calc(5mm * var(--fitSp)) 10mm 0 10mm;
+    background: rgb(233,243,255);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: calc(13px * var(--fitSp));
+  }
+  .sp-term-card .term-row { margin-bottom: 6px; }
+  .sp-term-card .term-row:last-child { margin-bottom: 0; }
+  .sp-term-card .term-label { color: rgb(15,75,160); font-weight: 700; margin-right: 8px; }
+  .sp-term-card .term-def { color: rgb(60,60,60); }
+  .sp-term-card .term-sub {
+    color: rgb(110,110,110); font-size: calc(11.5px * var(--fitSp));
+    margin-top: 2px;
+  }
+  .sp-concept {
+    margin: calc(5mm * var(--fitSp)) 10mm 0 10mm;
+    font-size: calc(15px * var(--fitSp)); line-height: 1.7; color: rgb(30,30,30);
+  }
+  .sp-section-label {
+    margin: calc(5mm * var(--fitSp)) 10mm 0 10mm;
+    color: rgb(20,20,20); font-weight: 700; font-size: calc(15px * var(--fitSp));
+  }
+  .sp-sentence {
+    margin: calc(2mm * var(--fitSp)) 10mm 0 10mm;
+    font-size: calc(15px * var(--fitSp)); line-height: 1.8; color: rgb(30,30,30);
+  }
+  .sp-sentence span.lbl { font-weight: 700; }
+  .sp-compare {
+    margin: calc(2mm * var(--fitSp)) 10mm 0 10mm;
+    font-size: calc(13px * var(--fitSp)); line-height: 1.7; color: rgb(90,90,90);
+  }
+  .sp-principle {
+    margin: calc(2mm * var(--fitSp)) 10mm 0 10mm;
+    font-size: calc(15px * var(--fitSp)); line-height: 1.7; color: rgb(30,30,30);
+  }
+  .sp-principle .sp-principle-para { margin-bottom: 10px; }
+  .sp-principle .sp-principle-para:last-child { margin-bottom: 0; }
+  .sp-examples { margin: calc(3mm * var(--fitSp)) 10mm 0 10mm; }
+  .sp-example-item {
+    margin-bottom: 10px;
+    font-size: calc(15px * var(--fitSp)); line-height: 1.8; color: rgb(30,30,30);
+  }
+  .sp-example-item .translation { color: rgb(100,100,100); margin-left: 18px; }
+  .sp-tip-box {
+    margin: calc(5mm * var(--fitSp)) 10mm calc(5mm * var(--fitSp)) 10mm;
+    background: rgb(255,244,214);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: calc(14px * var(--fitSp));
+    line-height: 1.7;
+    color: rgb(60,40,0);
+  }
+  .sp-tip-box .tip-label { color: rgb(180,110,0); font-weight: 700; margin-right: 8px; }
+  .sp-page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto 30px auto;
+    background: white;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+    --fitSp: 1;
+  }
+  @media screen and (max-width: 210mm) {
+    .sp-page { width: 100%; min-width: 0; }
+  }
 
   /* --- 알아보기 2장(품사 / 문장성분) - 주간 로테이션과 무관한 1회성 참고 페이지 --- */
   .ov-page {
@@ -464,6 +601,7 @@
     #page { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
     #page2 { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
     .ov-page { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
+    .sp-page { box-shadow: none; margin: 0 auto; width: auto; min-height: 0; }
     .hanja-row span { font-size: calc(20mm * var(--fit)) !important; }
     .hangul-reading { font-size: calc(9mm * var(--fit)) !important; }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -488,6 +626,7 @@
     <div class="content-toggle-group">
       <label><input type="checkbox" id="showPosOvChk"> 품사 알아보기</label>
       <label><input type="checkbox" id="showCompOvChk"> 문장성분 알아보기</label>
+      <label><input type="checkbox" id="showSpOvChk"> 문장의 5형식 알아보기</label>
       <label><input type="checkbox" id="showIdiomChk" checked> 사자성어</label>
       <label><input type="checkbox" id="showGrammarChk" checked> 영어문법</label>
     </div>
@@ -540,6 +679,16 @@
   <div class="ov-diagram-note" id="ov2bDiagramNote" style="display:none"></div>
 </div>
 
+<!-- 문장의 5형식 알아보기: 예전엔 매주 로테이션으로 돌아가던 Point 1~5를
+     품사/문장성분처럼 상시 참고 자료로 옮긴 것. 내용 모양(용어카드/핵심개념/
+     한영예문/원리/예문/TIP)은 기존 영문법 페이지와 같아서 sp-* 클래스로
+     같은 스타일을 재사용하되, 페이지별로 독립적으로 줄어들도록 --fitSp를 쓴다. -->
+<div id="pageSp1" class="sp-page" style="display:none"></div>
+<div id="pageSp2" class="sp-page" style="display:none"></div>
+<div id="pageSp3" class="sp-page" style="display:none"></div>
+<div id="pageSp4" class="sp-page" style="display:none"></div>
+<div id="pageSp5" class="sp-page" style="display:none"></div>
+
 <div id="page">
   <div class="gradient-bar"></div>
   <div class="header-row">
@@ -561,25 +710,33 @@
   <div class="charorigin-list" id="charoriginList"></div>
 </div>
 
+<!-- v1.26.0부터 page2 자리는 그 주의 사자성어와 짝을 이루는 PROVERBS 항목이
+     있으면 proverbBody를, 아직 콘텐츠가 없으면(대부분의 주차) grammarFallbackBody를
+     보여준다(generate_weekly_idiom.py의 main()과 같은 안전장치). 두 body를 같은
+     #page2 안에 두고 하나만 표시해서, 인쇄 시 페이지 크기/여백 계산이 동일하게
+     적용되게 한다. -->
 <div id="page2">
   <div class="gradient-bar"></div>
-  <div class="g-header-row">
-    <div class="g-header-text" id="gHeaderText"></div>
+  <div id="grammarFallbackBody">
+    <div class="g-header-row">
+      <div class="g-header-text" id="gHeaderText"></div>
+    </div>
+    <div class="g-chapter" id="gChapter"></div>
+    <div class="g-title" id="gTitle"></div>
+    <div class="term-card" id="termCard"></div>
+    <div class="g-concept" id="gConcept"></div>
+    <div class="g-section-label">한글로 먼저 보기</div>
+    <div class="g-sentence" id="krExample"></div>
+    <div class="g-section-label">영어로 표현하면</div>
+    <div class="g-sentence" id="enExample"></div>
+    <div class="g-compare" id="compareNote"></div>
+    <div class="g-section-label">왜 이런 구조일까요?</div>
+    <div class="g-principle" id="principleText"></div>
+    <div class="g-section-label">예문으로 확인해요</div>
+    <div class="g-examples" id="gExamples"></div>
+    <div class="tip-box"><span class="tip-label">TIP</span><span id="tipText"></span></div>
   </div>
-  <div class="g-chapter" id="gChapter"></div>
-  <div class="g-title" id="gTitle"></div>
-  <div class="term-card" id="termCard"></div>
-  <div class="g-concept" id="gConcept"></div>
-  <div class="g-section-label">한글로 먼저 보기</div>
-  <div class="g-sentence" id="krExample"></div>
-  <div class="g-section-label">영어로 표현하면</div>
-  <div class="g-sentence" id="enExample"></div>
-  <div class="g-compare" id="compareNote"></div>
-  <div class="g-section-label">왜 이런 구조일까요?</div>
-  <div class="g-principle" id="principleText"></div>
-  <div class="g-section-label">예문으로 확인해요</div>
-  <div class="g-examples" id="gExamples"></div>
-  <div class="tip-box"><span class="tip-label">TIP</span><span id="tipText"></span></div>
+  <div id="proverbBody" style="display:none"></div>
 </div>
 
 <script>
@@ -596,6 +753,8 @@ const CHAR_WORDS = {"馬":[["마차","말이 끄는 수레"],["승마","말을 �
 // 영어 문법(2페이지) 데이터 - generate_weekly_idiom.py의 GRAMMAR_POINTS/LABEL_COLORS와 동일한 내용.
 // new_terms: 이 Point에서 새로 등장하는 용어의 한자 풀이 카드(동적). principle: 문단(문자열) 리스트.
 const GRAMMAR_POINTS = [{"point_no":1,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"1형식 (S+V)","new_terms":[{"term":"주어","hanja":[["主","주인 주"],["語","말씀 어"]],"definition":"문장의 주인이 되는 말","words":["주인(主人)","주제(主題)","주인공(主人公)"]},{"term":"서술어","hanja":[["敍","펼 서"],["述","펼 술"],["語","말씀 어"]],"definition":"무언가를 풀어서 설명하는 말","words":["자서전(自敍傳)","서술(敍述)","진술(陳述)"]}],"concept":"주어와 동사만으로 뜻이 완성되는 가장 단순한 문장이에요. 목적어도 보어도 필요 없어요.","korean_example":[["새가","S"],["난다","V"]],"english_example":[["Birds","S"],["fly","V"]],"compare_note":"1형식은 한국어랑 영어 어순이 거의 똑같이 느껴지는 유일한 형식이에요.","principle":["fly(날다), sleep(자다), arrive(도착하다) 같은 동사는 '누구를/무엇을' 없이도 그 자체로 뜻이 완성돼요. 이런 동사를 완전자동사라고 불러요 - '완전'은 뜻이 이미 다 갖춰졌다는 말이고, '자동사'는 목적어가 필요 없다는 말이에요.","반대로 '먹다'를 생각해 보세요. '나는 먹는다'라고만 하면 뭔가 허전하죠? '무엇을 먹는지' 궁금해지니까요. 하지만 '새가 난다'는 그 자체로 완벽해요 - '무엇을 날았는지' 궁금하지 않잖아요. 이게 1형식 동사들의 공통점이에요."],"examples":[{"parts":[["The sun","S"],["rises","V"]],"translation":"해가 뜬다."},{"parts":[["She","S"],["smiled","V"]],"translation":"그녀가 웃었다."},{"parts":[["Birds","S"],["sing","V"]],"translation":"새들이 노래한다."}],"tip":"1형식인지 확인하는 방법: 문장 뒤에 '무엇을?'을 붙여 보세요. 'She smiled - 무엇을?' → 어색하죠? 그럼 1형식이 맞아요. 'She made - 무엇을?' → 자연스럽게 궁금해지죠? 그럼 목적어가 필요한 3형식이에요."},{"point_no":2,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"2형식 (S+V+SC)","new_terms":[{"term":"보어","hanja":[["補","도울 보"],["語","말씀 어"]],"definition":"부족한 부분을 채워 주는 말","words":["보충(補充)","보완(補完)","후보(候補)"]},{"term":"형용사","hanja":[["形","모양 형"],["容","얼굴 용"],["詞","말 사"]],"definition":"모양·성질·상태를 나타내는 말","words":["형태(形態)","용모(容貌)","대사(臺詞)"]}],"concept":"주어만으로는 뜻이 부족해서, 주어를 설명해 주는 말(주격보어)이 필요한 문장이에요.","korean_example":[["그녀는","S"],["예쁘다","SC"]],"english_example":[["She","S"],["is","V"],["pretty","SC"]],"compare_note":"여기서 형용사(pretty)가 왜 필요한지 감이 와요 - 보어 자리에서 주어를 설명해 줘요.","principle":["'그녀는'까지만 들으면 뭔가 부족하죠? 예쁜지 키가 큰지 아직 모르니까요. 이 빈자리를 채워 문장을 완성하는 말이 보어예요. 한 가지 꼭 기억할 것 - 보어는 동사가 아니에요. 이 문장의 진짜 서술어(동사)는 '~이다'에 해당하는 is이고, pretty는 그 뒤에서 상태를 설명하는 보어예요. 동사(V)와 보어(C)는 서로 다른 자리에 있는 서로 다른 성분이에요.","한국어의 서술어는 사실 세 가지 모습으로 나타나요: 동사형(그가 달린다), 형용사형(꽃이 예쁘다 - 형용사 혼자서 서술어가 돼요, '이다'조차 필요 없어요!), 명사+'이다'형(그는 학생이다). 그런데 영어의 서술어(V) 자리엔 언제나 동사만 올 수 있어요. 그래서 형용사나 명사로 서술하려면 반드시 be동사를 빌려와야 해요 - 이게 바로 2형식이 필요한 이유예요.","품사마다 답하는 질문이 달라요. 형용사·명사는 '어떤 상태/무엇인가?'에 답하고, 부사는 '어떻게 동작했는가?'에 답해요. 보어 자리는 '상태가 어떤지'를 묻는 자리라서, 동작을 꾸미는 부사는 그 답이 될 수 없어요. She is quick.(그녀는 빠르다)은 자연스럽지만 She is quickly.는 이상해요 - 우리말도 '예쁘다'는 되지만 '예쁘게이다'는 안 되는 것과 같은 이치예요."],"examples":[{"parts":[["He","S"],["became","V"],["a doctor","SC"]],"translation":"그는 의사가 되었다."},{"parts":[["The soup","S"],["tastes","V"],["salty","SC"]],"translation":"그 수프는 짜다."},{"parts":[["I","S"],["feel","V"],["tired","SC"]],"translation":"나는 피곤하게 느껴진다(=피곤하다)."}],"tip":"'주어 = 보어'가 자연스럽게 성립하는지 확인해 보세요. She=pretty(그녀는 예쁜 상태), He=a doctor(그는 의사라는 신분) - 등호가 성립하면 2형식이에요. 참고로 feel·look·become 같은 동사는 뒤에 형용사가 오면 원래 뜻(느끼다/보다/되다)이 아니라 '~하게 느껴지다/~해 보이다/~하게 되다'라는 상태의 뜻으로 슬쩍 바뀌어요."},{"point_no":3,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"3형식 (S+V+O)","new_terms":[{"term":"목적어","hanja":[["目","눈 목"],["的","과녁 적"],["語","말씀 어"]],"definition":"동작이 향하는 대상(과녁)을 나타내는 말","words":["목표(目標)","목차(目次)","적중(的中)"]}],"concept":"\"누구를/무엇을\"에 해당하는 목적어가 필요한 문장이에요. 영어 문장의 절반 이상이 이 형식이에요.","korean_example":[["나는","S"],["사과를","O"],["먹는다","V"]],"english_example":[["I","S"],["eat","V"],["an apple","O"]],"compare_note":"한국어는 목적어가 동사보다 앞(S-O-V), 영어는 동사가 먼저(S-V-O) - 이게 한영 어순 차이의 핵심이에요.","principle":["목적(目的)이라는 말 자체가 '눈이 향하는 과녁'이라는 뜻이에요. 목적어도 똑같아요 - 서술어(동작)가 향하는 대상을 가리켜요. '나는 사과를 먹는다'에서 '먹는다'라는 동작이 향하는 과녁이 바로 '사과'예요.","그런데 왜 영어는 동사를 목적어보다 먼저 말할까요? 한국어는 조사('~을/를')가 목적어를 딱 표시해 주기 때문에 순서가 비교적 자유로워요 - '사과를 나는 먹는다'도 말이 되잖아요. 하지만 영어는 조사가 없어서, 어순 자체가 '누가 무엇인지'를 알려주는 유일한 단서예요. 그래서 영어는 동사를 항상 주어 바로 뒤에 고정해서, 그다음에 나오는 말이 목적어라는 걸 순서로 알려주는 거예요."],"examples":[{"parts":[["I","S"],["like","V"],["music","O"]],"translation":"나는 음악을 좋아한다."},{"parts":[["She","S"],["bought","V"],["a new bag","O"]],"translation":"그녀는 새 가방을 샀다."},{"parts":[["We","S"],["watched","V"],["a movie","O"]],"translation":"우리는 영화를 봤다."}],"tip":"동사 뒤에서 '누구를?/무엇을?' 물었을 때 자연스러운 답이 나오면 목적어예요. 'I like ___' → 무엇을 좋아하는지 답이 나오죠? music이 목적어예요. 목적어 자리엔 언제나 명사(구)가 와요 - 형용사는 '어떤 상태'를 말할 뿐 '무엇을'의 답이 될 수 없어서 올 수 없어요."},{"point_no":4,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"4형식 (S+V+IO+DO)","new_terms":[{"term":"간접목적어","hanja":[["間","사이 간"],["接","이을 접"],["目的語","눈+과녁+말씀어"]],"definition":"동작을 사이에서 이어받는 대상(주로 사람)","words":["간격(間隔)","시간(時間)","접촉(接觸)"]},{"term":"직접목적어","hanja":[["直","곧을 직"],["接","이을 접"],["目的語","눈+과녁+말씀어"]],"definition":"동작을 곧장 직접 받는 대상(주로 사물)","words":["직진(直進)","정직(正直)","직접(直接)"]}],"concept":"\"누구에게(IO) 무엇을(DO) 해 주다\"라는 뜻의 동사(give, teach, buy)는 목적어가 두 개예요.","korean_example":[["나는","S"],["그녀에게","IO"],["선물을","DO"],["주었다","V"]],"english_example":[["I","S"],["gave","V"],["her","IO"],["a present","DO"]],"compare_note":"동사 다음 '누구에게'가 먼저, '무엇을'이 나중에 와요.","principle":["'주다'라는 동작을 떠올려 보면, 항상 두 가지 정보가 같이 필요해요 - '누구에게' 주는지, '무엇을' 주는지. 둘 중 하나라도 빠지면 문장이 어색해져요. '나는 주었다'만으로는 뭘 줬는지도, 누구한테 줬는지도 알 수 없잖아요.","'그녀에게'처럼 동작을 사이(間)에서 이어받는 대상(받는 사람)이 간접목적어(IO), '선물을'처럼 동작의 내용을 곧장(直) 받는 대상(주는 물건)이 직접목적어(DO)예요. 한자 이름 그대로 물건은 동작을 바로 받고, 사람은 그 물건을 통해 한 단계 거쳐서 받는 셈이에요."],"examples":[{"parts":[["He","S"],["teaches","V"],["us","IO"],["English","DO"]],"translation":"그는 우리에게 영어를 가르친다."},{"parts":[["She","S"],["made","V"],["me","IO"],["a cake","DO"]],"translation":"그녀는 나에게 케이크를 만들어 주었다."},{"parts":[["They","S"],["sent","V"],["him","IO"],["a letter","DO"]],"translation":"그들은 그에게 편지를 보냈다."}],"tip":"give·teach·buy·make·send처럼 '~해 주다' 느낌의 동사 뒤에는 대부분 '사람(IO) + 물건(DO)' 순서가 와요. 헷갈리면 우리말로 '~에게 ~을'이 자연스러운지 확인해 보세요 - '그에게 편지를' 순서 그대로 영어도 him(IO) a letter(DO) 순서예요."},{"point_no":5,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"5형식 (S+V+O+OC)","new_terms":[{"term":"목적격보어","hanja":[["目的","눈+과녁"],["格","격식 격"],["補語","도울+말씀어"]],"definition":"목적어의 자리(格)를 보충해 주는 말","words":["성격(性格)","자격(資格)","가격(價格)"]}],"concept":"목적어만으로는 뜻이 부족해서, 목적어를 보충 설명하는 말(목적격보어)이 필요한 문장이에요.","korean_example":[["나는","S"],["그를","O"],["반장으로","OC"],["만들었다","V"]],"english_example":[["I","S"],["made","V"],["him","O"],["captain","OC"]],"compare_note":"'반장으로'가 없으면 '그를 만들었다(창조했다?)'는 이상한 뜻이 돼요.","principle":["목적격보어(OC)는 이름 그대로 '목적어(目的語)의 자리(格)를 보충(補)해 주는 말'이에요. 2형식의 보어(SC)가 주어를 보충한다면, 5형식의 보어(OC)는 목적어를 보충해요 - 보충하는 대상만 다를 뿐 역할은 똑같아요.","핵심은 이거예요: 목적어와 목적격보어 사이엔 숨은 '=' 관계가 있어요. him = captain(그가 곧 반장)처럼요. 이 관계가 성립하지 않으면 5형식이 아니에요. 'I made him a cake.'(나는 그에게 케이크를 만들어 줬다)는 him≠a cake니까 5형식이 아니라 4형식이에요 - 같은 동사 make라도 뒤에 오는 두 말의 관계에 따라 형식이 완전히 달라지는 거예요."],"examples":[{"parts":[["They","S"],["call","V"],["him","O"],["a genius","OC"]],"translation":"그들은 그를 천재라고 부른다."},{"parts":[["The news","S"],["made","V"],["her","O"],["happy","OC"]],"translation":"그 소식은 그녀를 행복하게 만들었다."},{"parts":[["We","S"],["found","V"],["the movie","O"],["boring","OC"]],"translation":"우리는 그 영화가 지루하다고 느꼈다."}],"tip":"목적어와 목적격보어 사이에 '이다'를 넣어 말이 되는지 확인해 보세요. him이다=captain('그가 반장이다') → 말이 되면 5형식! 참고로 make가 '만들어 주다(4형식)'인지 '~하게 만들다(5형식)'인지는 뒤에 오는 두 말이 '=' 관계인지 아닌지로 구별해요."}];
+const PROVERBS = [{"idiom_hangul":"마이동풍","proverb_en":"In one ear and out the other.","match_type":"direct","match_note":"마이동풍과 뜻이 정확히 같아요. 봄바람이 말의 귀를 스쳐도 아무 느낌이 없다는 마이동풍처럼, 이 속담도 한쪽 귀로 들은 말이 다른 쪽 귀로 그냥 흘러나가 버린다는 뜻이에요.","structure_tokens":[["It","S"],["goes","V"],["in one ear and out the other","M"]],"structure_label":"1형식 (S+V) + 수식어","structure_note":"\"in one ear and out the other\"는 문장에 꼭 있어야 하는 성분이 아니라 goes를 꾸며 주는 수식어예요. 문장의 5형식 알아보기에서 배운 것처럼, 수식어는 빠져도 문장이 그대로 성립해요.","origin":"정확히 누가 언제 처음 썼는지는 알려져 있지 않지만, 아주 오래전부터 영어권에서 널리 쓰여 온 표현이에요. 귀로 들어온 말이 마치 한쪽 문으로 들어와 반대쪽 문으로 그냥 나가 버리는 것처럼, 마음에 담기지 않고 그냥 지나가 버린다는 상상에서 나온 표현이랍니다.","key_words":[{"word":"ear","pos":"명사(N)","forms":"단수 ear → 복수 ears","etymology":"고대 영어(Old English) ēare에서 온 아주 오래된 말이에요. 라틴어가 아니라 게르만어 계열 단어랍니다.","us_uk":null},{"word":"go / goes","pos":"동사(V)","forms":"go - went - gone (불규칙 변화)","etymology":"고대 영어 gān에서 왔어요. 재미있게도 went는 원래 다른 동사 wend(방향을 바꾸다)의 과거형이었는데, 시간이 지나며 go의 불규칙 과거형 자리를 대신 차지하게 되었어요.","us_uk":null}],"daily_examples":[{"en":"Mom told him to clean his room several times, but it went in one ear and out the other.","kr":"엄마가 방 좀 치우라고 여러 번 말씀하셨지만, 형은 마이동풍으로 흘려들었다.","note":"told 뒤에 him(목적어)과 to clean his room(목적격보어)이 이어져서 5형식 문장이에요."},{"en":"No matter how much his friends advised him, it went in one ear and out the other.","kr":"친구들이 아무리 조언해도 그는 마이동풍처럼 듣는 둥 마는 둥 했다.","note":"\"No matter how much\"는 \"아무리 ~해도\"라는 뜻의 표현이에요."},{"en":"He treated the teacher's advice as if it went in one ear and out the other, and forgot his homework again.","kr":"선생님의 충고를 마이동풍으로 여기다가 결국 숙제를 또 잊어버렸다.","note":"\"treat A as B\"는 \"A를 B로 여기다\"라는 뜻의 구문이에요."}]},{"idiom_hangul":"유비무환","proverb_en":"Better safe than sorry.","match_type":"direct","match_note":"유비무환과 통하는 속담이에요. 미리 조심해 두면 나중에 후회할 일이 없다는 뜻이, 유비무환의 \"준비가 있으면 근심이 없다\"는 뜻과 잘 맞아요.","structure_tokens":[["It","S"],["is","V"],["better safe than sorry","SC"]],"structure_label":"2형식 (S+V+SC), 단 많이 줄어든 문장","structure_note":"원래 문장은 \"It is better to be safe than to be sorry(안전한 것이 후회하는 것보다 낫다)\"예요. 영어 속담은 짧고 외우기 쉽게, 앞뒤에서 반복되는 부분(to be)을 통째로 줄여 말하는 경우가 많아요.","origin":"정확한 최초 출전은 알려져 있지 않지만, 아주 오래전부터 영어권에서 조심성을 강조할 때 즐겨 쓰여 온 표현이에요.","key_words":[{"word":"safe","pos":"형용사(Adj)","forms":"비교급 safer → 최상급 safest","etymology":"라틴어 salvus(구원받은, 안전한)에서 고대 프랑스어 sauf를 거쳐 영어로 들어온 말이에요. ear와 달리 이 단어는 정말로 라틴어 뿌리를 가진 경우예요.","us_uk":null},{"word":"sorry","pos":"형용사(Adj)","forms":"비교급 sorrier → 최상급 sorriest","etymology":"고대 영어 sārig(아프다는 뜻의 sār에서 온 말)에서 나왔어요.","us_uk":null}],"daily_examples":[{"en":"Reviewing your lessons before the test is a good example of \"better safe than sorry.\"","kr":"시험 전에 미리 복습해 두는 것이야말로 유비무환이다.","note":"Reviewing...은 동명사로, 문장의 주어(S) 역할을 해요."},{"en":"Fire drills are practiced often - it's always better safe than sorry.","kr":"소방 훈련을 자주 하는 것은 유비무환의 마음가짐에서 나온 것이다.","note":"are practiced는 수동태(당하는 표현)예요 - '훈련이 실시된다'는 뜻이죠."},{"en":"Because we packed a first-aid kit, it was truly a case of \"better safe than sorry\" when we got hurt during the trip.","kr":"비상약을 챙겨 간 덕분에 여행 중 다쳤을 때 유비무환의 효과를 톡톡히 봤다.","note":"Because는 \"~ 때문에\"라는 이유를 나타내는 접속사예요."}]},{"idiom_hangul":"일석이조","proverb_en":"Kill two birds with one stone.","match_type":"direct","match_note":"일석이조는 사실 이 영어 속담을 한자로 그대로 옮기면서 생긴 말이에요! 그러니 이번 주는 사자성어가 거꾸로 영어에서 건너온 특별한 경우예요.","structure_tokens":[["Kill","V"],["two birds","O"],["with one stone","M"]],"structure_label":"3형식 (S+V+O), 명령문이라 주어가 생략됨","structure_note":"Kill로 문장이 바로 시작해서 주어가 안 보이죠? 이런 문장을 명령문이라고 해요. 명령문에서는 듣는 사람(You)이 주어라는 게 너무 당연해서 아예 생략해 버려요.","origin":"1600년대부터 영어 기록에 등장한다고 알려진 꽤 오래된 속담이에요. 돌 하나를 던져서 새 두 마리를 한 번에 잡는다는 상상에서 나온 표현이랍니다.","key_words":[{"word":"stone","pos":"명사(N)","forms":"단수 stone → 복수 stones","etymology":"고대 영어 stān에서 온 게르만어 계열 단어예요.","us_uk":null},{"word":"bird","pos":"명사(N)","forms":"단수 bird → 복수 birds","etymology":"고대 영어 bridd에서 왔는데, 원래는 '아기 새(새끼 새)'만 가리키던 말이었어요. 시간이 지나며 새 전체를 가리키는 말로 뜻이 넓어졌답니다.","us_uk":null}],"daily_examples":[{"en":"Riding a bike to school saves time and gets me exercise - it really kills two birds with one stone.","kr":"자전거로 학교에 가면 운동도 되고 시간도 절약되니 일석이조다.","note":"saves와 gets, 두 개의 동사가 and로 이어진 문장이에요."},{"en":"I did my homework and read a book at the library, so it was killing two birds with one stone.","kr":"도서관에서 숙제도 하고 책도 읽으니 일석이조인 셈이다.","note":"did와 read 둘 다 과거형이에요(read는 현재형과 철자는 같지만 발음이 달라져요)."},{"en":"Making new friends while volunteering was truly killing two birds with one stone.","kr":"봉사활동을 하면서 새 친구도 사귀었으니 일석이조의 경험이었다.","note":"Making new friends가 동명사구로 문장의 주어 역할을 해요."}]},{"idiom_hangul":"전화위복","proverb_en":"Every cloud has a silver lining.","match_type":"direct","match_note":"전화위복과 아주 잘 맞는 속담이에요. 먹구름(나쁜 일) 뒤에도 반짝이는 은빛 테두리(숨은 좋은 점)가 있다는 뜻이니까요.","structure_tokens":[["Every cloud","S"],["has","V"],["a silver lining","O"]],"structure_label":"3형식 (S+V+O)","structure_note":"Every cloud(모든 구름)가 주어, has(가지고 있다)가 동사, a silver lining(은빛 테두리)이 목적어인 아주 깔끔한 3형식 문장이에요.","origin":"영국의 시인 존 밀턴(John Milton)이 1634년에 쓴 시 'Comus'에서 처음 이런 표현을 썼다고 알려져 있어요. 어두운 구름 뒤로 살짝 비치는 은빛 테두리를 그린 이 구절이, 훗날 '나쁜 일 속에도 좋은 면이 있다'는 뜻의 속담으로 자리 잡았답니다.","key_words":[{"word":"cloud","pos":"명사(N)","forms":"단수 cloud → 복수 clouds","etymology":"고대 영어 clūd에서 왔는데, 원래는 '바위 덩어리'라는 뜻이었어요! 시간이 지나며 하늘의 구름을 가리키는 말로 뜻이 바뀐 재미있는 경우예요.","us_uk":null},{"word":"silver","pos":"명사/형용사","forms":"형태 변화 없음(불가산명사)","etymology":"고대 영어 seolfor에서 온 게르만어 계열 단어예요.","us_uk":null}],"daily_examples":[{"en":"Hurting my leg meant I had to rest, but every cloud has a silver lining - I got to read a lot of books.","kr":"다리를 다쳐 쉬는 동안 오히려 책을 많이 읽게 되어 전화위복이 되었다.","note":"meant 뒤에 I had to rest 전체가 목적어로 붙었어요 - 문장 안에 또 다른 문장이 들어간 구조예요."},{"en":"Losing the match was hard, but every cloud has a silver lining - it made the team practice harder.","kr":"시합에서 진 것이 전화위복이 되어 더 열심히 연습하는 계기가 되었다.","note":"Losing the match(지는 것)처럼 동명사가 문장의 주어로 쓰였어요."},{"en":"Switching schools was upsetting at first, but every cloud has a silver lining - I made lots of new friends.","kr":"전학을 가게 된 것이 처음엔 속상했지만 새 친구를 많이 사귀는 전화위복이 되었다.","note":"Switching schools(전학 가는 것)도 동명사가 주어로 쓰인 경우예요."}]},{"idiom_hangul":"온고지신","proverb_en":"Learn from the past.","match_type":"none","match_note":"영어엔 온고지신과 정확히 똑같은 뜻의 속담은 없어요. \"옛것을 익혀서 새것을 안다\"는 두 단계 지혜를 하나로 압축한 표현이 따로 없거든요. 대신 비슷한 상황에서는 이렇게 표현해요.","structure_tokens":[["Learn","V"],["from the past","M"]],"structure_label":"명령문 (V+수식어)","structure_note":"이것도 Kill two birds처럼 주어(You)가 생략된 명령문이에요. from the past는 학습에는 꼭 필요하지 않아도 되는 수식어고요.","origin":"이건 정해진 유래가 있는 전통 속담이 아니라, \"과거에서 배우자\"는 뜻을 그대로 표현한 문장이에요. 그래서 이번 주 사자성어는 한국어(한자)만이 가진 표현력을 잘 보여주는 예시가 돼요 - 모든 좋은 말이 영어에 그대로 있는 건 아니거든요.","key_words":[{"word":"past","pos":"명사(N)","forms":"형태 변화 없음","etymology":"동사 pass(지나가다)의 옛 과거분사형이 명사로 굳어진 말이에요. pass는 고대 프랑스어 passer를 거쳐, 더 거슬러 올라가면 라틴어 passus(걸음)에서 왔어요.","us_uk":null},{"word":"learn","pos":"동사(V)","forms":"learn - learned/learnt - learned/learnt","etymology":"고대 영어 leornian에서 온 말이에요.","us_uk":"미국에서는 주로 learned를, 영국에서는 learnt도 흔히 써요 - 발음도 달라요(learnt는 '런트'에 가깝게)."}],"daily_examples":[{"en":"Studying old proverbs is also a way to learn from the past.","kr":"옛날 속담을 공부하는 것도 온고지신의 자세라고 할 수 있다.","note":"Studying old proverbs가 동명사구로 문장의 주어예요."},{"en":"Learning from old cultural treasures can give us new ideas.","kr":"옛 문화재를 배우며 새로운 아이디어를 얻는 것이 바로 온고지신이다.","note":"can give는 조동사(can)+동사원형(give)으로, \"~을 줄 수 있다\"는 뜻이에요."},{"en":"My teacher taught us traditional games in a modern way, learning from the past to create something new.","kr":"선생님은 온고지신의 정신으로 전통 놀이를 요즘 방식으로 바꿔 가르쳐 주셨다.","note":"\"in a modern way\"처럼 \"in a ~ way\"는 \"~한 방식으로\"라는 뜻이에요."}]},{"idiom_hangul":"새옹지마","proverb_en":"A blessing in disguise.","match_type":"direct","match_note":"새옹지마와 아주 잘 맞는 속담이에요. 나쁘게만 보였던 일이 사실은 변장(disguise)하고 나타난 축복이었다는 뜻이, 화와 복이 뒤바뀌는 새옹지마의 정서와 통해요.","structure_tokens":[["It","S"],["was","V"],["a blessing in disguise","SC"]],"structure_label":"2형식 (S+V+SC)","structure_note":"in disguise(변장한 채)가 blessing을 꾸며 주는 표현이에요. \"축복이 변장하고 나타났다\"는 재미있는 상상이 담겨 있어요.","origin":"정확한 최초 출전은 알려져 있지 않지만, 오래전부터 영어권에서 \"나쁜 일처럼 보이지만 사실은 좋은 결과로 이어지는 것\"을 가리킬 때 즐겨 쓰여 온 표현이에요.","key_words":[{"word":"blessing","pos":"명사(N)","forms":"단수 blessing → 복수 blessings","etymology":"고대 영어 bletsian(피로 신성하게 하다)에서 시작해, 시간이 지나며 \"축복하다\"로 뜻이 넓어졌어요.","us_uk":null},{"word":"disguise","pos":"명사/동사","forms":"동사 disguise - disguised - disguised","etymology":"고대 프랑스어 desguisier(모습을 바꾸다)에서 왔어요. dis(반대로)+guise(모습)가 합쳐진 말이에요.","us_uk":null}],"daily_examples":[{"en":"Falling and missing the competition was upsetting, but winning the next one made it a blessing in disguise.","kr":"넘어져서 대회에 못 나간 게 속상했지만, 다음 대회에서 우승했으니 새옹지마다.","note":"Falling과 missing이 and로 이어진 동명사구가 문장의 주어예요."},{"en":"Missing the bus turned out to be a blessing in disguise - I ran into an old friend on the street.","kr":"버스를 놓친 덕분에 길에서 우연히 옛 친구를 만났으니 새옹지마인 셈이다.","note":"\"turned out to be\"는 \"결국 ~인 것으로 드러났다\"는 뜻의 표현이에요."}]},{"idiom_hangul":"자업자득","proverb_en":"You reap what you sow.","match_type":"direct","match_note":"자업자득과 뜻이 정확히 같아요. 씨를 뿌린 대로 거둔다는 농사 비유로, 자기가 한 일의 결과를 자기가 받는다는 뜻이에요.","structure_tokens":[["You","S"],["reap","V"],["what you sow","O"]],"structure_label":"3형식 (S+V+O), 목적어 자리에 절이 통째로 들어감","structure_note":"what you sow(네가 심은 것)처럼 \"무엇을 ~하는지\" 전체가 목적어 역할을 하는 것을 명사절이라고 해요. 절 하나가 문장 성분 하나처럼 쓰이는 경우예요.","origin":"성경에 나오는 표현에서 비롯되었다고 알려진 아주 오래된 속담이에요. 농부가 뿌린 씨앗 그대로의 작물을 거두듯, 자기 행동의 결과를 자기가 받는다는 뜻으로 오랫동안 쓰여 왔어요.","key_words":[{"word":"reap","pos":"동사(V)","forms":"reap - reaped - reaped","etymology":"고대 영어 rīpan(수확하다)에서 왔어요.","us_uk":null},{"word":"sow","pos":"동사(V)","forms":"sow - sowed - sown/sowed","etymology":"고대 영어 sāwan(씨를 뿌리다)에서 왔어요. 발음이 같은 sow(암퇘지)와는 전혀 다른 단어예요.","us_uk":null}],"daily_examples":[{"en":"Putting off homework and having to cram all night was a clear case of \"you reap what you sow.\"","kr":"숙제를 미루다가 밤새 벼락치기를 한 건 자업자득이다.","note":"Putting off와 having to cram이 and로 이어진 동명사구예요."},{"en":"Getting in trouble for breaking the rules was just reaping what he sowed - there was no one else to blame.","kr":"규칙을 어기고 혼난 건 자업자득이니 누구를 탓할 수 없다.","note":"Getting in trouble이 동명사 주어, for breaking the rules가 이유를 나타내요."}]},{"idiom_hangul":"우공이산","proverb_en":"Where there's a will, there's a way.","match_type":"direct","match_note":"우공이산과 통하는 속담이에요. 의지만 있으면 방법도 있다는 뜻으로, 꾸준히 노력하면 큰일도 이룬다는 우공이산과 잘 맞아요.","structure_tokens":[["Where there's a will,",null],["there's a way",null]],"structure_label":"특수 구문 - \"There is/are ~\" (존재를 나타내는 구문)","structure_note":"\"there's a way\"처럼 \"There is/are ~\"는 \"~가 있다\"는 뜻의 특별한 구문이에요. 진짜 주어(a way)가 there 뒤로 밀려나는, 영어만의 독특한 어순이에요.","origin":"정확한 최초 출전은 알려져 있지 않지만, 아주 오래전부터 쓰여 온 영어 속담이에요. 의지(will)만 있으면 방법(way)은 반드시 찾아진다는 믿음을 담고 있어요.","key_words":[{"word":"will","pos":"명사(N)","forms":"형태 변화 없음(불가산명사)","etymology":"고대 영어 willa(의지, 바람)에서 왔어요. 조동사 will(~할 것이다)과 뿌리가 같은 단어예요.","us_uk":null},{"word":"way","pos":"명사(N)","forms":"단수 way → 복수 ways","etymology":"고대 영어 weg(길)에서 왔어요.","us_uk":null}],"daily_examples":[{"en":"Memorizing a few words every day, she finished the whole vocabulary book before she knew it - where there's a will, there's a way.","kr":"매일 조금씩 단어를 외우다 보니 우공이산처럼 어느새 단어장을 다 뗐다.","note":"\"before she knew it\"은 \"자기도 모르는 사이에\"라는 뜻의 표현이에요."},{"en":"With the mindset that where there's a will, there's a way, he practiced steadily and finally learned to ride a bike.","kr":"우공이산의 마음으로 꾸준히 연습해서 결국 자전거를 탈 수 있게 되었다.","note":"\"learn to + 동사원형\"은 \"~하는 법을 배우다\"라는 뜻이에요."}]},{"idiom_hangul":"백문불여일견","proverb_en":"Seeing is believing.","match_type":"direct","match_note":"백문불여일견과 통하는 속담이에요. 직접 봐야 믿을 수 있다는 뜻으로, 백 번 듣는 것보다 한 번 보는 게 낫다는 백문불여일견과 잘 맞아요.","structure_tokens":[["Seeing","S"],["is","V"],["believing","SC"]],"structure_label":"2형식 (S+V+SC), 주어와 보어 모두 동명사","structure_note":"Seeing(보는 것)과 believing(믿는 것) 둘 다 동사에 -ing를 붙여 명사처럼 쓴 동명사예요. 짧은 두 단어로 운율까지 맞춘 재치 있는 속담이에요.","origin":"1600년대부터 영어 기록에 등장한다고 알려진 오래된 속담이에요. 직접 눈으로 확인해야 확실히 믿을 수 있다는 뜻을 담고 있어요.","key_words":[{"word":"see","pos":"동사(V)","forms":"see - saw - seen (불규칙 변화)","etymology":"고대 영어 sēon에서 왔어요.","us_uk":null},{"word":"believe","pos":"동사(V)","forms":"believe - believed - believed","etymology":"고대 영어 belēfan에서 왔어요 - be(완전히)+lēfan(믿다, love와 뿌리가 같아요)의 조합이에요.","us_uk":null}],"daily_examples":[{"en":"Seeing is believing - visiting the museum in person made everything much easier to understand.","kr":"백문불여일견이라고, 직접 박물관에 가 보니 훨씬 이해가 잘 됐다.","note":"\"in person\"은 \"직접, 몸소\"라는 뜻의 표현이에요."},{"en":"After only hearing about volcanoes, actually seeing one made me realize that seeing really is believing.","kr":"설명만 듣던 화산을 실제로 보니 백문불여일견이라는 말이 실감 났다.","note":"\"After -ing\"는 \"~한 후에\"라는 뜻의 표현이에요."}]},{"idiom_hangul":"고진감래","proverb_en":"No pain, no gain.","match_type":"direct","match_note":"고진감래와 통하는 속담이에요. 고통 없이는 얻는 것도 없다는 뜻으로, 고생 끝에 낙이 온다는 고진감래와 잘 맞아요.","structure_tokens":[["If there is no pain,",null],["there is no gain",null]],"structure_label":"특수 구문 - 조건문이 통째로 줄어든 문장","structure_note":"원래는 \"If there is no pain, there is no gain(고통이 없으면 얻는 것도 없다)\"인데, if와 there is를 다 지우고 명사 두 개(pain, gain)만 남긴 아주 압축된 형태예요.","origin":"비슷한 뜻의 표현은 훨씬 오래전부터 있었지만, 지금 형태로는 1980년대 미국의 운동·헬스 문화와 함께 크게 유행하며 널리 퍼진 표현이에요.","key_words":[{"word":"pain","pos":"명사(N)","forms":"단수 pain → 복수 pains","etymology":"고대 프랑스어 peine를 거쳐 라틴어 poena(형벌)에서 왔어요.","us_uk":null},{"word":"gain","pos":"명사/동사","forms":"동사 gain - gained - gained","etymology":"고대 프랑스어 gaaignier(경작하다, 얻다)에서 왔어요.","us_uk":null}],"daily_examples":[{"en":"After months of hard practice, winning an award at the competition felt like proof that there's no gain without pain.","kr":"몇 달간 열심히 연습한 끝에 대회에서 상을 받아 고진감래를 느꼈다.","note":"winning an award가 동명사구 주어예요."},{"en":"Finally solving the difficult math problem was a true \"no pain, no gain\" moment.","kr":"어려운 수학 문제를 끝까지 풀어냈을 때 고진감래의 기쁨을 맛보았다.","note":"Finally solving...이 동명사구 주어예요."}]},{"idiom_hangul":"우이독경","proverb_en":"Like talking to a brick wall.","match_type":"direct","match_note":"우이독경과 뜻이 통하는 표현이에요. 벽돌 담에다 대고 말하는 것 같다는 뜻으로, 아무리 말해도 소용없다는 우이독경과 잘 맞아요.","structure_tokens":[["It","S"],["was","V"],["like talking to a brick wall","SC"]],"structure_label":"2형식 (S+V+SC)","structure_note":"talking to a brick wall(벽에 대고 말하기)이라는 동명사구가 like(~처럼) 뒤에서 보어 역할을 해요.","origin":"정확한 최초 출전은 알려져 있지 않지만, 아무리 말해도 반응이 없는 상황을 \"단단한 벽에 대고 말하는 것\"에 빗댄 오래된 영어 표현이에요.","key_words":[{"word":"brick","pos":"명사(N)","forms":"단수 brick → 복수 bricks","etymology":"중세 프랑스어 brique에서 왔어요.","us_uk":null},{"word":"wall","pos":"명사(N)","forms":"단수 wall → 복수 walls","etymology":"고대 영어 weall에서 왔는데, 이 단어는 뿌리를 거슬러 올라가면 라틴어 vallum(방벽)과 만나요 - ear와 달리, 아주 오래전에 라틴어에서 게르만어로 건너온 경우예요.","us_uk":null}],"daily_examples":[{"en":"Explaining it again and again with no result was just like talking to a brick wall.","kr":"몇 번을 설명해도 못 알아듣는 걸 보니 우이독경이 따로 없다.","note":"\"again and again\"은 \"몇 번이고 계속\"이라는 뜻의 반복 표현이에요."},{"en":"Giving advice to a friend who won't listen is exactly like talking to a brick wall.","kr":"아무리 조언해도 듣지 않는 친구에게는 우이독경이라는 말이 딱 맞다.","note":"who won't listen이 friend를 꾸며 주는 관계대명사절이에요."}]},{"idiom_hangul":"화룡점정","proverb_en":"The finishing touch.","match_type":"direct","match_note":"화룡점정과 뜻이 통하는 표현이에요. 용 그림에 마지막 눈동자를 찍듯, 일을 완성하는 마지막 손길이라는 뜻이 화룡점정과 잘 맞아요.","structure_tokens":[["It","S"],["was","V"],["the finishing touch","SC"]],"structure_label":"2형식 (S+V+SC)","structure_note":"finishing touch는 동사 finish(끝내다)에서 온 finishing(형용사처럼 쓰인 -ing)이 touch(손길)를 꾸며 주는 표현이에요.","origin":"정확한 최초 출전은 알려져 있지 않지만, 그림이나 조각 같은 예술 작품을 마무리하는 \"마지막 손길\"이라는 뜻에서 시작해, 어떤 일을 완벽하게 마무리하는 것을 가리키는 표현으로 널리 쓰이게 되었어요.","key_words":[{"word":"finish","pos":"동사(V)","forms":"finish - finished - finished","etymology":"고대 프랑스어 finir를 거쳐, 라틴어 finire(끝내다)에서 왔어요.","us_uk":null},{"word":"touch","pos":"명사/동사","forms":"동사 touch - touched - touched","etymology":"고대 프랑스어 tochier에서 왔어요.","us_uk":null}],"daily_examples":[{"en":"Adding a great conclusion at the end of the presentation was the finishing touch.","kr":"발표 마지막에 멋진 결론을 덧붙이니 화룡점정이 되었다.","note":"Adding a great conclusion이 동명사구 주어예요."},{"en":"Putting strawberries on top of the cake was the finishing touch.","kr":"케이크 위에 딸기를 올리는 것이 화룡점정이었다.","note":"\"on top of\"는 \"~의 위에\"라는 뜻의 표현이에요."}]},{"idiom_hangul":"유유상종","proverb_en":"Birds of a feather flock together.","match_type":"direct","match_note":"유유상종과 뜻이 정확히 같아요. 같은 깃털을 가진 새들끼리 무리 짓는다는 뜻으로, 비슷한 사람들끼리 어울린다는 유유상종과 통해요.","structure_tokens":[["Birds of a feather","S"],["flock","V"],["together","M"]],"structure_label":"1형식 (S+V) + 수식어","structure_note":"Birds of a feather(같은 깃털의 새들)가 하나의 덩어리로 주어 역할을 해요. flock은 원래 \"무리 짓다\"라는 뜻의 동사로도 쓰여요.","origin":"1500년대 영어 문헌에서부터 비슷한 표현이 발견될 만큼 아주 오래된 속담이에요. 같은 종류의 새들이 무리 지어 나는 모습을 보고 만들어졌어요.","key_words":[{"word":"feather","pos":"명사(N)","forms":"단수 feather → 복수 feathers","etymology":"고대 영어 feðer에서 온 게르만어 계열 단어예요.","us_uk":null},{"word":"flock","pos":"동사/명사","forms":"동사 flock - flocked - flocked","etymology":"고대 영어 flocc(무리)에서 왔어요.","us_uk":null}],"daily_examples":[{"en":"Seeing soccer-loving friends stick together proves that birds of a feather flock together.","kr":"축구를 좋아하는 친구들끼리 뭉치는 걸 보면 유유상종이라는 말이 맞다.","note":"soccer-loving처럼 명사+동사ing를 합쳐 하나의 형용사처럼 쓸 수 있어요."},{"en":"As they say, birds of a feather flock together - friends with similar personalities naturally grew close.","kr":"유유상종이라고, 성격이 비슷한 친구들끼리 자연스레 친해졌다.","note":"\"As they say\"는 \"흔히들 말하듯\"이라는 뜻의 표현이에요."}]},{"idiom_hangul":"사면초가","proverb_en":"Between a rock and a hard place.","match_type":"similar","match_note":"사면초가와 통하는 표현이에요. 딱딱한 바위와 벽 사이에 낀 것처럼 꼼짝 못 하는 상황을 가리키는 표현으로, 사방이 적으로 둘러싸인 사면초가와 잘 맞아요.","structure_tokens":[["I","S"],["was","V"],["between a rock and a hard place","M"]],"structure_label":"1형식 (S+V) + 수식어","structure_note":"between a rock and a hard place는 문장의 필수 성분이 아니라 \"어디에 있었는지\"를 설명해 주는 수식어(장소)예요.","origin":"1900년대 초 미국에서 널리 쓰이기 시작한 표현으로 알려져 있어요. 양쪽 다 나쁜 선택지밖에 없는 곤란한 상황을 바위와 딱딱한 땅 사이에 낀 모습에 빗댔어요.","key_words":[{"word":"rock","pos":"명사(N)","forms":"단수 rock → 복수 rocks","etymology":"고대 프랑스어 roque에서 왔어요.","us_uk":null},{"word":"place","pos":"명사(N)","forms":"단수 place → 복수 places","etymology":"고대 프랑스어 place를 거쳐, 그리스어 plateia(넓은 길)에서 왔어요.","us_uk":null}],"daily_examples":[{"en":"With homework piling up and a test right around the corner, I felt like I was between a rock and a hard place.","kr":"숙제도 밀리고 시험도 코앞이라 사면초가에 빠진 기분이었다.","note":"\"right around the corner\"는 \"바로 코앞에 닥친\"이라는 뜻의 표현이에요."},{"en":"Scheduling too many appointments at once left me between a rock and a hard place.","kr":"약속을 여러 개 겹쳐 잡아서 사면초가가 되어 버렸다.","note":"\"left me ~\"는 \"나를 ~한 상태로 만들었다\"는 뜻이에요."}]},{"idiom_hangul":"십중팔구","proverb_en":"Nine times out of ten.","match_type":"direct","match_note":"십중팔구와 뜻이 정확히 같아요. 열 번 중 아홉 번이라는 뜻으로, 거의 대부분을 가리키는 십중팔구와 딱 맞아요.","structure_tokens":[["Nine times out of ten","M"],["he","S"],["is right","V"]],"structure_label":"수식어(빈도)가 문장 맨 앞에 온 문장","structure_note":"Nine times out of ten은 문장 전체를 꾸며 주는 수식어라, 문장 맨 앞에 자유롭게 놓을 수 있어요.","origin":"정확한 최초 출전은 알려져 있지 않지만, 확률을 숫자로 간단하게 표현하는 오래된 영어 표현이에요.","key_words":[{"word":"time","pos":"명사(N)","forms":"단수 time → 복수 times","etymology":"고대 영어 tīma에서 왔어요. \"~번\"이라는 횟수를 나타낼 때도 이 단어를 써요.","us_uk":null},{"word":"out of","pos":"전치사구","forms":"형태 변화 없음","etymology":"out(밖으로)+of(~의)가 합쳐져 \"~ 중에서\"라는 뜻의 표현이 되었어요.","us_uk":null}],"daily_examples":[{"en":"If you go to bed that late, nine times out of ten you won't be able to wake up in the morning.","kr":"그렇게 늦게 자면 십중팔구 아침에 못 일어난다.","note":"If절이 조건을 나타내요."},{"en":"If you present without preparing, nine times out of ten you're bound to make a mistake.","kr":"준비 없이 발표하면 십중팔구 실수하기 마련이다.","note":"\"be bound to\"는 \"~하기 마련이다, 틀림없이 ~하다\"라는 뜻의 표현이에요."}]},{"idiom_hangul":"금상첨화","proverb_en":"The icing on the cake.","match_type":"direct","match_note":"금상첨화와 뜻이 정확히 같아요. 이미 맛있는 케이크 위에 설탕 장식까지 더한다는 뜻으로, 좋은 일에 또 좋은 일이 더해지는 금상첨화와 잘 맞아요.","structure_tokens":[["It","S"],["was","V"],["the icing on the cake","SC"]],"structure_label":"2형식 (S+V+SC)","structure_note":"the icing on the cake(케이크 위의 설탕 장식)가 통째로 보어 역할을 해요. icing은 동사 ice(설탕을 입히다)에서 온 명사예요.","origin":"정확한 최초 출전은 알려져 있지 않지만, 20세기 초부터 영어권에서 널리 쓰인 표현이에요. 이미 완성된 케이크 위에 마지막으로 설탕 장식을 얹는 모습에서 나왔어요.","key_words":[{"word":"icing","pos":"명사(N)","forms":"형태 변화 없음(불가산명사)","etymology":"동사 ice(얼음처럼 굳히다, 설탕을 입히다)에 -ing가 붙은 말이에요.","us_uk":"영국에서는 같은 뜻으로 frosting 대신 icing을 더 자주 써요."},{"word":"cake","pos":"명사(N)","forms":"단수 cake → 복수 cakes","etymology":"고대 노르드어 kaka에서 왔어요.","us_uk":null}],"daily_examples":[{"en":"I did well on the test and even won an award - that was the icing on the cake.","kr":"시험도 잘 봤는데 상까지 받았으니 금상첨화다.","note":"\"did well\"은 \"잘했다\"는 뜻의 표현이에요."},{"en":"The destination was beautiful, and the great weather was simply the icing on the cake.","kr":"여행지가 아름다운 데다 날씨도 좋으니 금상첨화가 따로 없다.","note":"simply는 \"그야말로, 그저\"라는 뜻을 강조하는 부사예요."}]},{"idiom_hangul":"설상가상","proverb_en":"When it rains, it pours.","match_type":"direct","match_note":"설상가상과 통하는 속담이에요. 비가 왔다 하면 아예 쏟아진다는 뜻으로, 어려운 일이 겹쳐 일어나는 설상가상과 잘 맞아요.","structure_tokens":[["When it rains,",null],["it pours",null]],"structure_label":"부사절(When~) + 주절","structure_note":"When it rains(비가 올 때)가 시간을 나타내는 부사절이고, it pours(쏟아붓는다)가 주절이에요. 여기서 it은 날씨를 나타낼 때 쓰는 비인칭 주어예요.","origin":"1900년대 초 미국의 한 소금 회사(Morton Salt)가 \"습기에도 잘 쏟아지는 소금\"이라는 광고 문구로 이 표현을 유명하게 만들었다고 알려져 있어요.","key_words":[{"word":"rain","pos":"동사/명사","forms":"동사 rain - rained - rained","etymology":"고대 영어 regn(명사)/rīnan(동사)에서 왔어요.","us_uk":null},{"word":"pour","pos":"동사(V)","forms":"pour - poured - poured","etymology":"정확한 어원은 확실하지 않지만, 고대 프랑스어에서 왔을 것으로 추정돼요.","us_uk":null}],"daily_examples":[{"en":"I caught a cold from being in the rain, and then I lost my umbrella too - when it rains, it pours.","kr":"비를 맞아 감기에 걸렸는데 우산까지 잃어버려서 설상가상이었다.","note":"\"from -ing\"는 \"~해서, ~한 것 때문에\"라는 원인을 나타내요."},{"en":"I was late, and on top of that I forgot my supplies - when it rains, it pours.","kr":"지각한 데다 준비물까지 놓고 왔으니 설상가상이다.","note":"\"on top of that\"은 \"그것도 모자라, 게다가\"라는 뜻의 표현이에요."}]},{"idiom_hangul":"대기만성","proverb_en":"Late bloomer.","match_type":"similar","match_note":"대기만성과 통하는 표현이에요. 꽃이 늦게 피는 사람이라는 뜻으로, 큰 인물은 늦게 이루어진다는 대기만성과 잘 맞아요. 완결된 문장이 아니라 사람을 가리키는 명사구예요.","structure_tokens":[["She","S"],["was","V"],["a late bloomer","SC"]],"structure_label":"2형식 (S+V+SC)","structure_note":"late bloomer는 late(늦은)와 bloomer(꽃 피우는 사람, 동사 bloom에서 옴)가 합쳐진 명사예요.","origin":"정확한 최초 출전은 알려져 있지 않지만, 식물이 다른 것보다 늦게 꽃을 피우는 모습에 빗대어, 재능이나 성공이 남들보다 늦게 나타나는 사람을 가리킬 때 쓰여요.","key_words":[{"word":"bloom","pos":"동사/명사","forms":"동사 bloom - bloomed - bloomed","etymology":"고대 노르드어 blōm(꽃)에서 왔어요.","us_uk":null},{"word":"late","pos":"형용사/부사","forms":"비교급 later → 최상급 latest","etymology":"고대 영어 læt에서 왔어요.","us_uk":null}],"daily_examples":[{"en":"She lacked skill at first, but as a true late bloomer, she became an outstanding athlete later on.","kr":"처음엔 실력이 부족했지만 대기만성이라고, 나중엔 훌륭한 선수가 되었다.","note":"\"later on\"은 \"나중에, 이후에\"라는 뜻의 표현이에요."},{"en":"Even though he started late, he worked steadily and became a real late bloomer.","kr":"늦게 시작했어도 꾸준히 노력해 대기만성형 인재가 되었다.","note":"Even though는 \"비록 ~이지만\"이라는 뜻의 양보를 나타내는 접속사예요."}]}]
+;
 const LABEL_COLORS = {"S":[200,30,30],"V":[20,90,200],"O":[0,140,70],"SC":[180,110,0],"OC":[180,110,0],"IO":[0,120,90],"DO":[0,100,60],"M":[120,120,120]};
 
 // 알아보기 2장(품사/문장성분) 데이터 - generate_weekly_idiom.py의 POS_OVERVIEW/COMPONENT_OVERVIEW와 동일한 내용.
@@ -842,6 +1001,137 @@ function renderGrammar() {
   });
 
   document.getElementById("tipText").textContent = " " + gp.tip;
+}
+
+// 문장의 5형식 알아보기: GRAMMAR_POINTS(Point1~5)를 주간 로테이션과 무관하게
+// pageSp1~pageSp5에 한 번씩 그린다. renderGrammar()와 내용 모양은 같지만
+// sp-* 클래스(독립적인 --fitSp)를 쓰고, 대상 컨테이너를 인자로 받는다.
+function renderSentencePatternPage(container, gp, headerText) {
+  container.innerHTML = "";
+
+  const headerRow = document.createElement("div");
+  headerRow.className = "sp-header-row";
+  const headerText_ = document.createElement("div");
+  headerText_.className = "sp-header-text";
+  headerText_.textContent = headerText;
+  headerRow.appendChild(headerText_);
+
+  const chapter = document.createElement("div");
+  chapter.className = "sp-chapter";
+  chapter.textContent = `${gp.chapter} · ${gp.unit}`;
+
+  const title = document.createElement("div");
+  title.className = "sp-title";
+  title.textContent = `Point ${pad(gp.point_no)}  ${gp.title}`;
+
+  const termCard = document.createElement("div");
+  termCard.className = "sp-term-card";
+  (gp.new_terms || []).forEach((t) => {
+    const row = document.createElement("div");
+    row.className = "term-row";
+    const l = document.createElement("span");
+    l.className = "term-label";
+    l.textContent = t.term;
+    const d = document.createElement("span");
+    d.className = "term-def";
+    d.textContent = t.definition;
+    row.appendChild(l);
+    row.appendChild(d);
+    const sub = document.createElement("div");
+    sub.className = "term-sub";
+    const hanjaStr = t.hanja.map(([ch, eum]) => `${ch}(${eum})`).join(" ");
+    sub.textContent = `${hanjaStr}   ·   일상 속 한자어: ${t.words.join(", ")}`;
+    row.appendChild(sub);
+    termCard.appendChild(row);
+  });
+
+  const concept = document.createElement("div");
+  concept.className = "sp-concept";
+  concept.textContent = gp.concept;
+
+  const krLabel = document.createElement("div");
+  krLabel.className = "sp-section-label";
+  krLabel.textContent = "한글로 먼저 보기";
+  const krExample = document.createElement("div");
+  krExample.className = "sp-sentence";
+  krExample.appendChild(buildLabeledSentence(gp.korean_example));
+
+  const enLabel = document.createElement("div");
+  enLabel.className = "sp-section-label";
+  enLabel.textContent = "영어로 표현하면";
+  const enExample = document.createElement("div");
+  enExample.className = "sp-sentence";
+  enExample.appendChild(buildLabeledSentence(gp.english_example));
+
+  const compareNote = document.createElement("div");
+  compareNote.className = "sp-compare";
+  compareNote.textContent = gp.compare_note;
+
+  const principleLabel = document.createElement("div");
+  principleLabel.className = "sp-section-label";
+  principleLabel.textContent = "왜 이런 구조일까요?";
+  const principleText = document.createElement("div");
+  principleText.className = "sp-principle";
+  (Array.isArray(gp.principle) ? gp.principle : [gp.principle]).forEach((para) => {
+    const p = document.createElement("div");
+    p.className = "sp-principle-para";
+    p.textContent = para;
+    principleText.appendChild(p);
+  });
+
+  const examplesLabel = document.createElement("div");
+  examplesLabel.className = "sp-section-label";
+  examplesLabel.textContent = "예문으로 확인해요";
+  const examples = document.createElement("div");
+  examples.className = "sp-examples";
+  gp.examples.forEach((ex, i) => {
+    const item = document.createElement("div");
+    item.className = "sp-example-item";
+    item.appendChild(document.createTextNode(`${i + 1}. `));
+    item.appendChild(buildLabeledSentence(ex.parts));
+    const tr = document.createElement("div");
+    tr.className = "translation";
+    tr.textContent = ex.translation;
+    item.appendChild(tr);
+    examples.appendChild(item);
+  });
+
+  const tipBox = document.createElement("div");
+  tipBox.className = "sp-tip-box";
+  const tipLabel = document.createElement("span");
+  tipLabel.className = "tip-label";
+  tipLabel.textContent = "TIP";
+  tipBox.appendChild(tipLabel);
+  tipBox.appendChild(document.createTextNode(" " + gp.tip));
+
+  const gradientBar = document.createElement("div");
+  gradientBar.className = "gradient-bar";
+
+  container.appendChild(gradientBar);
+  container.appendChild(headerRow);
+  container.appendChild(chapter);
+  container.appendChild(title);
+  container.appendChild(termCard);
+  container.appendChild(concept);
+  container.appendChild(krLabel);
+  container.appendChild(krExample);
+  container.appendChild(enLabel);
+  container.appendChild(enExample);
+  container.appendChild(compareNote);
+  container.appendChild(principleLabel);
+  container.appendChild(principleText);
+  container.appendChild(examplesLabel);
+  container.appendChild(examples);
+  container.appendChild(tipBox);
+}
+
+function renderSentencePatternOverview() {
+  GRAMMAR_POINTS.forEach((gp, i) => {
+    const container = document.getElementById(`pageSp${i + 1}`);
+    if (!container) return;
+    const headerText = `문장의 5형식 알아보기  ·  Point ${gp.point_no}/${GRAMMAR_POINTS.length}`;
+    renderSentencePatternPage(container, gp, headerText);
+  });
 }
 
 // "한눈에 보기" 도식의 맨 위 줄 - 품사/문장성분 개별 항목을 leaf 박스로
@@ -1271,11 +1561,17 @@ function renderOverview() {
 function applyContentVisibility() {
   const showPosOv = document.getElementById("showPosOvChk").checked;
   const showCompOv = document.getElementById("showCompOvChk").checked;
+  const showSpOv = document.getElementById("showSpOvChk").checked;
   const sections = [
     { id: "pageOv1a", show: showPosOv },
     { id: "pageOv1b", show: showPosOv },
     { id: "pageOv2a", show: showCompOv },
     { id: "pageOv2b", show: showCompOv },
+    { id: "pageSp1", show: showSpOv },
+    { id: "pageSp2", show: showSpOv },
+    { id: "pageSp3", show: showSpOv },
+    { id: "pageSp4", show: showSpOv },
+    { id: "pageSp5", show: showSpOv },
     { id: "page", show: document.getElementById("showIdiomChk").checked },
     { id: "page2", show: document.getElementById("showGrammarChk").checked },
   ];
@@ -1289,9 +1585,159 @@ function applyContentVisibility() {
   });
 }
 
+const PROVERBS_BY_HANGUL = {};
+PROVERBS.forEach((pv) => { PROVERBS_BY_HANGUL[pv.idiom_hangul] = pv; });
+
+const MATCH_BOX_STYLE = {
+  direct: { fill: [225, 240, 255], label: "뜻이 정확히 같은 속담이에요", labelColor: [15, 90, 170] },
+  similar: { fill: [240, 230, 255], label: "뜻이 비슷한 속담이에요", labelColor: [110, 60, 170] },
+  none: { fill: [255, 238, 222], label: "영어엔 없는, 한국어만의 표현이에요", labelColor: [180, 95, 20] },
+};
+
+// 금주의 영어 속담(한 페이지): generate_weekly_idiom.py의 build_proverb_page_image()와
+// 같은 순서(속담 원문 → 매칭 안내 → 문장 구조 → 유래 → 핵심 단어 → 일상 예문)로 그린다.
+function renderProverb(container, pv, idiom, weekNo) {
+  container.innerHTML = "";
+
+  const headerRow = document.createElement("div");
+  headerRow.className = "pv-header-row";
+  const headerText = document.createElement("div");
+  headerText.className = "pv-header-text";
+  headerText.textContent = `이번 주의 영어 속담  ·  ${fmtDate(weekStartDate(weekNo))} 시작  (제${weekNo}주)`;
+  headerRow.appendChild(headerText);
+
+  const pair = document.createElement("div");
+  pair.className = "pv-pair";
+  const hanjaStr = idiom.chars.map(([ch]) => ch).join("");
+  pair.textContent = `금주의 사자성어: ${idiom.hangul}(${hanjaStr})와 함께 보기`;
+
+  const proverb = document.createElement("div");
+  proverb.className = "pv-proverb";
+  proverb.textContent = pv.proverb_en;
+
+  const style = MATCH_BOX_STYLE[pv.match_type];
+  const matchBox = document.createElement("div");
+  matchBox.className = "pv-match-box";
+  matchBox.style.background = rgb(style.fill);
+  const matchLabel = document.createElement("span");
+  matchLabel.className = "pv-match-label";
+  matchLabel.textContent = style.label;
+  matchLabel.style.color = rgb(style.labelColor);
+  const matchNote = document.createElement("div");
+  matchNote.className = "pv-match-note";
+  matchNote.textContent = pv.match_note;
+  matchBox.appendChild(matchLabel);
+  matchBox.appendChild(matchNote);
+
+  const structLabel1 = document.createElement("div");
+  structLabel1.className = "pv-section-label";
+  structLabel1.textContent = "문장 구조로 뜯어보면";
+  const tokensLine = document.createElement("div");
+  tokensLine.className = "pv-tokens";
+  tokensLine.appendChild(buildLabeledSentence(pv.structure_tokens));
+  const structLabel = document.createElement("div");
+  structLabel.className = "pv-struct-label";
+  structLabel.textContent = pv.structure_label;
+  const structNote = document.createElement("div");
+  structNote.className = "pv-body-text";
+  structNote.textContent = pv.structure_note;
+
+  const originLabel = document.createElement("div");
+  originLabel.className = "pv-section-label";
+  originLabel.textContent = "이 속담은 어떻게 생겨났을까요?";
+  const originText = document.createElement("div");
+  originText.className = "pv-origin-text";
+  originText.textContent = pv.origin;
+
+  const wordsLabel = document.createElement("div");
+  wordsLabel.className = "pv-section-label";
+  wordsLabel.textContent = "핵심 단어 알아보기";
+  const wordsWrap = document.createElement("div");
+  (pv.key_words || []).forEach((kw) => {
+    const card = document.createElement("div");
+    card.className = "pv-word-card";
+    const wordSpan = document.createElement("span");
+    wordSpan.className = "pv-word";
+    wordSpan.textContent = kw.word;
+    const posSpan = document.createElement("span");
+    posSpan.className = "pv-pos";
+    posSpan.textContent = kw.pos;
+    card.appendChild(wordSpan);
+    card.appendChild(posSpan);
+    const sub = document.createElement("div");
+    sub.className = "pv-sub";
+    let subText = `문법 변화: ${kw.forms}   ·   어원: ${kw.etymology}`;
+    if (kw.us_uk) subText += `   ·   영국/미국 차이: ${kw.us_uk}`;
+    sub.textContent = subText;
+    card.appendChild(sub);
+    wordsWrap.appendChild(card);
+  });
+
+  const examplesLabel = document.createElement("div");
+  examplesLabel.className = "pv-section-label";
+  examplesLabel.textContent = "일상생활에서는 이렇게 써요";
+  const examplesWrap = document.createElement("div");
+  examplesWrap.className = "pv-examples";
+  (pv.daily_examples || []).forEach((ex, i) => {
+    const item = document.createElement("div");
+    item.className = "pv-example-item";
+    const en = document.createElement("div");
+    en.className = "pv-en";
+    en.textContent = `${i + 1}. ${ex.en}`;
+    const kr = document.createElement("div");
+    kr.className = "pv-kr";
+    kr.textContent = ex.kr;
+    const note = document.createElement("div");
+    note.className = "pv-note";
+    note.textContent = ex.note;
+    item.appendChild(en);
+    item.appendChild(kr);
+    item.appendChild(note);
+    examplesWrap.appendChild(item);
+  });
+
+  const gradientBar = document.createElement("div");
+  gradientBar.className = "gradient-bar";
+
+  container.appendChild(gradientBar);
+  container.appendChild(headerRow);
+  container.appendChild(pair);
+  container.appendChild(proverb);
+  container.appendChild(matchBox);
+  container.appendChild(structLabel1);
+  container.appendChild(tokensLine);
+  container.appendChild(structLabel);
+  container.appendChild(structNote);
+  container.appendChild(originLabel);
+  container.appendChild(originText);
+  container.appendChild(wordsLabel);
+  container.appendChild(wordsWrap);
+  container.appendChild(examplesLabel);
+  container.appendChild(examplesWrap);
+}
+
+// page2 자리는 그 주 사자성어에 PROVERBS 콘텐츠가 있으면 속담을, 없으면(대부분의
+// 주차, 아직 콘텐츠 작성 전) 기존 GRAMMAR_POINTS 로테이션을 보여준다 - 자동
+// 인쇄가 끊기지 않도록 하는 안전장치(generate_weekly_idiom.py의 main()과 동일한 로직).
+function renderWeeklySlot() {
+  const idiom = IDIOMS[idxForWeek(currentWeek)];
+  const pv = PROVERBS_BY_HANGUL[idiom.hangul];
+  const fallbackBody = document.getElementById("grammarFallbackBody");
+  const proverbBody = document.getElementById("proverbBody");
+  if (pv) {
+    fallbackBody.style.display = "none";
+    proverbBody.style.display = "";
+    renderProverb(proverbBody, pv, idiom, currentWeek);
+  } else {
+    proverbBody.style.display = "none";
+    fallbackBody.style.display = "";
+    renderGrammar();
+  }
+}
+
 function renderAll() {
   render();
-  renderGrammar();
+  renderWeeklySlot();
 }
 
 function render() {
@@ -1486,12 +1932,14 @@ document.getElementById("showIdiomChk").addEventListener("change", applyContentV
 document.getElementById("showGrammarChk").addEventListener("change", applyContentVisibility);
 document.getElementById("showPosOvChk").addEventListener("change", applyContentVisibility);
 document.getElementById("showCompOvChk").addEventListener("change", applyContentVisibility);
+document.getElementById("showSpOvChk").addEventListener("change", applyContentVisibility);
 
 
 populateWeekSelect();
 currentWeek = computeWeek(new Date());
 renderAll();
 renderOverview();
+renderSentencePatternOverview();
 applyContentVisibility();
 
 // 인쇄가 A4 한 장을 넘기지 않도록, 인쇄 직전에 실제 렌더링 높이를 재서
@@ -1511,6 +1959,11 @@ applyContentVisibility();
     { id: "pageOv1b", cssVar: "--fitOv", scope: "self" },
     { id: "pageOv2a", cssVar: "--fitOv", scope: "self" },
     { id: "pageOv2b", cssVar: "--fitOv", scope: "self" },
+    { id: "pageSp1", cssVar: "--fitSp", scope: "self" },
+    { id: "pageSp2", cssVar: "--fitSp", scope: "self" },
+    { id: "pageSp3", cssVar: "--fitSp", scope: "self" },
+    { id: "pageSp4", cssVar: "--fitSp", scope: "self" },
+    { id: "pageSp5", cssVar: "--fitSp", scope: "self" },
     { id: "page", cssVar: "--fit" },
     { id: "page2", cssVar: "--fit2" },
   ];
