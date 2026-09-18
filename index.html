@@ -20,9 +20,9 @@
        자기 페이지 안에서만 자동으로 줄어든다. */
     --fit2: 1;
   }
-  /* 개론(품사/문장성분)은 --fitOv라는 같은 이름을 쓰지만 각 페이지 엘리먼트
+  /* 알아보기(품사/문장성분)는 --fitOv라는 같은 이름을 쓰지만 각 페이지 엘리먼트
      스스로에 지역 스코프로 설정되므로 서로 독립적으로 줄어든다(같은 :root
-     변수를 공유하지 않음). 개론 1장/2장 각각 설명(a)/도식(b) 두 페이지로
+     변수를 공유하지 않음). 알아보기 1장/2장 각각 설명(a)/도식(b) 두 페이지로
      나뉜다. */
   #pageOv1a, #pageOv1b, #pageOv2a, #pageOv2b { --fitOv: 1; }
   * { box-sizing: border-box; }
@@ -331,11 +331,11 @@
     color: rgb(180,110,0); font-weight: 700; margin-right: 8px;
   }
   /* 여러 페이지 중 첫 번째로 보이는 페이지가 아니면 인쇄 시 새 장부터
-     시작하도록 하는 공통 클래스 (사자성어/영문법/개론1/개론2 어떤 조합이든
+     시작하도록 하는 공통 클래스 (사자성어/영문법/알아보기1/알아보기2 어떤 조합이든
      applyContentVisibility()가 동적으로 붙였다 뗐다 한다). */
   .pb-before { page-break-before: always; break-before: page; }
 
-  /* --- 개론 2장(품사 / 문장성분) - 주간 로테이션과 무관한 1회성 참고 페이지 --- */
+  /* --- 알아보기 2장(품사 / 문장성분) - 주간 로테이션과 무관한 1회성 참고 페이지 --- */
   .ov-page {
     width: 210mm;
     min-height: 297mm;
@@ -370,6 +370,7 @@
   }
   .ov-grammar-note-label { font-weight: 700; color: rgb(20,110,60); margin-bottom: 6px; }
   .ov-grammar-note-text { line-height: 1.7; color: rgb(30,70,45); }
+  .ov-grammar-note-text + .ov-grammar-note-text { margin-top: 10px; }
   .ov-intro-box {
     margin: calc(5mm * var(--fitOv)) 10mm 0 10mm;
     background: rgb(255,244,214);
@@ -409,10 +410,10 @@
     border-radius: 10px;
     padding: 14px 18px;
     font-size: calc(14.5px * var(--fitOv));
-    line-height: 1.7;
-    color: rgb(20,40,80);
   }
-  .ov-rule-label { font-weight: 700; color: rgb(15,75,160); margin-right: 10px; }
+  .ov-rule-label { font-weight: 700; color: rgb(15,75,160); margin-bottom: 6px; }
+  .ov-rule-text { line-height: 1.7; color: rgb(20,40,80); }
+  .ov-rule-text + .ov-rule-text { margin-top: 10px; }
   .ov-diff-box {
     margin: calc(6mm * var(--fitOv)) 10mm 0 10mm;
     background: rgb(255,234,234);
@@ -485,8 +486,8 @@
       <select id="weekSelect"></select>
     </div>
     <div class="content-toggle-group">
-      <label><input type="checkbox" id="showPosOvChk"> 품사 개론</label>
-      <label><input type="checkbox" id="showCompOvChk"> 문장성분 개론</label>
+      <label><input type="checkbox" id="showPosOvChk"> 품사 알아보기</label>
+      <label><input type="checkbox" id="showCompOvChk"> 문장성분 알아보기</label>
       <label><input type="checkbox" id="showIdiomChk" checked> 사자성어</label>
       <label><input type="checkbox" id="showGrammarChk" checked> 영어문법</label>
     </div>
@@ -494,7 +495,7 @@
   <button onclick="window.print()">인쇄하기</button>
 </div>
 
-<!-- 품사 개론은 매주 인쇄되는 페이지가 아니라 한 번 인쇄해서 철해 두는
+<!-- 품사 알아보기는 매주 인쇄되는 페이지가 아니라 한 번 인쇄해서 철해 두는
      참고 자료라, 좁은 한 페이지에 욱여넣기보다 이해가 쉬운 쪽을 택해 두
      페이지로 나눈다: 1/2(설명)은 목록/정의를 여유 있게, 2/2(도식)는
      "영어와 이렇게 달라요" 비교와 포함관계 도식을 넉넉하게 보여준다. -->
@@ -597,11 +598,11 @@ const CHAR_WORDS = {"馬":[["마차","말이 끄는 수레"],["승마","말을 �
 const GRAMMAR_POINTS = [{"point_no":1,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"1형식 (S+V)","new_terms":[{"term":"주어","hanja":[["主","주인 주"],["語","말씀 어"]],"definition":"문장의 주인이 되는 말","words":["주인(主人)","주제(主題)","주인공(主人公)"]},{"term":"서술어","hanja":[["敍","펼 서"],["述","펼 술"],["語","말씀 어"]],"definition":"무언가를 풀어서 설명하는 말","words":["자서전(自敍傳)","서술(敍述)","진술(陳述)"]}],"concept":"주어와 동사만으로 뜻이 완성되는 가장 단순한 문장이에요. 목적어도 보어도 필요 없어요.","korean_example":[["새가","S"],["난다","V"]],"english_example":[["Birds","S"],["fly","V"]],"compare_note":"1형식은 한국어랑 영어 어순이 거의 똑같이 느껴지는 유일한 형식이에요.","principle":["fly(날다), sleep(자다), arrive(도착하다) 같은 동사는 '누구를/무엇을' 없이도 그 자체로 뜻이 완성돼요. 이런 동사를 완전자동사라고 불러요 - '완전'은 뜻이 이미 다 갖춰졌다는 말이고, '자동사'는 목적어가 필요 없다는 말이에요.","반대로 '먹다'를 생각해 보세요. '나는 먹는다'라고만 하면 뭔가 허전하죠? '무엇을 먹는지' 궁금해지니까요. 하지만 '새가 난다'는 그 자체로 완벽해요 - '무엇을 날았는지' 궁금하지 않잖아요. 이게 1형식 동사들의 공통점이에요."],"examples":[{"parts":[["The sun","S"],["rises","V"]],"translation":"해가 뜬다."},{"parts":[["She","S"],["smiled","V"]],"translation":"그녀가 웃었다."},{"parts":[["Birds","S"],["sing","V"]],"translation":"새들이 노래한다."}],"tip":"1형식인지 확인하는 방법: 문장 뒤에 '무엇을?'을 붙여 보세요. 'She smiled - 무엇을?' → 어색하죠? 그럼 1형식이 맞아요. 'She made - 무엇을?' → 자연스럽게 궁금해지죠? 그럼 목적어가 필요한 3형식이에요."},{"point_no":2,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"2형식 (S+V+SC)","new_terms":[{"term":"보어","hanja":[["補","도울 보"],["語","말씀 어"]],"definition":"부족한 부분을 채워 주는 말","words":["보충(補充)","보완(補完)","후보(候補)"]},{"term":"형용사","hanja":[["形","모양 형"],["容","얼굴 용"],["詞","말 사"]],"definition":"모양·성질·상태를 나타내는 말","words":["형태(形態)","용모(容貌)","대사(臺詞)"]}],"concept":"주어만으로는 뜻이 부족해서, 주어를 설명해 주는 말(주격보어)이 필요한 문장이에요.","korean_example":[["그녀는","S"],["예쁘다","SC"]],"english_example":[["She","S"],["is","V"],["pretty","SC"]],"compare_note":"여기서 형용사(pretty)가 왜 필요한지 감이 와요 - 보어 자리에서 주어를 설명해 줘요.","principle":["'그녀는'까지만 들으면 뭔가 부족하죠? 예쁜지 키가 큰지 아직 모르니까요. 이 빈자리를 채워 문장을 완성하는 말이 보어예요. 한 가지 꼭 기억할 것 - 보어는 동사가 아니에요. 이 문장의 진짜 서술어(동사)는 '~이다'에 해당하는 is이고, pretty는 그 뒤에서 상태를 설명하는 보어예요. 동사(V)와 보어(C)는 서로 다른 자리에 있는 서로 다른 성분이에요.","한국어의 서술어는 사실 세 가지 모습으로 나타나요: 동사형(그가 달린다), 형용사형(꽃이 예쁘다 - 형용사 혼자서 서술어가 돼요, '이다'조차 필요 없어요!), 명사+'이다'형(그는 학생이다). 그런데 영어의 서술어(V) 자리엔 언제나 동사만 올 수 있어요. 그래서 형용사나 명사로 서술하려면 반드시 be동사를 빌려와야 해요 - 이게 바로 2형식이 필요한 이유예요.","품사마다 답하는 질문이 달라요. 형용사·명사는 '어떤 상태/무엇인가?'에 답하고, 부사는 '어떻게 동작했는가?'에 답해요. 보어 자리는 '상태가 어떤지'를 묻는 자리라서, 동작을 꾸미는 부사는 그 답이 될 수 없어요. She is quick.(그녀는 빠르다)은 자연스럽지만 She is quickly.는 이상해요 - 우리말도 '예쁘다'는 되지만 '예쁘게이다'는 안 되는 것과 같은 이치예요."],"examples":[{"parts":[["He","S"],["became","V"],["a doctor","SC"]],"translation":"그는 의사가 되었다."},{"parts":[["The soup","S"],["tastes","V"],["salty","SC"]],"translation":"그 수프는 짜다."},{"parts":[["I","S"],["feel","V"],["tired","SC"]],"translation":"나는 피곤하게 느껴진다(=피곤하다)."}],"tip":"'주어 = 보어'가 자연스럽게 성립하는지 확인해 보세요. She=pretty(그녀는 예쁜 상태), He=a doctor(그는 의사라는 신분) - 등호가 성립하면 2형식이에요. 참고로 feel·look·become 같은 동사는 뒤에 형용사가 오면 원래 뜻(느끼다/보다/되다)이 아니라 '~하게 느껴지다/~해 보이다/~하게 되다'라는 상태의 뜻으로 슬쩍 바뀌어요."},{"point_no":3,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"3형식 (S+V+O)","new_terms":[{"term":"목적어","hanja":[["目","눈 목"],["的","과녁 적"],["語","말씀 어"]],"definition":"동작이 향하는 대상(과녁)을 나타내는 말","words":["목표(目標)","목차(目次)","적중(的中)"]}],"concept":"\"누구를/무엇을\"에 해당하는 목적어가 필요한 문장이에요. 영어 문장의 절반 이상이 이 형식이에요.","korean_example":[["나는","S"],["사과를","O"],["먹는다","V"]],"english_example":[["I","S"],["eat","V"],["an apple","O"]],"compare_note":"한국어는 목적어가 동사보다 앞(S-O-V), 영어는 동사가 먼저(S-V-O) - 이게 한영 어순 차이의 핵심이에요.","principle":["목적(目的)이라는 말 자체가 '눈이 향하는 과녁'이라는 뜻이에요. 목적어도 똑같아요 - 서술어(동작)가 향하는 대상을 가리켜요. '나는 사과를 먹는다'에서 '먹는다'라는 동작이 향하는 과녁이 바로 '사과'예요.","그런데 왜 영어는 동사를 목적어보다 먼저 말할까요? 한국어는 조사('~을/를')가 목적어를 딱 표시해 주기 때문에 순서가 비교적 자유로워요 - '사과를 나는 먹는다'도 말이 되잖아요. 하지만 영어는 조사가 없어서, 어순 자체가 '누가 무엇인지'를 알려주는 유일한 단서예요. 그래서 영어는 동사를 항상 주어 바로 뒤에 고정해서, 그다음에 나오는 말이 목적어라는 걸 순서로 알려주는 거예요."],"examples":[{"parts":[["I","S"],["like","V"],["music","O"]],"translation":"나는 음악을 좋아한다."},{"parts":[["She","S"],["bought","V"],["a new bag","O"]],"translation":"그녀는 새 가방을 샀다."},{"parts":[["We","S"],["watched","V"],["a movie","O"]],"translation":"우리는 영화를 봤다."}],"tip":"동사 뒤에서 '누구를?/무엇을?' 물었을 때 자연스러운 답이 나오면 목적어예요. 'I like ___' → 무엇을 좋아하는지 답이 나오죠? music이 목적어예요. 목적어 자리엔 언제나 명사(구)가 와요 - 형용사는 '어떤 상태'를 말할 뿐 '무엇을'의 답이 될 수 없어서 올 수 없어요."},{"point_no":4,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"4형식 (S+V+IO+DO)","new_terms":[{"term":"간접목적어","hanja":[["間","사이 간"],["接","이을 접"],["目的語","눈+과녁+말씀어"]],"definition":"동작을 사이에서 이어받는 대상(주로 사람)","words":["간격(間隔)","시간(時間)","접촉(接觸)"]},{"term":"직접목적어","hanja":[["直","곧을 직"],["接","이을 접"],["目的語","눈+과녁+말씀어"]],"definition":"동작을 곧장 직접 받는 대상(주로 사물)","words":["직진(直進)","정직(正直)","직접(直接)"]}],"concept":"\"누구에게(IO) 무엇을(DO) 해 주다\"라는 뜻의 동사(give, teach, buy)는 목적어가 두 개예요.","korean_example":[["나는","S"],["그녀에게","IO"],["선물을","DO"],["주었다","V"]],"english_example":[["I","S"],["gave","V"],["her","IO"],["a present","DO"]],"compare_note":"동사 다음 '누구에게'가 먼저, '무엇을'이 나중에 와요.","principle":["'주다'라는 동작을 떠올려 보면, 항상 두 가지 정보가 같이 필요해요 - '누구에게' 주는지, '무엇을' 주는지. 둘 중 하나라도 빠지면 문장이 어색해져요. '나는 주었다'만으로는 뭘 줬는지도, 누구한테 줬는지도 알 수 없잖아요.","'그녀에게'처럼 동작을 사이(間)에서 이어받는 대상(받는 사람)이 간접목적어(IO), '선물을'처럼 동작의 내용을 곧장(直) 받는 대상(주는 물건)이 직접목적어(DO)예요. 한자 이름 그대로 물건은 동작을 바로 받고, 사람은 그 물건을 통해 한 단계 거쳐서 받는 셈이에요."],"examples":[{"parts":[["He","S"],["teaches","V"],["us","IO"],["English","DO"]],"translation":"그는 우리에게 영어를 가르친다."},{"parts":[["She","S"],["made","V"],["me","IO"],["a cake","DO"]],"translation":"그녀는 나에게 케이크를 만들어 주었다."},{"parts":[["They","S"],["sent","V"],["him","IO"],["a letter","DO"]],"translation":"그들은 그에게 편지를 보냈다."}],"tip":"give·teach·buy·make·send처럼 '~해 주다' 느낌의 동사 뒤에는 대부분 '사람(IO) + 물건(DO)' 순서가 와요. 헷갈리면 우리말로 '~에게 ~을'이 자연스러운지 확인해 보세요 - '그에게 편지를' 순서 그대로 영어도 him(IO) a letter(DO) 순서예요."},{"point_no":5,"chapter":"Chapter 01 문장의 구조","unit":"Unit 01 문장의 형식","title":"5형식 (S+V+O+OC)","new_terms":[{"term":"목적격보어","hanja":[["目的","눈+과녁"],["格","격식 격"],["補語","도울+말씀어"]],"definition":"목적어의 자리(格)를 보충해 주는 말","words":["성격(性格)","자격(資格)","가격(價格)"]}],"concept":"목적어만으로는 뜻이 부족해서, 목적어를 보충 설명하는 말(목적격보어)이 필요한 문장이에요.","korean_example":[["나는","S"],["그를","O"],["반장으로","OC"],["만들었다","V"]],"english_example":[["I","S"],["made","V"],["him","O"],["captain","OC"]],"compare_note":"'반장으로'가 없으면 '그를 만들었다(창조했다?)'는 이상한 뜻이 돼요.","principle":["목적격보어(OC)는 이름 그대로 '목적어(目的語)의 자리(格)를 보충(補)해 주는 말'이에요. 2형식의 보어(SC)가 주어를 보충한다면, 5형식의 보어(OC)는 목적어를 보충해요 - 보충하는 대상만 다를 뿐 역할은 똑같아요.","핵심은 이거예요: 목적어와 목적격보어 사이엔 숨은 '=' 관계가 있어요. him = captain(그가 곧 반장)처럼요. 이 관계가 성립하지 않으면 5형식이 아니에요. 'I made him a cake.'(나는 그에게 케이크를 만들어 줬다)는 him≠a cake니까 5형식이 아니라 4형식이에요 - 같은 동사 make라도 뒤에 오는 두 말의 관계에 따라 형식이 완전히 달라지는 거예요."],"examples":[{"parts":[["They","S"],["call","V"],["him","O"],["a genius","OC"]],"translation":"그들은 그를 천재라고 부른다."},{"parts":[["The news","S"],["made","V"],["her","O"],["happy","OC"]],"translation":"그 소식은 그녀를 행복하게 만들었다."},{"parts":[["We","S"],["found","V"],["the movie","O"],["boring","OC"]],"translation":"우리는 그 영화가 지루하다고 느꼈다."}],"tip":"목적어와 목적격보어 사이에 '이다'를 넣어 말이 되는지 확인해 보세요. him이다=captain('그가 반장이다') → 말이 되면 5형식! 참고로 make가 '만들어 주다(4형식)'인지 '~하게 만들다(5형식)'인지는 뒤에 오는 두 말이 '=' 관계인지 아닌지로 구별해요."}];
 const LABEL_COLORS = {"S":[200,30,30],"V":[20,90,200],"O":[0,140,70],"SC":[180,110,0],"OC":[180,110,0],"IO":[0,120,90],"DO":[0,100,60],"M":[120,120,120]};
 
-// 개론 2장(품사/문장성분) 데이터 - generate_weekly_idiom.py의 POS_OVERVIEW/COMPONENT_OVERVIEW와 동일한 내용.
+// 알아보기 2장(품사/문장성분) 데이터 - generate_weekly_idiom.py의 POS_OVERVIEW/COMPONENT_OVERVIEW와 동일한 내용.
 // 주간 로테이션과 무관하게 1회성으로 렌더링되며(renderOverview()), 기본은 체크박스가 꺼져 있어
 // 화면/인쇄에 나타나지 않는다.
-const POS_OVERVIEW = {"title":"국어 9품사 개론","diagram_root":"9품사","diagram_extra_label":"영어에만 있음","diagram_kind":"additive","grammar_note":"문법(文法)은 '말의 법칙'이라는 뜻이에요. 문법은 크게 두 가지로 이루어져요 - 낱말 하나하나가 어떤 종류인지 아는 것(품사), 그리고 그 낱말들이 문장 속에서 어떤 역할을 맡아 서로 어떻게 짜맞춰지는지 아는 것(문장성분과 어순). 즉 문법은 '재료의 종류'와 '그 재료를 조합하는 규칙'을 모두 함께 이해하는 것이에요. 이번 1장에서는 재료의 종류(품사)를, 2장에서는 그 재료가 맡는 역할(문장성분)을 다뤄요.","en_diff_intro":"여기 나오는 4가지는 영어에는 정식 품사로 있지만, 국어 9품사 분류에는 없는 것들이에요. 국어에 이 개념이 '없어서 못 쓰는' 게 아니라 - 같은 뜻을 국어는 다른 방식(어미, 어순, 지시어 등)으로 이미 표현하고 있어서, 굳이 별도 품사로 나누지 않는 거예요. 즉 영어 품사 체계는 국어의 9품사를 그대로 포함하면서, 이 4가지가 더 있는 셈이에요. 아래에서 영어의 각 품사가 국어에서는 어떤 방식으로 표현되는지 하나씩 비교해 볼게요.","en_diff_items":[{"term":"관사","en_term":"Article","examples":"a, an, the","hanja":[["冠","갓 관"],["詞","말 사"]],"note":"명사 앞에 붙어 '하나인지 정해진 것인지'를 표시해요. 영어는 명사를 쓸 때 거의 항상 필요하지만, 한국어는 명사를 그냥 써도 자연스러워요.","mapping":"한국어엔 없음 (문맥이나 '이/그' 같은 지시어로 대신함)"},{"term":"전치사","en_term":"Preposition","examples":"in, on, at, from...","hanja":[["前","앞 전"],["置","둘 치"],["詞","말 사"]],"note":"명사 앞에 놓여 장소·시간·방향 관계를 나타내요. 한자 뜻 그대로 '앞(前)에 놓는(置) 말'이에요.","mapping":"조사와 비슷한 역할, 단 위치가 정반대(조사는 명사 뒤에 붙음)"},{"term":"관계대명사","en_term":"Relative pronoun","examples":"who, which, that...","hanja":[["關","관계할 관"],["係","맬 계"],["代","대신 대"],["名","이름 명"],["詞","말 사"]],"note":"문장 하나를 통째로 명사를 꾸미는 말(관형어)로 바꿔주는 접착제예요. 'The book that I bought'(내가 산 책)에서, 한국어는 별도 단어 없이 서술어 끝에 관형사형 어미(-는/-ㄴ/-을)만 붙여 똑같은 역할을 해요.","mapping":"한국어엔 없음 (관형사형 어미 '-는/-ㄴ/-을'로 대신함)"},{"term":"조동사","en_term":"Auxiliary verb","examples":"can, will, must, do...","hanja":[["助","도울 조"],["動","움직일 동"],["詞","말 사"]],"note":"본동사를 도와 가능·의무·미래 등의 뜻을 더하거나 의문문·부정문을 만들어요.","mapping":"어미(-겠다, -을 수 있다)나 보조용언(-어야 하다)으로 대신함"}],"intro_hanja":[["品","물건/등급 품"],["詞","말 사"]],"intro":"품(品)은 '여러 종류로 나누다', 사(詞)는 '말'이라는 뜻이에요. 품사란 '낱말을 종류별로 나눠놓은 것'이죠. 사람에게 타고난 직업이 있듯, 모든 단어는 태어날 때부터 정해진 품사가 있고 문장 어디에 쓰이든 이 종류는 절대 바뀌지 않아요. 참고로 품사라는 개념 자체는 모든 언어에 다 있어요 - 영어에도 명사(noun), 동사(verb) 같은 품사가 있죠. 다만 몇 개로, 어떤 기준으로 나누는지는 언어마다 달라요. 이 장에서는 그중 국어가 정한 분류를 다뤄요 - 국어의 품사는 모두 9개이고, 성질이 비슷한 것끼리 5개 무리로 묶을 수 있어요.","items":[{"term":"명사","hanja":[["名","이름 명"],["詞","말 사"]],"definition":"이름을 나타내는 말","example":"학생, 사과, 서울","group":"체언"},{"term":"대명사","hanja":[["代","대신 대"],["名","이름 명"],["詞","말 사"]],"definition":"이름을 대신 가리키는 말","example":"나, 너, 그것","group":"체언"},{"term":"수사","hanja":[["數","셈 수"],["詞","말 사"]],"definition":"수·순서를 나타내는 말","example":"하나, 둘째, 셋","group":"체언"},{"term":"동사","hanja":[["動","움직일 동"],["詞","말 사"]],"definition":"움직임·동작을 나타내는 말","example":"달리다, 먹다, 자다","group":"용언"},{"term":"형용사","hanja":[["形","모양 형"],["容","얼굴 용"],["詞","말 사"]],"definition":"성질·상태를 나타내는 말","example":"예쁘다, 크다, 빠르다","group":"용언"},{"term":"관형사","hanja":[["冠","갓 관"],["形","모양 형"],["詞","말 사"]],"definition":"체언을 꾸며 주는 말","example":"새 책, 헌 옷, 이 사람","group":"수식언"},{"term":"부사","hanja":[["副","버금 부"],["詞","말 사"]],"definition":"용언(주로 동사·형용사)을 꾸며 주는 말","example":"빨리, 매우, 아주","group":"수식언"},{"term":"조사","hanja":[["助","도울 조"],["詞","말 사"]],"definition":"다른 말에 붙어 자격·관계를 표시함","example":"~이/가, ~을/를, ~의","group":"관계언"},{"term":"감탄사","hanja":[["感","느낄 감"],["歎","탄식할 탄"],["詞","말 사"]],"definition":"느낌·놀람을 나타내는 말","example":"아!, 와!, 어머!","group":"독립언"}],"groups":[{"group":"체언","hanja":[["體","몸 체"],["言","말씀 언"]],"definition":"문장의 몸통이 되는 말(형태가 변하지 않음)","words":["신체(身體)","전체(全體)","체육(體育)"]},{"group":"용언","hanja":[["用","쓸 용"],["言","말씀 언"]],"definition":"쓰임(문맥)에 따라 형태가 바뀌는 말","words":["사용(使用)","이용(利用)","용도(用途)"]},{"group":"수식언","hanja":[["修","닦을 수"],["飾","꾸밀 식"],["言","말씀 언"]],"definition":"다른 말을 꾸며 주는 말","words":["수리(修理)","장식(裝飾)","수식어(修飾語)"]},{"group":"관계언","hanja":[["關","관계할 관"],["係","맬 계"],["言","말씀 언"]],"definition":"다른 말과의 문법적 관계를 나타내는 말","words":["관계(關係)","관련(關聯)","무관(無關)"]},{"group":"독립언","hanja":[["獨","홀로 독"],["立","설 립"]],"definition":"다른 말과 상관없이 홀로 쓰이는 말","words":["독립(獨立)","고독(孤獨)","자립(自立)"]}]};
-const COMPONENT_OVERVIEW = {"title":"국어 7문장성분 개론","diagram_root":"7문장성분","diagram_extra_label":"영어는 더 단순","diagram_kind":"merge","intro_hanja":[["文","글월 문"],["章","글 장"],["成","이룰 성"],["分","나눌 분"]],"intro":"문장(文章)은 '글', 성분(成分)은 '무언가를 이루는 각각의 조각'이라는 뜻이에요. 문장성분이란 문장을 이루는 재료 조각들, 즉 문장 속에서 각 말이 맡는 역할이에요. 같은 단어라도 문장 속 자리에 따라 역할이 매번 달라질 수 있어요 - 이게 품사와 다른 점이에요. 참고로 문장성분이라는 개념도 모든 언어에 다 있어요 - 어느 언어든 문장에는 주어·서술어 역할을 하는 말이 있죠(영어 문법에서 말하는 S, V, O, C가 바로 그거예요). 다만 몇 가지로, 얼마나 세밀하게 나누는지는 언어마다 달라요. 국어의 문장성분은 모두 7가지이고, 역할의 비중에 따라 3개 무리로 나뉘어요.","items":[{"term":"주어","hanja":[["主","주인 주"],["語","말씀 어"]],"definition":"문장의 주인이 되는 말","example":"학생이, 나는, 새가","group":"주성분","abbr":"S","abbr_en":"Subject"},{"term":"서술어","hanja":[["敍","펼 서"],["述","펼 술"],["語","말씀 어"]],"definition":"주어를 풀어서 설명하는 말","example":"달린다, 예쁘다, 학생이다","group":"주성분","abbr":"V","abbr_en":"Verb"},{"term":"목적어","hanja":[["目","눈 목"],["的","과녁 적"],["語","말씀 어"]],"definition":"서술어(동작)가 향하는 대상","example":"밥을, 책을, 너를","group":"주성분","abbr":"O","abbr_en":"Object"},{"term":"보어","hanja":[["補","도울 보"],["語","말씀 어"]],"definition":"부족한 뜻을 보충해 채우는 말","example":"의사가(되다), 천재가(아니다)","group":"주성분","abbr":"C","abbr_en":"Complement"},{"term":"관형어","hanja":[["冠","갓 관"],["形","모양 형"],["語","말씀 어"]],"definition":"체언을 꾸며 주는 말","example":"새 (책), 예쁜 (꽃), 나의 (가방)","group":"부속성분","abbr":"M","abbr_en":"Modifier"},{"term":"부사어","hanja":[["副","버금 부"],["語","말씀 어"]],"definition":"용언을 꾸며 주는 말","example":"빨리, 매우, 학교에서","group":"부속성분","abbr":"M","abbr_en":"Modifier"},{"term":"독립어","hanja":[["獨","홀로 독"],["立","설 립"],["語","말씀 어"]],"definition":"부름·감탄처럼 홀로 쓰이는 말","example":"아!, 영수야, 네","group":"독립성분","abbr":null,"abbr_en":null}],"groups":[{"group":"주성분","hanja":[["主","주인 주"],["成","이룰 성"],["分","나눌 분"]],"definition":"문장의 뼈대 - 하나라도 빠지면 문장이 안 됨","words":["주인(主人)","주제(主題)","주최(主催)"]},{"group":"부속성분","hanja":[["附","붙을 부"],["屬","붙일 속"],["成","이룰 성"],["分","나눌 분"]],"definition":"주성분에 붙어서 뜻을 더 자세히 꾸며 주는 성분","words":["부착(附着)","부록(附錄)","소속(所屬)"]},{"group":"독립성분","hanja":[["獨","홀로 독"],["立","설 립"],["成","이룰 성"],["分","나눌 분"]],"definition":"다른 성분과 상관없이 홀로 쓰이는 성분","words":["독립(獨立)","독차지"]}],"rule_note":"품사는 詞(말 사)로 끝나고 '단어가 타고난 고정된 종류'를, 문장성분은 語(말씀 어)로 끝나고 '문장 속에서 그때그때 맡는 역할'을 가리켜요 - 예외 없는 확실한 구별법이에요. 예를 들어 '학생'이라는 단어는 품사로는 언제나 명사(名詞)지만, 문장 속에서는 '학생이 온다'에서는 주어(主語), '나는 학생이다'에서는 보어(補語)로 자리에 따라 다른 문장성분을 맡아요.","en_diff_intro":"품사 개론과는 반대 방향이에요 - 이번엔 국어가 7가지로 더 세밀하게 나누고, 영어의 1~5형식(서술어가 필요로 하는 S·V·O·C 조합에 따라 갈라지는 다섯 가지 문장 틀) 쪽이 이 중 일부를 더 단순하게 묶어서 다뤄요. 주어·서술어·목적어·보어 4가지는 국어와 영어가 그대로 1:1로 대응되지만(형식에 따라 이름이 갈리기도 해요), 나머지 3가지(관형어·부사어·독립어)에서 차이가 나요 - 즉 영어의 1~5형식은 국어 7문장성분에 완전히 포함되는 부분집합인 셈이에요. 아래에서 무엇이 어떻게 합쳐지거나 빠지는지 보여드릴게요.","en_diff_items":[{"term":"관형어+부사어","en_term":"Modifier (M)","examples":"형용사구, 부사구, 전치사구...","hanja":[["修","닦을 수"],["飾","꾸밀 식"],["語","말씀 어"]],"note":"한국어는 무엇을 꾸미는지에 따라 관형어(체언을 꾸밈)와 부사어(용언을 꾸밈)로 나눠 부르지만, 영어에서는 이 둘을 나누지 않고 통틀어 수식어(Modifier, M)라고 불러요. 다만 M은 1~5형식 중 어디에도 속하지 않아요 - 형식은 S·V·O·C 조합으로만 정해지고, M은 어느 형식 문장에나 형식 구분과 무관하게 자유롭게 덧붙는 말이에요.","mapping":"영어에서는 관형어/부사어 구분 없이 수식어(M) 하나로 통합되고, 1~5형식 분류 기준에는 포함되지 않음"},{"term":"독립어","en_term":"Independent element","examples":"Oh!, John, ...","hanja":[["獨","홀로 독"],["立","설 립"],["語","말씀 어"]],"note":"영어에도 감탄사나 부르는 말(Oh!, John, ...)처럼 독립적으로 쓰이는 말이 있지만, 1~5형식 틀 안에서는 정식 문장성분으로 다루지 않고 문장 밖의 예외적인 요소로 취급해요.","mapping":"영어 1~5형식 틀에는 정식 항목으로 없음 (감탄사·호칭 등으로 별도 취급)"}]};
+const POS_OVERVIEW = {"title":"국어 9품사 알아보기","diagram_root":"9품사","diagram_extra_label":"영어에만 있음","diagram_kind":"additive","grammar_note":["문법(文法)은 '말의 법칙'이라는 뜻이에요. 문법은 크게 두 가지로 이루어져요 - 단어 하나하나가 어떤 종류인지 아는 것(품사), 그리고 그 단어들이 문장 속에서 어떤 역할을 맡아 서로 어떻게 짜맞춰지는지 아는 것(문장성분과 어순).","비유하자면 품사는 '재료의 종류'를 아는 것이고, 문장성분은 '그 재료를 조합하는 방법'을 아는 것이에요. 이번 품사 알아보기에서는 재료의 종류(품사)를, 문장성분 알아보기에서는 그 재료가 맡는 역할(문장성분)을 다뤄요."],"en_diff_intro":"여기 나오는 4가지는 영어에는 정식 품사로 있지만, 국어 9품사 분류에는 없는 것들이에요. 대부분은 국어에 이 개념이 '없어서 못 쓰는' 게 아니라 - 같은 뜻을 국어는 다른 방식(어미, 지시어 등)으로 이미 표현하고 있어서, 굳이 별도 품사로 나누지 않는 거예요. 다만 전치사만은 예외예요 - 국어의 조사가 사실상 같은 역할을 해요, 놓이는 위치만 다를 뿐이에요. 즉 영어 품사 체계는 국어의 9품사를 그대로 포함하면서, 이 4가지가 더 있는 셈이에요. 아래에서 영어의 각 품사가 국어에서는 어떤 방식으로 표현되는지 하나씩 비교해 볼게요.","en_diff_items":[{"term":"관사","en_term":"Article","examples":"a, an, the","hanja":[["冠","갓 관"],["詞","말 사"]],"note":"명사 앞에 붙어 '하나인지 정해진 것인지'를 표시해요. 영어는 명사를 쓸 때 거의 항상 필요하지만, 한국어는 명사를 그냥 써도 자연스러워요.","mapping":"국어엔 해당 품사가 아예 없음 (예: a book → 그냥 '책', the book → '그 책')","attaches_to":"명사"},{"term":"전치사","en_term":"Preposition","examples":"in, on, at, from...","hanja":[["前","앞 전"],["置","둘 치"],["詞","말 사"]],"note":"명사 앞에 놓여 장소·시간·방향 관계를 나타내요. 한국어에는 '전치사'라는 품사 이름은 없지만, 조사가 사실상 똑같은 역할을 해요 - 다만 놓이는 위치가 정반대예요(전치사는 명사 앞, 조사는 명사 뒤).","mapping":"품사 이름은 다르지만 조사가 사실상 같은 역할 (예: in the box → 상자 '안에', on the table → 탁자 '위에')","attaches_to":"명사"},{"term":"관계대명사","en_term":"Relative pronoun","examples":"who, which, that...","hanja":[["關","관계할 관"],["係","맬 계"],["代","대신 대"],["名","이름 명"],["詞","말 사"]],"note":"문장 하나를 통째로 명사를 꾸미는 말(관형어)로 바꿔주는 접착제예요. 한국어에는 이 품사가 아예 없지만, 서술어 끝에 관형사형 어미(-는/-ㄴ/-을)만 붙이면 똑같은 역할을 해요.","mapping":"국어엔 해당 품사가 아예 없음 (예: the book that I bought → 내가 '산' 책)","attaches_to":"명사"},{"term":"조동사","en_term":"Auxiliary verb","examples":"can, will, must, do...","hanja":[["助","도울 조"],["動","움직일 동"],["詞","말 사"]],"note":"본동사를 도와 가능·의무·미래 등의 뜻을 더하거나 의문문·부정문을 만들어요. 한국어에는 이 품사가 아예 없지만, 동사 끝의 어미를 바꾸거나 다른 동사를 보태서 같은 뜻을 표현해요.","mapping":"국어엔 해당 품사가 아예 없음 (예: I will go → 나는 '갈 거야', I can swim → 나는 수영할 '수 있어')","attaches_to":"동사"}],"intro_word":"품사","intro_hanja":[["品","물건/등급 품"],["詞","말 사"]],"intro":"품(品)은 '여러 종류로 나누다', 사(詞)는 '말'이라는 뜻이에요. 품사란 '단어를 종류별로 나눠놓은 것'이죠. 사람에게 타고난 직업이 있듯, 모든 단어는 태어날 때부터 정해진 품사가 있고 문장 어디에 쓰이든 이 종류는 절대 바뀌지 않아요. 참고로 품사라는 개념 자체는 모든 언어에 다 있어요 - 영어에도 명사(noun), 동사(verb) 같은 품사가 있죠. 다만 몇 개로, 어떤 기준으로 나누는지는 언어마다 달라요. 여기서는 그중 국어가 정한 분류를 다뤄요 - 국어의 품사는 모두 9개이고, 성질이 비슷한 것끼리 5개 무리로 묶을 수 있어요.","items":[{"term":"명사","hanja":[["名","이름 명"],["詞","말 사"]],"definition":"이름을 나타내는 말","example":"학생, 사과, 서울","group":"체언","abbr":"N","abbr_en":"Noun"},{"term":"대명사","hanja":[["代","대신 대"],["名","이름 명"],["詞","말 사"]],"definition":"이름을 대신 가리키는 말","example":"나, 너, 그것","group":"체언","abbr":"Pron","abbr_en":"Pronoun"},{"term":"수사","hanja":[["數","셈 수"],["詞","말 사"]],"definition":"수·순서를 나타내는 말","example":"하나, 둘째, 셋","group":"체언","abbr":"Num","abbr_en":"Numeral"},{"term":"동사","hanja":[["動","움직일 동"],["詞","말 사"]],"definition":"움직임·동작을 나타내는 말","example":"달리다, 먹다, 자다","group":"용언","abbr":"V","abbr_en":"Verb"},{"term":"형용사","hanja":[["形","모양 형"],["容","얼굴 용"],["詞","말 사"]],"definition":"성질·상태를 나타내는 말","example":"예쁘다, 크다, 빠르다","group":"용언","abbr":"Adj","abbr_en":"Adjective"},{"term":"관형사","hanja":[["冠","갓 관"],["形","모양 형"],["詞","말 사"]],"definition":"체언을 꾸며 주는 말","example":"새 책, 헌 옷, 이 사람","group":"수식언","abbr":null,"abbr_en":null,"note":"영어엔 정확히 대응하는 품사가 없어요(형용사·한정사 등으로 나눠서 다뤄요)"},{"term":"부사","hanja":[["副","버금 부"],["詞","말 사"]],"definition":"용언(주로 동사·형용사)을 꾸며 주는 말","example":"빨리, 매우, 아주","group":"수식언","abbr":"Adv","abbr_en":"Adverb"},{"term":"조사","hanja":[["助","도울 조"],["詞","말 사"]],"definition":"다른 말에 붙어 자격·관계를 표시함","example":"~이/가, ~을/를, ~의","group":"관계언","abbr":null,"abbr_en":null,"note":"영어엔 아예 없는, 국어만의 품사예요(교착어의 특징)"},{"term":"감탄사","hanja":[["感","느낄 감"],["歎","탄식할 탄"],["詞","말 사"]],"definition":"느낌·놀람을 나타내는 말","example":"아!, 와!, 어머!","group":"독립언","abbr":"Interj","abbr_en":"Interjection"}],"groups":[{"group":"체언","hanja":[["體","몸 체"],["言","말씀 언"]],"definition":"문장의 몸통이 되는 말(형태가 변하지 않음)","words":["신체(身體)","전체(全體)","체육(體育)"]},{"group":"용언","hanja":[["用","쓸 용"],["言","말씀 언"]],"definition":"쓰임(문맥)에 따라 형태가 바뀌는 말","words":["사용(使用)","이용(利用)","용도(用途)"]},{"group":"수식언","hanja":[["修","닦을 수"],["飾","꾸밀 식"],["言","말씀 언"]],"definition":"다른 말을 꾸며 주는 말","words":["수리(修理)","장식(裝飾)","수식어(修飾語)"]},{"group":"관계언","hanja":[["關","관계할 관"],["係","맬 계"],["言","말씀 언"]],"definition":"다른 말과의 문법적 관계를 나타내는 말","words":["관계(關係)","관련(關聯)","무관(無關)"]},{"group":"독립언","hanja":[["獨","홀로 독"],["立","설 립"]],"definition":"다른 말과 상관없이 홀로 쓰이는 말","words":["독립(獨立)","고독(孤獨)","자립(自立)"]}]};
+const COMPONENT_OVERVIEW = {"title":"국어 7문장성분 알아보기","diagram_root":"7문장성분","diagram_extra_label":"영어는 더 단순","diagram_kind":"merge","intro_word":"문장성분","intro_hanja":[["文","글월 문"],["章","글 장"],["成","이룰 성"],["分","나눌 분"]],"intro":"문장(文章)은 '글', 성분(成分)은 '무언가를 이루는 각각의 조각'이라는 뜻이에요. 문장성분이란 문장을 이루는 조각들, 즉 문장 속에서 각 단어가 맡는 역할이에요. 같은 단어라도 문장 속 자리에 따라 역할이 매번 달라질 수 있어요 - 이게 품사와 다른 점이에요. 참고로 문장성분이라는 개념도 모든 언어에 다 있어요 - 어느 언어든 문장에는 주어·서술어 역할을 하는 말이 있죠(영어 문법에서 말하는 S, V, O, C가 바로 그거예요). 다만 몇 가지로, 얼마나 세밀하게 나누는지는 언어마다 달라요. 국어의 문장성분은 모두 7가지이고, 역할의 비중에 따라 3개 무리로 나뉘어요.","items":[{"term":"주어","hanja":[["主","주인 주"],["語","말씀 어"]],"definition":"문장의 주인이 되는 말","example":"학생이, 나는, 새가","group":"주성분","abbr":"S","abbr_en":"Subject"},{"term":"서술어","hanja":[["敍","펼 서"],["述","펼 술"],["語","말씀 어"]],"definition":"주어를 풀어서 설명하는 말","example":"달린다, 예쁘다, 학생이다","group":"주성분","abbr":"V","abbr_en":"Verb"},{"term":"목적어","hanja":[["目","눈 목"],["的","과녁 적"],["語","말씀 어"]],"definition":"서술어(동작)가 향하는 대상","example":"밥을, 책을, 너를","group":"주성분","abbr":"O","abbr_en":"Object"},{"term":"보어","hanja":[["補","도울 보"],["語","말씀 어"]],"definition":"부족한 뜻을 보충해 채우는 말","example":"의사가(되다), 천재가(아니다)","group":"주성분","abbr":"C","abbr_en":"Complement"},{"term":"관형어","hanja":[["冠","갓 관"],["形","모양 형"],["語","말씀 어"]],"definition":"체언(명사·대명사·수사)을 꾸며 주는 말","example":"새 (책), 예쁜 (꽃), 나의 (가방)","group":"부속성분","abbr":"M","abbr_en":"Modifier"},{"term":"부사어","hanja":[["副","버금 부"],["語","말씀 어"]],"definition":"용언(동사·형용사)을 꾸며 주는 말","example":"빨리, 매우, 학교에서","group":"부속성분","abbr":"M","abbr_en":"Modifier"},{"term":"독립어","hanja":[["獨","홀로 독"],["立","설 립"],["語","말씀 어"]],"definition":"부름·감탄처럼 홀로 쓰이는 말","example":"아!, 영수야, 네","group":"독립성분","abbr":null,"abbr_en":null}],"groups":[{"group":"주성분","hanja":[["主","주인 주"],["成","이룰 성"],["分","나눌 분"]],"definition":"문장의 뼈대 - 하나라도 빠지면 문장이 안 됨","words":["주인(主人)","주제(主題)","주최(主催)"]},{"group":"부속성분","hanja":[["附","붙을 부"],["屬","붙일 속"],["成","이룰 성"],["分","나눌 분"]],"definition":"주성분에 붙어서 뜻을 더 자세히 꾸며 주는 성분","words":["부착(附着)","부록(附錄)","소속(所屬)"]},{"group":"독립성분","hanja":[["獨","홀로 독"],["立","설 립"],["成","이룰 성"],["分","나눌 분"]],"definition":"다른 성분과 상관없이 홀로 쓰이는 성분","words":["독립(獨立)","독차지"]}],"rule_note":["품사는 詞(말 사)로 끝나고, 문장성분은 語(말씀 어)로 끝나요 - 그냥 정해진 이름이 아니라, 이 두 한자의 뜻 자체가 달라요.","詞(사)는 '낱개의 단어 그 자체'를 가리키는 한자예요. 그래서 품사는 '단어가 태어날 때부터 갖고 있는, 문장 어디에 쓰이든 절대 안 바뀌는 고정된 종류'를 뜻해요. 반대로 語(어)는 '문장 속에서 하는 말, 그 순간의 역할'을 가리키는 한자예요. 그래서 문장성분은 '문장 속 자리에 따라 그때그때 달라지는 역할'을 뜻해요.","예를 들어 '학생'이라는 단어는 품사로는 언제나 명사(名詞)로 고정돼 있어요 - 절대 안 바뀌어요. 하지만 문장성분은 자리에 따라 달라져요: '학생이 온다'에서는 주어(主語), '나는 학생이다'에서는 보어(補語)가 돼요."],"en_diff_intro":"여기서는 국어가 7가지로 더 세밀하게 나누고, 영어의 1~5형식(서술어가 필요로 하는 S·V·O·C 조합에 따라 갈라지는 다섯 가지 문장 틀) 쪽이 그중 일부를 더 단순하게 묶어서 다뤄요. 주어·서술어·목적어·보어 4가지는 국어와 영어가 그대로 1:1로 대응돼요(형식에 따라 이름이 갈리기도 해요). 차이는 나머지 3가지(관형어·부사어·독립어)에서 나요 - 즉 영어의 1~5형식은 국어 7문장성분에 완전히 포함되는 부분집합인 셈이에요. 아래에서 무엇이 어떻게 합쳐지거나 빠지는지 보여드릴게요.","en_diff_items":[{"term":"관형어+부사어","en_term":"Modifier (M)","examples":"형용사구, 부사구, 전치사구...","hanja":[["修","닦을 수"],["飾","꾸밀 식"],["語","말씀 어"]],"note":"한국어는 무엇을 꾸미는지에 따라 관형어(체언=명사·대명사·수사를 꾸밈)와 부사어(용언=동사·형용사를 꾸밈)로 나눠 부르지만, 영어에서는 이 둘을 나누지 않고 통틀어 수식어(Modifier, M)라고 불러요. 다만 M은 1~5형식 중 어디에도 속하지 않아요 - 형식은 S·V·O·C 조합으로만 정해지고, M은 어느 형식 문장에나 형식 구분과 무관하게 자유롭게 덧붙는 말이에요.","mapping":"영어에서는 관형어/부사어 구분 없이 수식어(M) 하나로 통합되고, 1~5형식 분류 기준에는 포함되지 않음"},{"term":"독립어","en_term":"Independent element","examples":"Oh!, John, ...","hanja":[["獨","홀로 독"],["立","설 립"],["語","말씀 어"]],"note":"영어에도 감탄사나 부르는 말(Oh!, John, ...)처럼 독립적으로 쓰이는 말이 있지만, 1~5형식 틀 안에서는 정식 문장성분으로 다루지 않고 문장 밖의 예외적인 요소로 취급해요.","mapping":"영어 1~5형식 틀에는 정식 항목으로 없음 (감탄사·호칭 등으로 별도 취급)"}]};
 
 // 비슷한/반대 한자성어에 나오는 한자 중, 52개 사자성어 자체에는 등장하지 않아
 // 훈(뜻)을 아직 모르는 한자들의 훈만 모아둔 사전 (음/발음은 각 성어의 이미
@@ -870,10 +871,12 @@ function buildLeafRowSvg(items, groupColor, containerW, topLabel) {
   return { svg, colCenters, boxW, rowBottom: leafTop + leafH };
 }
 
-// 품사 개론용 포함관계 도식: "영어 품사 전체"가 국어 9품사를 그대로
+// 품사 알아보기용 포함관계 도식: "영어 품사 전체"가 국어 9품사를 그대로
 // 포함하면서(맨 위 leaf 줄에서 내려오는 연결선으로 보여줌) 그 안에 4가지가
-// 더 있다는 걸(칩으로) 보여준다. generate_weekly_idiom.py의
-// _draw_pos_inclusion()과 같은 레이아웃.
+// 더 있다는 걸 보여준다. 영어전용 4개는 그냥 한 줄에 나열하지 않고, 각
+// 항목의 attaches_to(관사/전치사/관계대명사는 명사, 조동사는 동사)로 묶어서
+// "명사와 짝을 이루는 3가지"/"동사와 짝을 이루는 1가지"처럼 소속을 분명히
+// 드러낸다. generate_weekly_idiom.py의 _draw_pos_inclusion()과 같은 레이아웃.
 function buildPosInclusionSvg(overview) {
   const CONTAINER_W = 1120;
   const items = overview.items;
@@ -891,21 +894,42 @@ function buildPosInclusionSvg(overview) {
   });
 
   const outerTop = row1.rowBottom + stubH;
-  const chipH = 34, chipGap = 14, chipW = 150;
-  const outerH = 20 + 30 + 10 + 24 + 12 + chipH + 16;
+
+  // attaches_to 순서대로(데이터에 나온 순서 그대로) 묶는다.
+  const attachOrder = [];
+  const attachGroups = {};
+  extra.forEach((it) => {
+    const key = it.attaches_to || "기타";
+    if (!attachGroups[key]) {
+      attachGroups[key] = [];
+      attachOrder.push(key);
+    }
+    attachGroups[key].push(it);
+  });
+
+  const chipH = 34, chipGap = 14, rowGap = 14;
+  const rowsH = attachOrder.length * chipH + Math.max(attachOrder.length - 1, 0) * rowGap;
+  const outerH = 34 + 20 + 10 + rowsH + 16;
 
   svg += `<rect x="0" y="${outerTop}" width="${CONTAINER_W}" height="${outerH}" rx="14" fill="#f7f7fa" stroke="#bebec8" stroke-width="2" />`;
   svg += `<text x="20" y="${outerTop + 34}" font-weight="700" font-size="19" fill="#141414">영어 품사 전체</text>`;
   svg += `<text x="${CONTAINER_W - 20}" y="${outerTop + 34}" text-anchor="end" font-weight="700" font-size="15" fill="#787878">국어 9품사와 그대로 대응</text>`;
 
-  const sub2Y = outerTop + 34 + 10 + 20;
-  svg += `<text x="20" y="${sub2Y}" font-weight="700" font-size="15" fill="#aa2828">영어에만 있는 ${extra.length}가지</text>`;
-
-  const chipsY = sub2Y + 12;
-  extra.forEach((it, i) => {
-    const cx0 = 20 + i * (chipW + chipGap);
-    svg += `<rect x="${cx0}" y="${chipsY}" width="${chipW}" height="${chipH}" rx="10" fill="#ffe0e0" stroke="#d26e6e" stroke-width="2" />`;
-    svg += `<text x="${cx0 + chipW / 2}" y="${chipsY + chipH / 2}" text-anchor="middle" dominant-baseline="central" font-weight="700" font-size="15" fill="#961e1e">${escapeHtml(it.term)}</text>`;
+  // 라벨 폭은 캔버스 측정 없이 넉넉한 고정값으로 잡는다(칩 폭도 기존과
+  // 같이 고정 150px - 텍스트 폭 측정 없이도 안전하게 안 겹치도록).
+  const LABEL_W = 270;
+  const chipW = 150;
+  const rowsTop = outerTop + 34 + 20;
+  attachOrder.forEach((key, gi) => {
+    const groupItems = attachGroups[key];
+    const rowY = rowsTop + gi * (chipH + rowGap);
+    const rowLabel = key !== "기타" ? `${key}와 짝을 이루어 함께 쓰이는 ${groupItems.length}가지` : `그 밖에 ${groupItems.length}가지`;
+    svg += `<text x="20" y="${rowY + chipH / 2}" dominant-baseline="central" font-weight="700" font-size="15" fill="#aa2828">${escapeHtml(rowLabel)}</text>`;
+    groupItems.forEach((it, ii) => {
+      const chipX = 20 + LABEL_W + ii * (chipW + chipGap);
+      svg += `<rect x="${chipX}" y="${rowY}" width="${chipW}" height="${chipH}" rx="10" fill="#ffe0e0" stroke="#d26e6e" stroke-width="2" />`;
+      svg += `<text x="${chipX + chipW / 2}" y="${rowY + chipH / 2}" text-anchor="middle" dominant-baseline="central" font-weight="700" font-size="15" fill="#961e1e">${escapeHtml(it.term)}</text>`;
+    });
   });
 
   const totalH = outerTop + outerH + 10;
@@ -922,7 +946,7 @@ const SENTENCE_PATTERNS = [
   ["5형식", ["S", "V", "O", "OC"]],
 ];
 
-// 문장성분 개론용 포함관계 도식: 국어 7문장성분이 맨 위 leaf 줄로 전부
+// 문장성분 알아보기용 포함관계 도식: 국어 7문장성분이 맨 위 leaf 줄로 전부
 // 나오고, 그 아래 영어의 1~5형식을 각각 낱개 카드로 보여준다. 목적어/보어처럼
 // 한 국어 성분이 여러 형식에 걸치거나(목적어→3·4·5형식, 4형식에서는
 // IO+DO로 갈라짐) 형식마다 다른 이름을 얻는 경우(보어→2형식 SC/5형식 OC)는
@@ -1023,7 +1047,7 @@ function buildComponentInclusionSvg(overview) {
   return `<svg viewBox="0 0 ${CONTAINER_W} ${totalH}" xmlns="http://www.w3.org/2000/svg">${svg}</svg>`;
 }
 
-// 개론(품사/문장성분)은 주간 로테이션과 무관하게 항상 같은 내용이므로,
+// 알아보기(품사/문장성분)는 주간 로테이션과 무관하게 항상 같은 내용이므로,
 // 매주 다시 그릴 필요 없이 페이지 로드 시 딱 한 번만 렌더링한다. 1페이지
 // (설명: 제목/문법설명/도입/1depth목록/그룹요약/구별법)와 2페이지(영어와
 // 이렇게 달라요 + 포함관계 도식)로 나뉘며, generate_weekly_idiom.py의
@@ -1031,7 +1055,9 @@ function buildComponentInclusionSvg(overview) {
 function buildOverviewPage1(prefix, overview, showRule) {
   document.getElementById(prefix + "Title").textContent = overview.title;
 
-  // "문법이란 무엇인가"를 짚어주는 도입 상자 (현재는 품사 개론에만 있음).
+  // "문법이란 무엇인가"를 짚어주는 도입 상자 (현재는 품사 알아보기에만 있음).
+  // grammar_note는 문단 리스트(또는 문자열 하나)로 올 수 있다 - 한 덩어리로
+  // 뭉쳐 읽기보다 문단 사이에 여백을 두고 끊어 읽을 수 있게 한다.
   const gnBox = document.getElementById(prefix + "GrammarNote");
   if (gnBox) {
     if (overview.grammar_note) {
@@ -1040,21 +1066,26 @@ function buildOverviewPage1(prefix, overview, showRule) {
       const label = document.createElement("div");
       label.className = "ov-grammar-note-label";
       label.textContent = "문법(文法)이란?";
-      const text = document.createElement("div");
-      text.className = "ov-grammar-note-text";
-      text.textContent = overview.grammar_note;
       gnBox.appendChild(label);
-      gnBox.appendChild(text);
+      const paragraphs = Array.isArray(overview.grammar_note) ? overview.grammar_note : [overview.grammar_note];
+      paragraphs.forEach((p) => {
+        const text = document.createElement("div");
+        text.className = "ov-grammar-note-text";
+        text.textContent = p;
+        gnBox.appendChild(text);
+      });
     } else {
       gnBox.style.display = "none";
     }
   }
 
+  // 도입 설명 박스. 한자 풀이 앞에 무슨 단어의 한자인지("품사"/"문장성분")를
+  // 먼저 밝혀서, 한자만 툭 던져지지 않고 바로 이어 읽히게 한다.
   const introBox = document.getElementById(prefix + "Intro");
   introBox.innerHTML = "";
   const hj = document.createElement("div");
   hj.className = "ov-intro-hanja";
-  hj.textContent = overview.intro_hanja.map(([ch, eum]) => `${ch}(${eum})`).join("   ");
+  hj.textContent = overview.intro_word + "  (" + overview.intro_hanja.map(([ch, eum]) => `${ch}(${eum})`).join("   ") + ")";
   const tx = document.createElement("div");
   tx.className = "ov-intro-text";
   tx.textContent = overview.intro;
@@ -1085,7 +1116,10 @@ function buildOverviewPage1(prefix, overview, showRule) {
     const bodySpan = document.createElement("span");
     bodySpan.className = "ov-item-body";
     const ex = it.example ? `   예) ${it.example}` : "";
-    bodySpan.textContent = `${it.definition}${ex}`;
+    // note: 약어(abbr)가 없는 항목(관형사/조사처럼 영어에 정확히 대응하는
+    // 품사가 없는 경우)에 "왜 약어가 없는지"를 짧게 짚어 주는 학습 포인트.
+    const noteText = it.note ? `   (${it.note})` : "";
+    bodySpan.textContent = `${it.definition}${ex}${noteText}`;
     row.appendChild(termSpan);
     row.appendChild(document.createTextNode(" "));
     row.appendChild(bodySpan);
@@ -1128,18 +1162,25 @@ function buildOverviewPage1(prefix, overview, showRule) {
     });
   }
 
+  // 구별법 상자. rule_note도 grammar_note처럼 문단 리스트로 와서, 라벨을
+  // 자기 줄에 두고 그 아래에 문단을 하나씩 쌓는다(詞/語 어원 설명이 늘어난
+  // 만큼 끊어 읽기 좋게).
   const ruleBox = document.getElementById(prefix + "Rule");
   if (ruleBox) {
     if (showRule && overview.rule_note) {
       ruleBox.style.display = "";
       ruleBox.innerHTML = "";
-      const label = document.createElement("span");
+      const label = document.createElement("div");
       label.className = "ov-rule-label";
       label.textContent = "구별법";
-      const text = document.createElement("span");
-      text.textContent = overview.rule_note;
       ruleBox.appendChild(label);
-      ruleBox.appendChild(text);
+      const paragraphs = Array.isArray(overview.rule_note) ? overview.rule_note : [overview.rule_note];
+      paragraphs.forEach((p) => {
+        const text = document.createElement("div");
+        text.className = "ov-rule-text";
+        text.textContent = p;
+        ruleBox.appendChild(text);
+      });
     } else {
       ruleBox.style.display = "none";
     }
@@ -1212,18 +1253,18 @@ function buildOverviewPage2(prefix, overview) {
 
 function renderOverview() {
   const note = "(한 번 읽고 철해 두면 언제든 다시 볼 수 있어요)";
-  document.getElementById("ov1aHeaderText").textContent = `학습지 개론 · 1장 품사 (1/2 설명)  ${note}`;
-  document.getElementById("ov1bHeaderText").textContent = `학습지 개론 · 1장 품사 (2/2 영어와 비교 · 도식)  ${note}`;
-  document.getElementById("ov2aHeaderText").textContent = `학습지 개론 · 2장 문장성분 (1/2 설명)  ${note}`;
-  document.getElementById("ov2bHeaderText").textContent = `학습지 개론 · 2장 문장성분 (2/2 영어와 비교 · 도식)  ${note}`;
+  document.getElementById("ov1aHeaderText").textContent = `품사 알아보기 (1/2 설명)  ${note}`;
+  document.getElementById("ov1bHeaderText").textContent = `품사 알아보기 (2/2 영어와 비교 · 도식)  ${note}`;
+  document.getElementById("ov2aHeaderText").textContent = `문장성분 알아보기 (1/2 설명)  ${note}`;
+  document.getElementById("ov2bHeaderText").textContent = `문장성분 알아보기 (2/2 영어와 비교 · 도식)  ${note}`;
   buildOverviewPage1("ov1a", POS_OVERVIEW, false);
   buildOverviewPage2("ov1b", POS_OVERVIEW);
   buildOverviewPage1("ov2a", COMPONENT_OVERVIEW, true);
   buildOverviewPage2("ov2b", COMPONENT_OVERVIEW);
 }
 
-// 개론1(품사)/개론2(문장성분)/사자성어/영문법, 이 순서로 체크된 것만 화면·인쇄에
-// 보여준다. 여러 조합이 동시에 가능해졌으므로(예: 개론만, 개론+주간 둘 다 등),
+// 알아보기1(품사)/알아보기2(문장성분)/사자성어/영문법, 이 순서로 체크된 것만 화면·인쇄에
+// 보여준다. 여러 조합이 동시에 가능해졌으므로(예: 알아보기만, 알아보기+주간 둘 다 등),
 // "보이는 페이지 중 맨 처음"만 빼고 나머지에 pb-before(새 장에서 시작)를 붙이는
 // 방식으로 일반화했다 - #page2에만 고정으로 걸려 있던 예전 방식과 달리 어떤
 // 조합이 와도 항상 올바르게 페이지가 나뉜다.
@@ -1462,7 +1503,7 @@ applyContentVisibility();
 
   // 사자성어(--fit)/영어문법(--fit2) 페이지는 서로 독립적으로 줄어든다 -
   // 체크박스로 한쪽만 인쇄할 때도 그 페이지만 기준으로 딱 맞게 맞추기 위해서다.
-  // 개론1/개론2는 같은 변수 이름(--fitOv)을 쓰지만 scope:"self"로 각 페이지
+  // 알아보기1/알아보기2는 같은 변수 이름(--fitOv)을 쓰지만 scope:"self"로 각 페이지
   // 엘리먼트 자신에게 지역 스코프로 설정되므로(: root가 아님) 서로 영향을
   // 주지 않고 독립적으로 줄어든다.
   var PAGES = [
