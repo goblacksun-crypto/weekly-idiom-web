@@ -36,12 +36,21 @@
   .hanja-row span, .related-item .head .hanja, .charorigin-item .visual .chip,
   .charorigin-item .visual .badge, .hj {
     font-family: "궁서체", "HYGungSo-Bold", GungsuhChe, Gungsuh, Batang, serif;
-    /* 궁서체는 획이 가늘어 다른 고딕 글자보다 얇고 작아 보이므로 살짝
-       외곽선을 더해 두께를 보완한다 (지원 안 하는 브라우저에서는 무시됨).
-       고정 px가 아니라 em 단위로 둬서, 상단의 큰 제목 글자일수록 외곽선도
-       비례해서 굵어지도록 한다 (고정값이면 큰 글자일수록 상대적으로 얇아 보임). */
-    -webkit-text-stroke: 0.035em currentColor;
-    text-stroke: 0.035em currentColor;
+  }
+  /* v1.33.0: 예전엔 위 규칙에 -webkit-text-stroke를 무조건 걸어서, 궁서체
+     계열 폰트가 실제로 설치되어 있지 않은 환경(대표적으로 macOS)에서는
+     일반 serif 대체 폰트에 외곽선만 더해져 오히려 두껍고 뭉개져 보이는
+     문제가 있었다. 이제는 JS(아래 <script> 맨 아래, hasGungsuhFont() 참고)가
+     궁서체 계열 폰트가 실제로 로드 가능한지 Font Loading API로 확인한 뒤에만
+     html에 .hanja-stroke-ok 클래스를 붙이고, 그때만 아주 약한 외곽선을 준다
+     (Python 쪽 v1.33.0 stroke 축소와 같은 비율로 맞춤: 0.035em → 0.014em). */
+  html.hanja-stroke-ok .hanja-row span,
+  html.hanja-stroke-ok .related-item .head .hanja,
+  html.hanja-stroke-ok .charorigin-item .visual .chip,
+  html.hanja-stroke-ok .charorigin-item .visual .badge,
+  html.hanja-stroke-ok .hj {
+    -webkit-text-stroke: 0.014em currentColor;
+    text-stroke: 0.014em currentColor;
   }
   .toolbar {
     max-width: 210mm; margin: 12px auto; padding: 0 4mm;
@@ -2055,6 +2064,26 @@ document.getElementById("showCompOvChk").addEventListener("change", applyContent
 document.getElementById("showSpOvChk").addEventListener("change", applyContentVisibility);
 document.getElementById("showPcOvChk").addEventListener("change", applyContentVisibility);
 
+
+// v1.33.0: 궁서체 계열 폰트(궁서체/GungsuhChe/Gungsuh/Batang)가 이 브라우저에서
+// 실제로 쓸 수 있는지 Font Loading API로 확인한다. 이 폰트들은 전부 로컬(OS)
+// 폰트라서 웹에서 다운로드해 강제로 쓸 수 없고, 없으면 브라우저가 조용히
+// 일반 serif로 대체한다 - 그 상태에서 외곽선(stroke)까지 주면 두꺼워지기만
+// 하고 원래 의도(붓글씨 느낌 보완)에는 안 맞으므로, 진짜 그 폰트가 있을 때만
+// hanja-stroke-ok 클래스를 붙인다.
+function hasGungsuhFont() {
+  if (!document.fonts || !document.fonts.check) return false;
+  var candidates = ['"궁서체"', "GungsuhChe", "Gungsuh", "Batang"];
+  for (var i = 0; i < candidates.length; i++) {
+    try {
+      if (document.fonts.check("16px " + candidates[i])) return true;
+    } catch (e) { /* 일부 구형 브라우저는 check()가 없거나 예외를 던질 수 있음 */ }
+  }
+  return false;
+}
+if (hasGungsuhFont()) {
+  document.documentElement.classList.add("hanja-stroke-ok");
+}
 
 populateWeekSelect();
 currentWeek = computeWeek(new Date());
