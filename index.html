@@ -407,8 +407,29 @@
   .pv-example-item .pv-en { color: rgb(30,30,30); }
   .pv-example-item .pv-en .lbl { font-weight: 700; }
   .pv-example-item .pv-kr { color: rgb(100,100,100); }
-  .pv-example-item .pv-literal { color: rgb(130,130,155); font-size: calc(12px * var(--fit2)); font-style: italic; }
-  .pv-example-item .pv-note { color: rgb(150,120,40); font-size: calc(12px * var(--fit2)); }
+  .pv-example-item .pv-literal { color: rgb(130,130,155); font-size: calc(13px * var(--fit2)); font-style: italic; }
+  /* v1.34.0: 문법 설명(note)이 그냥 흘러가는 작은 회색조 텍스트처럼 보여서
+     "안 읽고 싶어진다"는 피드백에 따라, 인쇄판(Python)과 같은 옅은 노란
+     배경 박스 + 왼쪽 강조 띠 "포인트" 카드로 바꾸고 글자도 키웠다. */
+  .pv-example-item .pv-note {
+    display: flex;
+    align-items: flex-start;
+    gap: calc(8px * var(--fit2));
+    background: rgb(255,246,224);
+    border-radius: calc(8px * var(--fit2));
+    padding: calc(7px * var(--fit2)) calc(12px * var(--fit2));
+    margin-top: calc(5px * var(--fit2));
+    color: rgb(120,85,10);
+    font-size: calc(15px * var(--fit2));
+    line-height: 1.55;
+  }
+  .pv-example-item .pv-note-bar {
+    flex: 0 0 calc(4px * var(--fit2));
+    align-self: stretch;
+    background: rgb(230,165,30);
+    border-radius: calc(3px * var(--fit2));
+  }
+  .pv-example-item .pv-note-text { flex: 1 1 auto; }
 
   /* 여러 페이지 중 첫 번째로 보이는 페이지가 아니면 인쇄 시 새 장부터
      시작하도록 하는 공통 클래스 (사자성어/영문법/알아보기1/알아보기2 어떤 조합이든
@@ -1810,7 +1831,13 @@ function renderProverb(container, pv, idiom, weekNo) {
     kr.textContent = ex.kr;
     const note = document.createElement("div");
     note.className = "pv-note";
-    note.textContent = ex.note;
+    const noteBar = document.createElement("span");
+    noteBar.className = "pv-note-bar";
+    const noteText = document.createElement("span");
+    noteText.className = "pv-note-text";
+    noteText.textContent = ex.note;
+    note.appendChild(noteBar);
+    note.appendChild(noteText);
     item.appendChild(en);
     item.appendChild(kr);
     if (ex.literal) {
